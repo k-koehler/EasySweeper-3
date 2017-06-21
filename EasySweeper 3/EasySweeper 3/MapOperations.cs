@@ -13,33 +13,43 @@ namespace EasySweeper_3 {
     class MapOperations {
 
         /// <summary>
-        /// returns true if the reference contains a valid map capture
+        /// chops the winterface into OCR-Friendly sub-bitmaps
         /// </summary>
-        public static bool is_valid_map(ref Bitmap map) {
-            //all we're interested in right now is if the picture has the right dimensions
-            //TODO using Size.Empty for now
-            return map.Size == Size.Empty;
+        /// <param name="winterface">an image of the winterface</param>
+        /// <returns>list of sub-bitmaps which are the useful bits to use OCR on</returns>
+        private static List<Bitmap> chopWinterface(ref Bitmap winterface) {
+            //TODO
+            return null;
+        }
+
+        /// <summary>
+        /// returns a list of strings of winterface information
+        /// </summary>
+        /// <param name="winterface">an image of the winterface</param>
+        /// <returns>list of strings of winterface information</returns>
+        public static List<String> readWinterface(ref Bitmap winterface) {
+            //chop into OCR friendly bits
+            var ocr_friendly = chopWinterface(ref winterface);
+            //TODO
+            return null;
+        }
+
+        /// <summary>
+        /// interprets a picture of the map as a graph with Vertices as connections and Nodes as rooms
+        /// </summary>
+        /// <param name="dg_map">an image of the map</param>
+        /// <returns>a graph representing the image</returns>
+        public static Graph interpretMap(ref Bitmap dg_map) {
+            //TODO
+            return null;
         }
 
         /// <summary>
         /// counts the rooms in a valid map
         /// </summary>
-        /// <param name="map">
-        /// the reference to the map for which the room count is required
-        /// </param>
-        /// <returns>
-        /// unsigned int from 1-64 representing the # of rooms in the map
-        /// returns 0 for invalid map
-        /// </returns>
-        public static uint room_count(ref Bitmap map){
-            
-            //return 0 on invalid map
-            if (is_valid_map(ref map) == false)
-                return 0;
-
+        public static uint room_count(ref Graph dg_graph){
             //return the room count
-            //TODO
-            return 1;
+            return dg_graph.roomcount;
         }
 
     }
