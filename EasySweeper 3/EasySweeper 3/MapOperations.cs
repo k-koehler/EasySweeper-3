@@ -20,27 +20,26 @@ namespace EasySweeper_3 {
         /// </summary>
         /// <returns>a bitmap of the winterface once it successfully captures</returns>
         public static Bitmap captureWinterface(ref CaptureDevice dev) {
-            //some consts which will be needed
-            const ushort WINT_WIDTH = 499, WINT_HEIGHT = 334, THREAD_SLEEP = 250;
+
+            //if rs is not running, this is not valid
+            //eventually fix so runescape must be foreground window
             const string PROC_NAME = "rs2client";
-            
+            var list = Process.GetProcessesByName(PROC_NAME);
+            if (list.GetLength(0) == 0)
+                return null;
+
             //rec.Width != 0 -> dev.findRec found the winterface
             Rectangle rec = new Rectangle(0, 0, 0, 0);
-            while (rec.Width == 0) {
-                Thread.Sleep(THREAD_SLEEP);
-                rec = dev.findRec(Properties.Resources.winterfaceBmp);
+            rec = dev.findRec(Properties.Resources.winterfaceBmp);
+            if (rec.Width == 0)
+                return null;
 
-                //if rs is not running, this is not valid
-                //eventually fix so runescape must be foreground window
-                var list = Process.GetProcessesByName(PROC_NAME);
-                if (list.GetLength(0) == 0)
-                    rec = new Rectangle(0, 0, 0, 0);
+            //garbage collect
+            //TODO fix the memory leak
+            GC.Collect();
 
-                //garbage collect
-                //eventually fix the memory leak
-                GC.Collect();
-            }
-
+            //some consts which will be needed
+            const ushort WINT_WIDTH = 499, WINT_HEIGHT = 334, THREAD_SLEEP = 250;
             //expand the found rec and return it
             rec.Width = WINT_WIDTH;
             rec.Height = WINT_HEIGHT;
