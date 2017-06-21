@@ -64,8 +64,7 @@ namespace EasySweeper_3 {
         //initially no tentative area
         public CaptureDevice() {
             tentativeScreenAreaCapture = new Rectangle(0, 0, 0, 0);
-            //TODO add DgMap to properties
-            //mapIndicator = Properties.Resources.DgMap;
+            mapIndicator = Properties.Resources.DgMap;
         }
 
         //captures an area of the screen into a bitmap

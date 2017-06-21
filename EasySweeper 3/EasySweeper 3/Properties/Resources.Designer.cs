@@ -63,6 +63,16 @@ namespace EasySweeper_3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DgMap {
+            get {
+                object obj = ResourceManager.GetObject("DgMap", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap winterfaceBmp {
             get {
                 object obj = ResourceManager.GetObject("winterfaceBmp", resourceCulture);
