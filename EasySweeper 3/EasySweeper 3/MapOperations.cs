@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -77,7 +78,7 @@ namespace EasySweeper_3 {
         /// </summary>
         /// <param name="winterface">an image of the winterface</param>
         /// <returns>list of sub-bitmaps which are the useful bits to use OCR on</returns>
-        private static List<Bitmap> chopWinterface(ref Bitmap winterface) {
+        public static List<Bitmap> chopWinterface(ref Bitmap winterface) {
 
             //make sure the winterface has the right dimensions
             if (winterface.Width != 499 || winterface.Height != 334)
@@ -85,8 +86,8 @@ namespace EasySweeper_3 {
 
             //some random consts for your viewing pleasure
             var rectangleList = new List<Rectangle> {
-                new Rectangle(new Point(35,35),   new Size(44,4)),   //timer                  -> 0
-                new Rectangle(new Point(49,79),   new Size(49,79)),  //floor number           -> 1
+                new Rectangle(new Point(35,35),   new Size(44,9)),   //timer                  -> 0
+                new Rectangle(new Point(49,79),   new Size(55,11)),  //floor number           -> 1
                 new Rectangle(new Point(307,171), new Size(37,9)),   //percentage completed   -> 2
                 new Rectangle(new Point(310,191), new Size(33,9)),   //level mod              -> 3
                 new Rectangle(new Point(358,61),  new Size(102,41)), //player 1               -> 4
@@ -102,17 +103,78 @@ namespace EasySweeper_3 {
                list.Add(cropBitmap(winterface, rec));
             }
 
+            //free me
+            rectangleList.Clear();
+
             return list;
+        }
+
+        /// <summary>
+        /// adjusts the contrast of an image
+        /// </summary>
+        /// <param name="Image">image for which you want to adjust brightness</param>
+        /// <param name="Value">degree of contrast you want</param>
+        /// <returns></returns>
+        public static Bitmap AdjustContrast(Bitmap Image, float Value) {
+            Value = (100.0f + Value) / 100.0f;
+            Value *= Value;
+            Bitmap NewBitmap = (Bitmap)Image.Clone();
+            BitmapData data = NewBitmap.LockBits(
+                new Rectangle(0, 0, NewBitmap.Width, NewBitmap.Height),
+                ImageLockMode.ReadWrite,
+                NewBitmap.PixelFormat);
+            int Height = NewBitmap.Height;
+            int Width = NewBitmap.Width;
+
+            unsafe
+            {
+                for (int y = 0; y < Height; ++y) {
+                    byte* row = (byte*)data.Scan0 + (y * data.Stride);
+                    int columnOffset = 0;
+                    for (int x = 0; x < Width; ++x) {
+                        byte B = row[columnOffset];
+                        byte G = row[columnOffset + 1];
+                        byte R = row[columnOffset + 2];
+
+                        float Red = R / 255.0f;
+                        float Green = G / 255.0f;
+                        float Blue = B / 255.0f;
+                        Red = (((Red - 0.5f) * Value) + 0.5f) * 255.0f;
+                        Green = (((Green - 0.5f) * Value) + 0.5f) * 255.0f;
+                        Blue = (((Blue - 0.5f) * Value) + 0.5f) * 255.0f;
+
+                        int iR = (int)Red;
+                        iR = iR > 255 ? 255 : iR;
+                        iR = iR < 0 ? 0 : iR;
+                        int iG = (int)Green;
+                        iG = iG > 255 ? 255 : iG;
+                        iG = iG < 0 ? 0 : iG;
+                        int iB = (int)Blue;
+                        iB = iB > 255 ? 255 : iB;
+                        iB = iB < 0 ? 0 : iB;
+
+                        row[columnOffset] = (byte)iB;
+                        row[columnOffset + 1] = (byte)iG;
+                        row[columnOffset + 2] = (byte)iR;
+
+                        columnOffset += 4;
+                    }
+                }
+            }
+
+            NewBitmap.UnlockBits(data);
+
+            return NewBitmap;
         }
 
         /// <summary>
         /// this method will contrast and invert each bitmap in a list
         /// </summary>
         /// <param name="winterfaceInformation"></param>
-        private static void processList(ref List<Bitmap> winterfaceInformation) {
-            foreach(var bmp in winterfaceInformation) {
-                //TODO adjust contrast
-                //TODO invert colours
+        public static void processList(ref List<Bitmap> winterfaceInformation) {
+            for(var i=0; i<winterfaceInformation.Count; ++i) {
+                winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)500.0);
+                //TODO invert
             }
         }
 
