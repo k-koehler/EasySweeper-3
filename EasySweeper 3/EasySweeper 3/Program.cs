@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tesseract;
 
 namespace EasySweeper_3 {
 
@@ -41,6 +42,23 @@ namespace EasySweeper_3 {
                 bmp.Save(i.ToString() + ".bmp");
                 ++i;
             }
+
+            TesseractEngine tessEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
+            tessEngine.DefaultPageSegMode = PageSegMode.SingleColumn;
+            tessEngine.
+
+            i = 0;
+            foreach(var bmp in test_winterface_chopper) {
+                var img = Pix.LoadFromFile(i + ".bmp");
+                var page  = tessEngine.Process(img);
+                var text = page.GetText();
+                Console.WriteLine("img " + i + " : " + text);
+                ++i;
+                img.Dispose();
+                page.Dispose();
+            }
+
+            
 
 #else
             Application.EnableVisualStyles();
