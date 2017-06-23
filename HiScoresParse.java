@@ -16,7 +16,7 @@ public class HiScoresParse {
         return true;
     }
 
-   public static void getTopPlayers() throws IOException {
+   public static void getTopPlayers() throws IOException, InterruptedException {
         // Structure for URL without page number
         String genericPageURL = "http://services.runescape.com/m=hiscore/ranking?" +
                 "category_type=0&table=0&time_filter=0&date=0&page=";
@@ -28,7 +28,7 @@ public class HiScoresParse {
         BufferedReader in;
         String line;
         String player;
-
+        boolean pageProcessed = false;
         page = 1;
         BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/Sajiel/Downloads/RuneScape HiScores/src/names.txt"));
 
@@ -39,18 +39,24 @@ public class HiScoresParse {
             while ((line = in.readLine()) != null) {
                 if (line.contains("<img class=\"avatar\" src='http://services.runescape.com/m=avatar-rs/")) {
                     player = (line.split("/")[4] + "\n").replace('+',' ');
+                    System.out.println(player);
                     bw.write(player);
+                    pageProcessed = true;
+                }
+                else if (line.contains("<b>Due to excessive use of the Hiscore system, your IP has been temporarily blocked.</b>")) {
+                    pageProcessed = false;
+                    Thread.sleep(500);
                 }
             }
             in.close();
-            page++;
-
+            if (pageProcessed)
+                page++;
         }
         while (page < 20000);
         bw.close();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         HiScoresParse.getTopPlayers();
     }
 }
