@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Graph.cs" />
     <Compile Include="MapOperations.cs" />
+    <Compile Include="MapOperations.WinterfaceArea.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Program.Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

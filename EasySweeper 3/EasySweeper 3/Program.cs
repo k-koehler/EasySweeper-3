@@ -43,16 +43,15 @@ namespace EasySweeper_3 {
                 ++i;
             }
 
-            TesseractEngine tessEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.Default);
+            TesseractEngine tessEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.TesseractAndCube);
             tessEngine.DefaultPageSegMode = PageSegMode.SingleColumn;
-            tessEngine.
 
             i = 0;
             foreach(var bmp in test_winterface_chopper) {
                 var img = Pix.LoadFromFile(i + ".bmp");
                 var page  = tessEngine.Process(img);
                 var text = page.GetText();
-                Console.WriteLine("img " + i + " : " + text);
+                Console.WriteLine("img " + i + " : \n" + text);
                 ++i;
                 img.Dispose();
                 page.Dispose();

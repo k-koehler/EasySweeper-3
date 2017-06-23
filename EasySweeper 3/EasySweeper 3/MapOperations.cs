@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Tesseract;
 
 /// <summary>
 /// Library which consists of all the operations we will perform on our Map Captures
 /// </summary>
 
 namespace EasySweeper_3 {
-    class MapOperations {
+    partial class MapOperations {
 
         /// <summary>
         /// capture the winterface
@@ -87,19 +88,21 @@ namespace EasySweeper_3 {
 
             //some random consts for your viewing pleasure
             var rectangleList = new List<Rectangle> {
-                new Rectangle(new Point(30,35),   new Size(49,9)),   //timer                  -> 0
+                new Rectangle(new Point(30,30),   new Size(54,19)),  //timer                  -> 0
                 new Rectangle(new Point(49,79),   new Size(55,11)),  //floor number           -> 1
                 new Rectangle(new Point(307,171), new Size(37,9)),   //percentage completed   -> 2
-                new Rectangle(new Point(310,191), new Size(33,9)),   //level mod              -> 3
-                new Rectangle(new Point(358,61),  new Size(102,41)), //player 1               -> 4
-                new Rectangle(new Point(358,111), new Size(102,41)), //player 2               -> 5
-                new Rectangle(new Point(358,161), new Size(102,41)), //player 3               -> 6
-                new Rectangle(new Point(358,211), new Size(102,41)), //player 4               -> 7
-                new Rectangle(new Point(358,261), new Size(102,41))  //player 5               -> 8
+                new Rectangle(new Point(310,186), new Size(33,14)),  //level mod              -> 3
+                new Rectangle(new Point(356,59),  new Size(76,16)),  //player 1               -> 4
+                new Rectangle(new Point(355,110), new Size(105,49)), //player 2               -> 5
+                new Rectangle(new Point(355,160), new Size(105,49)), //player 3               -> 6
+                new Rectangle(new Point(355,210), new Size(105,49)), //player 4               -> 7
+                new Rectangle(new Point(355,260), new Size(105,49))  //player 5               -> 8
             };
 
-            //crop each rectangle from the bitmap and add it to the list
-            List<Bitmap> list = new List<Bitmap>();
+            
+
+        //crop each rectangle from the bitmap and add it to the list
+        List<Bitmap> list = new List<Bitmap>();
             foreach (var rec in rectangleList) {
                 list.Add(cropBitmap(winterface, rec));
             }
@@ -215,6 +218,79 @@ namespace EasySweeper_3 {
             return destImage;
         }
 
+        public static Bitmap Sharpen(Bitmap image) {
+            Bitmap sharpenImage = (Bitmap)image.Clone();
+
+            int filterWidth = 3;
+            int filterHeight = 3;
+            int width = image.Width;
+            int height = image.Height;
+
+            // Create sharpening filter.
+            double[,] filter = new double[filterWidth, filterHeight];
+            filter[0, 0] = filter[0, 1] = filter[0, 2] = filter[1, 0] = filter[1, 2] = filter[2, 0] = filter[2, 1] = filter[2, 2] = -1;
+            filter[1, 1] = 9;
+
+            double factor = 1.0;
+            double bias = 0.0;
+
+            Color[,] result = new Color[image.Width, image.Height];
+
+            // Lock image bits for read/write.
+            BitmapData pbits = sharpenImage.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+            // Declare an array to hold the bytes of the bitmap.
+            int bytes = pbits.Stride * height;
+            byte[] rgbValues = new byte[bytes];
+
+            // Copy the RGB values into the array.
+            System.Runtime.InteropServices.Marshal.Copy(pbits.Scan0, rgbValues, 0, bytes);
+
+            int rgb;
+            // Fill the color array with the new sharpened color values.
+            for (int x = 0; x < width; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    double red = 0.0, green = 0.0, blue = 0.0;
+
+                    for (int filterX = 0; filterX < filterWidth; filterX++) {
+                        for (int filterY = 0; filterY < filterHeight; filterY++) {
+                            int imageX = (x - filterWidth / 2 + filterX + width) % width;
+                            int imageY = (y - filterHeight / 2 + filterY + height) % height;
+
+                            rgb = imageY * pbits.Stride + 3 * imageX;
+
+                            red += rgbValues[rgb + 2] * filter[filterX, filterY];
+                            green += rgbValues[rgb + 1] * filter[filterX, filterY];
+                            blue += rgbValues[rgb + 0] * filter[filterX, filterY];
+                        }
+                        int r = Math.Min(Math.Max((int)(factor * red + bias), 0), 255);
+                        int g = Math.Min(Math.Max((int)(factor * green + bias), 0), 255);
+                        int b = Math.Min(Math.Max((int)(factor * blue + bias), 0), 255);
+
+                        result[x, y] = Color.FromArgb(r, g, b);
+                    }
+                }
+            }
+
+            // Update the image with the sharpened pixels.
+            for (int x = 0; x < width; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    rgb = y * pbits.Stride + 3 * x;
+
+                    rgbValues[rgb + 2] = result[x, y].R;
+                    rgbValues[rgb + 1] = result[x, y].G;
+                    rgbValues[rgb + 0] = result[x, y].B;
+                }
+            }
+
+            // Copy the RGB values back to the bitmap.
+            System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, pbits.Scan0, bytes);
+            // Release image bits.
+            sharpenImage.UnlockBits(pbits);
+
+            return sharpenImage;
+        }
+
         /// <summary>
         /// this method will contrast and invert each bitmap in a list
         /// </summary>
@@ -223,20 +299,56 @@ namespace EasySweeper_3 {
             for (var i = 0; i < winterfaceInformation.Count; ++i) {
                 winterfaceInformation[i] = ResizeImage(
                     winterfaceInformation[i], 
-                    winterfaceInformation[i].Width * 10, 
+                    winterfaceInformation[i].Width *  10, 
                     winterfaceInformation[i].Height * 10);
                 winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)100.0);
                 winterfaceInformation[i] = whiten_and_invert(winterfaceInformation[i]);
+                //winterfaceInformation[i] = Sharpen(winterfaceInformation[i]);
             }
         }
+
+        public enum WinterfaceAreaType { Timer = 0, Floor_Number, Percentage_Completed, Keyer, Player, Level_Mod };
 
         /// <summary>
         /// reads a preprocessed image, returns a string of its contents
         /// </summary>
         /// <param name="src">the source image</param>
         /// <returns>string representation of the image</returns>
-        public static string tesseract_read_bitmap(Bitmap src) {
-            return null;
+        public static string tesseract_read_winterface_area(Bitmap winterfaceBitmap, WinterfaceAreaType winArea, EngineMode engMode, PageSegMode segMode, string datapath, string configpath = null) {
+            
+            //setup our tessengine
+            TesseractEngine tessEng;
+            if(configpath != null)
+                tessEng = new TesseractEngine(datapath, "eng", engMode, configpath);
+            else tessEng = new TesseractEngine(datapath, "eng", engMode, datapath);
+            tessEng.DefaultPageSegMode = segMode;
+
+            //goto correct place :3
+            string ret_txt;
+            switch (winArea) {
+                case WinterfaceAreaType.Timer:
+                    ret_txt = tesseract_read_timer(ref tessEng, ref winterfaceBitmap);
+                    break;
+                case WinterfaceAreaType.Player:
+                    ret_txt = tesseract_read_player(ref tessEng, ref winterfaceBitmap);
+                    break;
+                case WinterfaceAreaType.Percentage_Completed:
+                    ret_txt = tesseract_read_percent_completed(ref tessEng, ref winterfaceBitmap);
+                    break;
+                case WinterfaceAreaType.Keyer:
+                    ret_txt = tesseract_read_keyer(ref tessEng, ref winterfaceBitmap);
+                    break;
+                case WinterfaceAreaType.Floor_Number:
+                    ret_txt = tesseract_read_floor_number(ref tessEng, ref winterfaceBitmap);
+                    break;
+                case WinterfaceAreaType.Level_Mod:
+                    ret_txt = tesseract_read_level_mod(ref tessEng, ref winterfaceBitmap);
+                    break;
+                default:
+                    throw new Exception("this should never happen");
+
+            }
+            return ret_txt;
         }
 
         /// <summary>
@@ -248,8 +360,20 @@ namespace EasySweeper_3 {
             //chop into OCR friendly bits
             var ocr_friendly = chopWinterface(ref winterface);
             processList(ref ocr_friendly);
-            //TODO
-            return null;
+            var stringList = new List<String>();
+
+            //some annoying shit here
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[0], WinterfaceAreaType.Timer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[1], WinterfaceAreaType.Floor_Number,         EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[2], WinterfaceAreaType.Percentage_Completed, EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[3], WinterfaceAreaType.Level_Mod,            EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[4], WinterfaceAreaType.Keyer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[5], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[6], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[7], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[8], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+
+            return stringList;
         }
 
         /// <summary>
