@@ -86,7 +86,7 @@ namespace EasySweeper_3 {
 
             //some random consts for your viewing pleasure
             var rectangleList = new List<Rectangle> {
-                new Rectangle(new Point(35,35),   new Size(44,9)),   //timer                  -> 0
+                new Rectangle(new Point(30,35),   new Size(49,9)),   //timer                  -> 0
                 new Rectangle(new Point(49,79),   new Size(55,11)),  //floor number           -> 1
                 new Rectangle(new Point(307,171), new Size(37,9)),   //percentage completed   -> 2
                 new Rectangle(new Point(310,191), new Size(33,9)),   //level mod              -> 3
@@ -168,12 +168,31 @@ namespace EasySweeper_3 {
         }
 
         /// <summary>
+        /// honestly, I don't really know how this works, but it works! It does the opposite of what I expected...
+        /// inverts a hi-contrast image and turns it into black and white (black text, white background)
+        /// </summary>
+        /// <param name="bmp">the image to turn into black & white and invert</param>
+        public static Bitmap whiten_and_invert(Bitmap bmp) {
+            var outBitmap = new Bitmap(bmp.Width, bmp.Height);
+            for (int i = 0; i < bmp.Width; i++) {
+                for (int j = 0; j < bmp.Height; j++) {
+                    var colour = bmp.GetPixel(i, j);
+                    if (colour.ToArgb() == Color.Black.ToArgb())
+                        outBitmap.SetPixel(i, j, Color.White);
+                    else outBitmap.SetPixel(i, j, Color.Black);
+                }
+            }
+            return outBitmap;
+        }
+
+        /// <summary>
         /// this method will contrast and invert each bitmap in a list
         /// </summary>
         /// <param name="winterfaceInformation"></param>
         public static void processList(ref List<Bitmap> winterfaceInformation) {
             for(var i=0; i<winterfaceInformation.Count; ++i) {
-                winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)500.0);
+                winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)100.0);
+                winterfaceInformation[i] = whiten_and_invert(winterfaceInformation[i]);
                 //TODO invert
             }
         }
