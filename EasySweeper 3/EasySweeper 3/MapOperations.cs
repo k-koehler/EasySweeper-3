@@ -99,8 +99,8 @@ namespace EasySweeper_3 {
 
             //crop each rectangle from the bitmap and add it to the list
             List<Bitmap> list = new List<Bitmap>();
-            foreach(var rec in rectangleList) {
-               list.Add(cropBitmap(winterface, rec));
+            foreach (var rec in rectangleList) {
+                list.Add(cropBitmap(winterface, rec));
             }
 
             //free me
@@ -190,11 +190,19 @@ namespace EasySweeper_3 {
         /// </summary>
         /// <param name="winterfaceInformation"></param>
         public static void processList(ref List<Bitmap> winterfaceInformation) {
-            for(var i=0; i<winterfaceInformation.Count; ++i) {
+            for (var i = 0; i < winterfaceInformation.Count; ++i) {
                 winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)100.0);
                 winterfaceInformation[i] = whiten_and_invert(winterfaceInformation[i]);
-                //TODO invert
             }
+        }
+
+        /// <summary>
+        /// reads a preprocessed image, returns a string of its contents
+        /// </summary>
+        /// <param name="src">the source image</param>
+        /// <returns>string representation of the image</returns>
+        public static string tesseract_read_bitmap(Bitmap src) {
+            return null;
         }
 
         /// <summary>
