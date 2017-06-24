@@ -11,12 +11,14 @@ namespace EasySweeper_3 {
     partial class MapOperations {
 
         private static string tesseract_read_floor_number(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
+            tessEng.SetVariable("tessedit_char_whitelist", " Floor0123456789:");
             var page = tessEng.Process(winterfaceBitmap);
             var str = page.GetText();
             return str;
         }
 
         private static string tesseract_read_keyer(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
+            tessEng.SetVariable("tessedit_char_whitelist", " -0123456789abcdefghijqlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
             var page = tessEng.Process(winterfaceBitmap);
             return page.GetText();
         }
@@ -27,6 +29,7 @@ namespace EasySweeper_3 {
         }
 
         private static string tesseract_read_player(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
+            tessEng.SetVariable("tessedit_char_whitelist", " -0123456789abcdefghijqlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
             var page = tessEng.Process(winterfaceBitmap);
             return page.GetText();
         }
@@ -65,6 +68,7 @@ namespace EasySweeper_3 {
 
         private static string tesseract_read_level_mod(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
             var page = tessEng.Process(winterfaceBitmap);
+            tessEng.SetVariable("tessedit_char_whitelist", "-+%0123456789");
             return page.GetText();
         }
 
