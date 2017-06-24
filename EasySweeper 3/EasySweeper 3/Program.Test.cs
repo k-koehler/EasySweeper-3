@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EasySweeper_3 {
@@ -15,6 +16,8 @@ namespace EasySweeper_3 {
                     var bmp = MapOperations.captureMap(ref dev);
                     if (bmp != null)
                         Console.WriteLine("found map");
+                    Thread.Sleep(1000);
+                    bmp.Dispose();
                 }
             });
             testTask.Start();
@@ -34,6 +37,7 @@ namespace EasySweeper_3 {
 
                     //delete it
                     winterface.Dispose();
+                    Thread.Sleep(1000);
                 }
 
             });

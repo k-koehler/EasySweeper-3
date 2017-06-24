@@ -25,42 +25,24 @@ namespace EasySweeper_3 {
         static void Main() {
 
 #if TEST_LIB
-            var dev = new CaptureDevice();
+            //var dev = new CaptureDevice();
             //testing for map capture
             //testMap(dev);
 
             //testing for winterface capture
-            //testWinterface(dev);
+            // testWinterface(dev);
 
-            //let this thread live on
-            //while (true) ;
-
-            var test_winterface = new Bitmap("testWint.bmp");
-
-            /*var test_winterface_chopper = MapOperations.chopWinterface(ref test_winterface);
-            MapOperations.processList(ref test_winterface_chopper);
-            int i = 0;
-            foreach(var bmp in test_winterface_chopper) {
-                bmp.Save(i.ToString() + ".bmp");
-                ++i;
-            }*/
-
-            /*Console.WriteLine("Testing Method: readWinterface...\n");
-            var list = MapOperations.readWinterface(ref test_winterface);
-            foreach(var str in list) {
-                Console.WriteLine(str);
-            }*/
-
-            var i = 0;
             foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
             {
+                GC.Collect();
                 var bmp_load = new Bitmap(file);
-                var test_winterface_chopper = MapOperations.chopWinterface(ref bmp_load);
-                MapOperations.processList(ref test_winterface_chopper);
-                test_winterface_chopper[0].Save(i + ".bmp");
-                Console.WriteLine("filename="+ file + ": " + MapOperations.readWinterface(ref bmp_load)[0]);
-                ++i;
+                File.AppendAllText("log.txt", "filename=" + file + ": \n");
+                File.AppendAllText("log.txt", "entering read_winterface... data...\n");
+                var str_list = MapOperations.readWinterface(ref bmp_load);
+                File.AppendAllLines("log.txt", str_list);
             }
+
+            while (true) ;
 
 #else
             Application.EnableVisualStyles();
