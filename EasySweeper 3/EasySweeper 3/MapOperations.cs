@@ -36,7 +36,7 @@ namespace EasySweeper_3 {
             GC.Collect();
 
             //some consts which will be needed
-            const ushort WINT_WIDTH = 499, WINT_HEIGHT = 334, THREAD_SLEEP = 250;
+            const ushort WINT_WIDTH = 499, WINT_HEIGHT = 334;
             //expand the found rec and return it
             rec.Width = WINT_WIDTH;
             rec.Height = WINT_HEIGHT;
@@ -99,11 +99,11 @@ namespace EasySweeper_3 {
         /// </summary>
         /// <param name="winterfaceInformation"></param>
         public static void processList(ref List<Bitmap> winterfaceInformation) {
-            for (var i = 0; i < winterfaceInformation.Count; ++i) {
+            for (var i = 0; i < 1/*winterfaceInformation.Count*/; ++i) {
                 winterfaceInformation[i] = ResizeImage(
-                    winterfaceInformation[i], 
-                    winterfaceInformation[i].Width *  10, 
-                    winterfaceInformation[i].Height * 10);
+                    winterfaceInformation[i],
+                    winterfaceInformation[i].Width  * 5,
+                    winterfaceInformation[i].Height * 5);
                 winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)100.0);
                 winterfaceInformation[i] = whiten_and_invert(winterfaceInformation[i]);
             }
@@ -165,15 +165,15 @@ namespace EasySweeper_3 {
             var stringList = new List<String>();
 
             //some annoying shit here
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[0], WinterfaceAreaType.Timer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[1], WinterfaceAreaType.Floor_Number,         EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[2], WinterfaceAreaType.Percentage_Completed, EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[3], WinterfaceAreaType.Level_Mod,            EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[4], WinterfaceAreaType.Keyer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[5], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[6], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[7], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[8], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            stringList.Add(tesseract_read_winterface_area(ocr_friendly[0], WinterfaceAreaType.Timer,                EngineMode.Default, PageSegMode.SingleWord,   @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[1], WinterfaceAreaType.Floor_Number,         EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[2], WinterfaceAreaType.Percentage_Completed, EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[3], WinterfaceAreaType.Level_Mod,            EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[4], WinterfaceAreaType.Keyer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[5], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[6], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[7], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
+            //stringList.Add(tesseract_read_winterface_area(ocr_friendly[8], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
 
             return stringList;
         }

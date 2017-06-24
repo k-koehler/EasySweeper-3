@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,8 +36,8 @@ namespace EasySweeper_3 {
             //while (true) ;
 
             var test_winterface = new Bitmap("testWint.bmp");
-            /*
-            var test_winterface_chopper = MapOperations.chopWinterface(ref test_winterface);
+
+            /*var test_winterface_chopper = MapOperations.chopWinterface(ref test_winterface);
             MapOperations.processList(ref test_winterface_chopper);
             int i = 0;
             foreach(var bmp in test_winterface_chopper) {
@@ -44,10 +45,21 @@ namespace EasySweeper_3 {
                 ++i;
             }*/
 
-            Console.WriteLine("Testing Method: readWinterface...\n");
+            /*Console.WriteLine("Testing Method: readWinterface...\n");
             var list = MapOperations.readWinterface(ref test_winterface);
             foreach(var str in list) {
                 Console.WriteLine(str);
+            }*/
+
+            var i = 0;
+            foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
+            {
+                var bmp_load = new Bitmap(file);
+                var test_winterface_chopper = MapOperations.chopWinterface(ref bmp_load);
+                MapOperations.processList(ref test_winterface_chopper);
+                test_winterface_chopper[0].Save(i + ".bmp");
+                Console.WriteLine("filename="+ file + ": " + MapOperations.readWinterface(ref bmp_load)[0]);
+                ++i;
             }
 
 #else
