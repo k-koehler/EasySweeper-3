@@ -35,29 +35,20 @@ namespace EasySweeper_3 {
             //while (true) ;
 
             var test_winterface = new Bitmap("testWint.bmp");
+            /*
             var test_winterface_chopper = MapOperations.chopWinterface(ref test_winterface);
             MapOperations.processList(ref test_winterface_chopper);
             int i = 0;
             foreach(var bmp in test_winterface_chopper) {
                 bmp.Save(i.ToString() + ".bmp");
                 ++i;
+            }*/
+
+            Console.WriteLine("Testing Method: readWinterface...\n");
+            var list = MapOperations.readWinterface(ref test_winterface);
+            foreach(var str in list) {
+                Console.WriteLine(str);
             }
-
-            TesseractEngine tessEngine = new TesseractEngine(@"./tessdata", "eng", EngineMode.TesseractAndCube);
-            tessEngine.DefaultPageSegMode = PageSegMode.SingleColumn;
-
-            i = 0;
-            foreach(var bmp in test_winterface_chopper) {
-                var img = Pix.LoadFromFile(i + ".bmp");
-                var page  = tessEngine.Process(img);
-                var text = page.GetText();
-                Console.WriteLine("img " + i + " : \n" + text);
-                ++i;
-                img.Dispose();
-                page.Dispose();
-            }
-
-            
 
 #else
             Application.EnableVisualStyles();

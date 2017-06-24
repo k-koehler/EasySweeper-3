@@ -10,27 +10,33 @@ namespace EasySweeper_3 {
     partial class MapOperations {
 
         private static string tesseract_read_floor_number(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
         private static string tesseract_read_keyer(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
         private static string tesseract_read_percent_completed(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
         private static string tesseract_read_player(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
         private static string tesseract_read_timer(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
         private static string tesseract_read_level_mod(ref TesseractEngine tessEng, ref Bitmap winterfaceBitmap) {
-            throw new NotImplementedException();
+            var page = tessEng.Process(winterfaceBitmap);
+            return page.GetText();
         }
 
 
