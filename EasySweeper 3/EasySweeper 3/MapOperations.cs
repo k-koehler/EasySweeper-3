@@ -52,14 +52,12 @@ namespace EasySweeper_3 {
             return dev.findMap();
         }
 
-
-
         /// <summary>
         /// chops the winterface into OCR-Friendly sub-bitmaps
         /// </summary>
         /// <param name="winterface">an image of the winterface</param>
         /// <returns>list of sub-bitmaps which are the useful bits to use OCR on</returns>
-        public static List<Bitmap> chopWinterface(ref Bitmap winterface) {
+        public static List<Bitmap> chopWinterface(Bitmap winterface) {
 
             //make sure the winterface has the right dimensions
             if (winterface.Width != 499 || winterface.Height != 334)
@@ -92,100 +90,15 @@ namespace EasySweeper_3 {
             return list;
         }
 
-
-
         /// <summary>
         /// this method will contrast and invert each bitmap in a list
         /// </summary>
         /// <param name="winterfaceInformation"></param>
         public static void processList(ref List<Bitmap> winterfaceInformation) {
             for (var i = 0; i < winterfaceInformation.Count; ++i) {
-                if (i == 0)
-                {
-                    winterfaceInformation[i] = ResizeImage(
-                    winterfaceInformation[i],
-                    winterfaceInformation[i].Width * 5,
-                    winterfaceInformation[i].Height * 5);
-                }
-                else
-                {
-                    winterfaceInformation[i] = ResizeImage(
-                    winterfaceInformation[i],
-                    winterfaceInformation[i].Width  * 10,
-                    winterfaceInformation[i].Height * 10);
-                }
                 winterfaceInformation[i] = AdjustContrast(winterfaceInformation[i], (float)100.0);
                 winterfaceInformation[i] = whiten_and_invert(winterfaceInformation[i]);
             }
-        }
-
-        public enum WinterfaceAreaType { Timer = 0, Floor_Number, Percentage_Completed, Keyer, Player, Level_Mod };
-
-        /// <summary>
-        /// reads a preprocessed image, returns a string of its contents
-        /// </summary>
-        /// <param name="src">the source image</param>
-        /// <returns>string representation of the image</returns>
-        public static string tesseract_read_winterface_area(Bitmap winterfaceBitmap, WinterfaceAreaType winArea, EngineMode engMode, PageSegMode segMode, string datapath, string configpath = null) {
-            
-            //setup our tessengine
-            TesseractEngine tessEng;
-            if(configpath != null)
-                tessEng = new TesseractEngine(datapath, "eng", engMode, configpath);
-            else tessEng = new TesseractEngine(datapath, "eng", engMode, datapath);
-            tessEng.DefaultPageSegMode = segMode;
-
-            //goto correct place :3
-            string ret_txt;
-            switch (winArea) {
-                case WinterfaceAreaType.Timer:
-                    ret_txt = tesseract_read_timer(ref tessEng, ref winterfaceBitmap);
-                    break;
-                case WinterfaceAreaType.Player:
-                    ret_txt = tesseract_read_player(ref tessEng, ref winterfaceBitmap);
-                    break;
-                case WinterfaceAreaType.Percentage_Completed:
-                    ret_txt = tesseract_read_percent_completed(ref tessEng, ref winterfaceBitmap);
-                    break;
-                case WinterfaceAreaType.Keyer:
-                    ret_txt = tesseract_read_keyer(ref tessEng, ref winterfaceBitmap);
-                    break;
-                case WinterfaceAreaType.Floor_Number:
-                    ret_txt = tesseract_read_floor_number(ref tessEng, ref winterfaceBitmap);
-                    break;
-                case WinterfaceAreaType.Level_Mod:
-                    ret_txt = tesseract_read_level_mod(ref tessEng, ref winterfaceBitmap);
-                    break;
-                default:
-                    throw new Exception("this should never happen");
-
-            }
-            return ret_txt;
-        }
-
-        /// <summary>
-        /// returns a list of strings of winterface information
-        /// </summary>
-        /// <param name="winterface">an image of the winterface</param>
-        /// <returns>list of strings of winterface information</returns>
-        public static List<String> readWinterface(ref Bitmap winterface) {
-            //chop into OCR friendly bits
-            var ocr_friendly = chopWinterface(ref winterface);
-            processList(ref ocr_friendly);
-            var stringList = new List<String>();
-
-            //some annoying shit here
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[0], WinterfaceAreaType.Timer,                EngineMode.Default, PageSegMode.SingleWord,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[1], WinterfaceAreaType.Floor_Number,         EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[2], WinterfaceAreaType.Percentage_Completed, EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[3], WinterfaceAreaType.Level_Mod,            EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[4], WinterfaceAreaType.Keyer,                EngineMode.TesseractAndCube, PageSegMode.SingleLine,   @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[5], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[6], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[7], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-            stringList.Add(tesseract_read_winterface_area(ocr_friendly[8], WinterfaceAreaType.Player,               EngineMode.TesseractAndCube, PageSegMode.SingleColumn, @"./tessdata"));
-
-            return stringList;
         }
 
         /// <summary>
