@@ -28,8 +28,11 @@ namespace EasySweeper_3 {
             var ocr = new PixelMatchOCR();
             foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
             {
-                File.AppendAllText("log.txt",ocr.readWinterface(new Bitmap(file))[0]+"\n");
-                File.AppendAllText("log.txt", ocr.readWinterface(new Bitmap(file))[1] + "\n");
+                var list = ocr.readWinterface(new Bitmap(file));
+                File.AppendAllText("log.txt", list[0]+"\n");
+                File.AppendAllText("log.txt", list[1] + "\n");
+                File.AppendAllText("log.txt", "percent completed: " + list[2] + "\n");
+                File.AppendAllText("log.txt", "level mod: " + list[3] + "\n");
             }
 
 #else

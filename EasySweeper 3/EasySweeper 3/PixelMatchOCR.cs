@@ -58,6 +58,16 @@ namespace EasySweeper_3 {
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/8.bmp"), "8"));
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/9.bmp"), "9"));
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/Floor.bmp"), "Floor "));
+
+            //lvlmodpcnt
+            _levelModPcntCmpt = new List<Tuple<Bitmap, string>>();
+            _levelModPcntCmpt.AddRange(_timerGlyphs);
+            var lvlModPath = new FileInfo("../../Glyphs/lvlModPcntCmptGlyphs/");
+            _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/plus.bmp"),    "+"));
+            _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/minus.bmp"),   "-"));
+            _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/percent.bmp"), "%"));
+
+
         }
 
         public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP };
@@ -80,8 +90,8 @@ namespace EasySweeper_3 {
             List<string> winterfaceData = new List<string>();
             winterfaceData.Add(pixelMatch(winterfaceList[0], GLYPH_TYPE.TIMER));
             winterfaceData.Add(pixelMatch(winterfaceList[1], GLYPH_TYPE.FLOOR));
-            //winterfaceData.Add(pixelMatch(winterfaceList[2], GLYPH_TYPE.LVLMOD_PCNTCMP));
-            //winterfaceData.Add(pixelMatch(winterfaceList[3], GLYPH_TYPE.LVLMOD_PCNTCMP));
+            winterfaceData.Add(pixelMatch(winterfaceList[2], GLYPH_TYPE.LVLMOD_PCNTCMP));
+            winterfaceData.Add(pixelMatch(winterfaceList[3], GLYPH_TYPE.LVLMOD_PCNTCMP));
             //winterfaceData.Add(pixelMatch(winterfaceList[4], GLYPH_TYPE.PLAYER));
             //winterfaceData.Add(pixelMatch(winterfaceList[5], GLYPH_TYPE.PLAYER));
             //winterfaceData.Add(pixelMatch(winterfaceList[6], GLYPH_TYPE.PLAYER));
