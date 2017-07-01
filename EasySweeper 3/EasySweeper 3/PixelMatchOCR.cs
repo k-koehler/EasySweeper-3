@@ -77,8 +77,9 @@ namespace EasySweeper_3 {
             throw new Exception("this should never happen");
         }
 
-        private static string _scanPixels(List<Bitmap> _floorGlyphs, Bitmap bitmap) {
-            throw new NotImplementedException();
+        private static string _scanPixels(List<Bitmap> _floorGlyphs, Bitmap bitmap)
+        {
+            return null;
         }
     }
 }

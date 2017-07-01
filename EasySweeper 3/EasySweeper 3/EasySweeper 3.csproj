@@ -145,6 +145,24 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Glyphs\floorGlyphs\" />
+    <Folder Include="Glyphs\lvlModPcntCmptGlyphs\" />
+    <Folder Include="Glyphs\playerGlyphs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Glyphs\timerGlyphs\0.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\1.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\2.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\3.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\4.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\5.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\6.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\7.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\8.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\9.bmp" />
+    <EmbeddedResource Include="Glyphs\timerGlyphs\semicolon.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
