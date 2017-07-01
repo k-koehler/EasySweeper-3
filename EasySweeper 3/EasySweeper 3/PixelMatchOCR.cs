@@ -96,11 +96,11 @@ namespace EasySweeper_3 {
             var retStr = "";
             for (var i = 0; i < bitmap.Width; ++i) {
                 foreach (var glyph in floorGlyphs) {
-                    if (MapOperations.FindRec(
-                            glyph.Item1,
-                            MapOperations.cropBitmap(bitmap, new Rectangle(i, 0, 5, bitmap.Height))).Width == 0)
+                    if (MapOperations.FindRec(glyph.Item1,MapOperations.cropBitmap(bitmap, new Rectangle(i, 0, glyph.Item1.Width, glyph.Item1.Height))).Width == 0)
                         continue;
-                    Console.WriteLine(glyph.Item2);
+#if TEST_LIB        //TESTING
+                    Console.Write(glyph.Item2);
+#endif              //END TESTING
                     retStr += glyph.Item2;
                     i += glyph.Item1.Width;
                 }

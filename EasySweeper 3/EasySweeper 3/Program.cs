@@ -26,7 +26,10 @@ namespace EasySweeper_3 {
 #if TEST_LIB
 
             var ocr = new PixelMatchOCR();
-            Console.WriteLine(ocr.readWinterface(new Bitmap("testWint.bmp"))[0]);
+            foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
+            {
+                File.AppendAllText("log.txt",ocr.readWinterface(new Bitmap(file))[0]+"\n");
+            }
 
 #else
             Application.EnableVisualStyles();
