@@ -25,7 +25,8 @@ namespace EasySweeper_3 {
 
 #if TEST_LIB
 
-
+            var ocr = new PixelMatchOCR();
+            Console.WriteLine(ocr.readWinterface(new Bitmap("testWint.bmp"))[0]);
 
 #else
             Application.EnableVisualStyles();
