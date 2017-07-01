@@ -43,6 +43,21 @@ namespace EasySweeper_3 {
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/8.bmp"), "8"));
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/9.bmp"), "9"));
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/semicolon.bmp"), ":"));
+
+            //floor
+            _floorGlyphs = new List<Tuple<Bitmap, string>>();
+            var floorPath = new FileInfo("../../Glyphs/floorGlyphs/");
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/0.bmp"), "0"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/1.bmp"), "1"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/2.bmp"), "2"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/3.bmp"), "3"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/4.bmp"), "4"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/5.bmp"), "5"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/6.bmp"), "6"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/7.bmp"), "7"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/8.bmp"), "8"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/9.bmp"), "9"));
+            _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/Floor.bmp"), "Floor "));
         }
 
         public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP };
@@ -64,7 +79,7 @@ namespace EasySweeper_3 {
         private List<string> _pixelMatchGeneric(List<Bitmap> winterfaceList) {
             List<string> winterfaceData = new List<string>();
             winterfaceData.Add(pixelMatch(winterfaceList[0], GLYPH_TYPE.TIMER));
-            //winterfaceData.Add(pixelMatch(winterfaceList[1], GLYPH_TYPE.FLOOR));
+            winterfaceData.Add(pixelMatch(winterfaceList[1], GLYPH_TYPE.FLOOR));
             //winterfaceData.Add(pixelMatch(winterfaceList[2], GLYPH_TYPE.LVLMOD_PCNTCMP));
             //winterfaceData.Add(pixelMatch(winterfaceList[3], GLYPH_TYPE.LVLMOD_PCNTCMP));
             //winterfaceData.Add(pixelMatch(winterfaceList[4], GLYPH_TYPE.PLAYER));
@@ -92,6 +107,12 @@ namespace EasySweeper_3 {
             throw new Exception("this should never happen");
         }
 
+        /// <summary>
+        /// where all the good shit happens
+        /// scans a larger bitmap for glyphs, returns a string of what it finds
+        /// <param name="floorGlyphs">the glyphs which correspond to the winterface type</param>
+        /// <param name="bitmap">the larger bitmap</param>
+        /// <returns>string representing the text in the pic</returns>
         private static string _scanPixels(List<Tuple<Bitmap, string>> floorGlyphs, Bitmap bitmap) {
             var retStr = "";
             for (var i = 0; i < bitmap.Width; ++i) {

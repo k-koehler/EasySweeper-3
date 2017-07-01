@@ -29,6 +29,7 @@ namespace EasySweeper_3 {
             foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
             {
                 File.AppendAllText("log.txt",ocr.readWinterface(new Bitmap(file))[0]+"\n");
+                File.AppendAllText("log.txt", ocr.readWinterface(new Bitmap(file))[1] + "\n");
             }
 
 #else
