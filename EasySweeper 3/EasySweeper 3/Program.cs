@@ -26,13 +26,19 @@ namespace EasySweeper_3 {
 #if TEST_LIB
 
             var ocr = new PixelMatchOCR();
-            foreach (var file in Directory.EnumerateFiles("C:\\Users\\Chelsea\\Documents\\EasySweeper", "*.bmp"))
+            foreach (var file in Directory.EnumerateFiles("C:\\Users\\Kevin\\Documents\\EasySweeper", "*.bmp"))
             {
                 var list = ocr.readWinterface(new Bitmap(file));
                 File.AppendAllText("log.txt", list[0]+"\n");
                 File.AppendAllText("log.txt", list[1] + "\n");
                 File.AppendAllText("log.txt", "percent completed: " + list[2] + "\n");
                 File.AppendAllText("log.txt", "level mod: " + list[3] + "\n");
+                File.AppendAllText("log.txt", "player 1: " + list[4] + "\n");
+                File.AppendAllText("log.txt", "player 2: " + list[5] + "\n");
+                File.AppendAllText("log.txt", "player 3: " + list[6] + "\n");
+                File.AppendAllText("log.txt", "player 4: " + list[7] + "\n");
+                File.AppendAllText("log.txt", "player 5: " + list[8] + "\n");
+                File.AppendAllText("log.txt", "----------------------------------------------\n");
             }
 
 #else
