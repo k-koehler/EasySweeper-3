@@ -7,19 +7,29 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Net;
+using Imgur.API.Authentication.Impl;
+using Imgur.API.Models;
+using System.Diagnostics;
+using Imgur.API;
+using Imgur.API.Endpoints.Impl;
+using System.Drawing;
 
 namespace EasyWinterface {
     static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
+
+        static string url = null;
+
         [STAThread]
         static void Main() {
 
             var ocr = new PixelMatchOCR();
 
             //look for winterface
-            var asynchTask = new Task(() => {
+            var asynchTask = new Task(async () => {
                 while (true) {
                     var bmp = MapOperations.captureWinterface(new CaptureDevice());
                     if (bmp == null) {
@@ -31,7 +41,9 @@ namespace EasyWinterface {
                         Console.WriteLine("winterface detected.");
                         bmp.Save("temp.bmp");
                         var fi = new FileInfo("temp.bmp");
-                        PostToImgur(fi.FullName, "303907803ca83e2");
+                        await UploadImage(fi.FullName);
+                        Console.WriteLine("url: " + url);
+
 #else
                         var list = ocr.readWinterface(bmp);
                         updateDB(list);
@@ -46,38 +58,19 @@ namespace EasyWinterface {
             Application.Run();
         }
 
-        public static string PostToImgur(string imagFilePath, string apiKey) {
-            byte[] imageData;
-            FileStream fileStream = File.OpenRead(imagFilePath);
-            imageData = new byte[fileStream.Length];
-            fileStream.Read(imageData, 0, imageData.Length);
-
-#if TEST
-            Console.WriteLine("converting");
-#endif
-
-            var base64str = Convert.ToBase64String(imageData);
-            string uploadRequestString = "image=" + Uri.EscapeDataString(base64str + "&key=" + apiKey);
-
-#if TEST
-            Console.WriteLine("done converting");
-#endif
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create("http://api.imgur.com/2/upload");
-            webRequest.Method = "POST";
-            webRequest.ContentType = "application/x-www-form-urlencoded";
-            webRequest.ServicePoint.Expect100Continue = false;
-            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
-            streamWriter.Write(uploadRequestString);
-            streamWriter.Close();
-
-            WebResponse response = webRequest.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            StreamReader responseReader = new StreamReader(responseStream);
-
-#if TEST
-            Console.WriteLine("writing to imgur");
-#endif
-            return responseReader.ReadToEnd();
+        public static async Task UploadImage(string location) {
+            try {
+                var client = new ImgurClient("303907803ca83e2", "4dac3d390864caa8e4f2782d61b023205e00f17d");
+                var endpoint = new ImageEndpoint(client);
+                IImage image;
+                using (var fs = new FileStream(location, FileMode.Open)) {
+                    image = await endpoint.UploadImageStreamAsync(fs);
+                }
+                url = image.Link;
+            } catch (ImgurException imgurEx) {
+                Debug.Write("An error occurred uploading an image to Imgur.");
+                Debug.Write(imgurEx.Message);
+            }
         }
 
         public static void updateDB(List<string> list) {
