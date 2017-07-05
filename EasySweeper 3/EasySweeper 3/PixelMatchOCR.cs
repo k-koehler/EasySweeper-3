@@ -193,6 +193,14 @@ namespace EasySweeper_3 {
         /// <param name="bitmap">the larger bitmap</param>
         /// <returns>string representing the text in the pic</returns>
         private static string _scanPixels(List<Tuple<Bitmap, string>> floorGlyphs, Bitmap bitmap, GLYPH_TYPE gt = GLYPH_TYPE.FLOOR) {
+
+            if(gt == GLYPH_TYPE.PLAYER) {
+                var playerPath = new FileInfo("../../Glyphs/playerGlyphs/");
+                if (MapOperations.FindRec(new Bitmap(playerPath.FullName + "/leecher.bmp"), bitmap).Width != 0) {
+                    return null;
+                }
+            }
+
             var retStr = "";
             var widthBetweenFindings = 0;
             for (var i = 0; i < bitmap.Width; ++i) {
