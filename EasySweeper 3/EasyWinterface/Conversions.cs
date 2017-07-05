@@ -36,8 +36,8 @@ namespace EasyWinterface
         }
 
         public static int JustDigits(string str)
-        {               
-            return Convert.ToInt32(Regex.Replace(str, "^[0-9]+$", ""));
+        {
+            return Convert.ToInt32(Regex.Replace(str, "\\D+", ""));
         }
     }
 }

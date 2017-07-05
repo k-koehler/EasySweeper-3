@@ -21,15 +21,24 @@ namespace EasyWinterface
         public static explicit operator Floor(List<string> strings)
         {
             List<Player> players = new List<Player>();
-
-            int floor = Conversions.ToFloorNumber(strings[0]);
-            TimeSpan time = Conversions.ToTimeSpan(strings[1]);
+            TimeSpan time = Conversions.ToTimeSpan(strings[0]);
+            int floor = Conversions.ToFloorNumber(strings[1]);
             int bonus = Conversions.ToBonusPercentage(strings[2]);
             int mod = Conversions.ToLevelMod(strings[3]);
+            Console.WriteLine("mod");
+
+            //strings 4 -> 8 are the player names.
+            //an empty string ("") means the OCR failed
+            //a null string means this player was a leecher, so we'll discard this player.
+            for (int i = 4; i <= 8; i++)
+            {
+                if (strings[i] != null)
+                {
+                    players.Add(new Player(strings[i]));
+                }
+            }
             
-
-
-            return null;
+            return new Floor(players, time, floor, bonus, mod);
         }
 
         public Floor(IEnumerable<Player> players, TimeSpan time, int floor, int bonusPercentage)
