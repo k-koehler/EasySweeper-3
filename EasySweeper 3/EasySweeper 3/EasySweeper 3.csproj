@@ -98,7 +98,6 @@
     <Compile Include="Graph.cs" />
     <Compile Include="MapOperations.BitmapOperations.cs" />
     <Compile Include="MapOperations.cs" />
-    <Compile Include="MapOperations.WinterfaceArea.cs" />
     <Compile Include="PixelMatchOCR.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Program.Test.cs" />

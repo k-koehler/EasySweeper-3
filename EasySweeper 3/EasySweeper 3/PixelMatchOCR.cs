@@ -73,11 +73,11 @@ namespace EasySweeper_3 {
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/0.bmp"), "0"));           
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/2.bmp"), "2"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/3.bmp"), "3"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/4.bmp"), "4"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/4.bmp"), "4"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/5.bmp"), "5"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/6.bmp"), "6"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/7.bmp"), "7"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/8.bmp"), "8"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/8.bmp"), "8"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/9.bmp"), "9"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/a.bmp"), "a"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/b.bmp"), "b"));
@@ -94,7 +94,7 @@ namespace EasySweeper_3 {
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/n.bmp"), "n"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/o.bmp"), "o"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/p.bmp"), "p"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/q.bmp"), "q"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/q.bmp"), "q"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/r.bmp"), "r"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/s.bmp"), "s"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/t.bmp"), "t"));
@@ -120,7 +120,7 @@ namespace EasySweeper_3 {
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/n_cap.bmp"), "N"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/o_cap.bmp"), "O"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/p_cap.bmp"), "P"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/q_cap.bmp"), "Q"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/q_cap.bmp"), "Q"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/r_cap.bmp"), "R"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/s_cap.bmp"), "S"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/t_cap.bmp"), "T"));
@@ -128,10 +128,10 @@ namespace EasySweeper_3 {
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/v_cap.bmp"), "V"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/w_cap.bmp"), "W"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/x_cap.bmp"), "X"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/y_cap.bmp"), "Y"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/y_cap.bmp"), "Y"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/z_cap.bmp"), "Z"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/underscore.bmp"), "_"));
-            //_playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/dash.bmp"), "-"));
+            _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/dash.bmp"), "-"));
 
             //check these lats
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/1.bmp"), "1"));

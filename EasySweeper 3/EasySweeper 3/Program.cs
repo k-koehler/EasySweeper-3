@@ -24,7 +24,6 @@ namespace EasySweeper_3 {
         static void Main() {
 
 #if TEST_LIB
-
             var ocr = new PixelMatchOCR();
             foreach (var file in Directory.EnumerateFiles("C:\\Users\\Kevin\\Documents\\EasySweeper", "*.bmp"))
             {
