@@ -12,11 +12,13 @@ namespace EasyWinterface
         private TimeSpan _time;
         private int _floor;
         private int _bonusPercentage;
+        private int _mod;
 
         public IEnumerable<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
         public int BonusPercentage => _bonusPercentage;
+        public int Mod => _mod;
 
         public static explicit operator Floor(List<string> strings)
         {
@@ -41,10 +43,23 @@ namespace EasyWinterface
             return new Floor(players, time, floor, bonus, mod);
         }
 
-        public Floor(IEnumerable<Player> players, TimeSpan time, int floor, int bonusPercentage)
-        {            
+        public override string ToString()
+        {
+            return String.Format("Floor: {0} Time: {1} Bonus: {2} Mod: {3}",
+                _floor,
+                _time.ToString(),
+                _bonusPercentage,
+                _mod);
+        }
+
+
+        public Floor(IEnumerable<Player> players, TimeSpan time, int floor, int bonusPercentage, int mod)
+        {
             _players = players?.ToList<Player>() ?? new List<Player>();
-            _time = time;            
+            _time = time;
+            _floor = floor;
+            _bonusPercentage = bonusPercentage;
+            _mod = mod;
         }
 
 
