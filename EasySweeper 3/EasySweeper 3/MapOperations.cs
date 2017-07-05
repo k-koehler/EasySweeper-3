@@ -28,12 +28,11 @@ namespace EasySweeper_3 {
             if (list.GetLength(0) == 0)
                 return null;
 
-#if !LIB_TEST
-            if (GetActiveWindowTitle() != "RuneScape")
+#if !TEST_LIB
+           if (GetActiveWindowTitle() != "RuneScape") {
+                Console.WriteLine("returning null here");
                 return null;
-#elif !TEST
-            if (GetActiveWindowTitle() != "RuneScape")
-                return null;
+            }           
 #endif
 
             //rec.Width != 0 -> dev.findRec found the winterface
