@@ -23,14 +23,20 @@ namespace EasyWinterface {
                     if (bmp == null) {
                         Thread.Sleep(200);
                         continue;
-                    } else {
+                    } else {   
+#if TEST
+                        Console.WriteLine("winterface detected.");
+#else
                         var list = ocr.readWinterface(bmp);
                         updateDB(list);
+#endif
                         Thread.Sleep(240000); //4 minutes
+
                     }
                 }
             });
 
+            asynchTask.Start();
             Application.Run();
         }
 

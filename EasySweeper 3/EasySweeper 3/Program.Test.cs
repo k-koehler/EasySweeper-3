@@ -28,7 +28,7 @@ namespace EasySweeper_3 {
             Task testTask2 = new Task(() => {
 
                 while (true) {
-                    var winterface = MapOperations.captureWinterface(ref dev);
+                    var winterface = MapOperations.captureWinterface(dev);
 
                     if (winterface == null)
                         continue;

@@ -12,6 +12,7 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		LibTest|Any CPU = LibTest|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -20,12 +21,16 @@ Global
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.LibTest|Any CPU.Build.0 = LibTest|Any CPU
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Test|Any CPU.Build.0 = Debug|Any CPU
 		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.ActiveCfg = Release|Any CPU
-		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.Build.0 = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.ActiveCfg = Test|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.Build.0 = Test|Any CPU
 		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
