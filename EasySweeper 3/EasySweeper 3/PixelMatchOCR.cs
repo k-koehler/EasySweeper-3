@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EasySweeper_3 {
-    class PixelMatchOCR {
+    public class PixelMatchOCR {
 
         /// <summary>
         /// a list of all the glyphs
@@ -133,7 +133,7 @@ namespace EasySweeper_3 {
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/underscore.bmp"), "_"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/dash.bmp"), "-"));
 
-            //check these lats
+            //check these last
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/1.bmp"), "1"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/l.bmp"), "l"));
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasySweeper 3", "EasySweeper 3\EasySweeper 3.csproj", "{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyWinterface Beta", "EasyWinterface Beta\EasyWinterface Beta.csproj", "{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyWinterface", "EasyWinterface\EasyWinterface.csproj", "{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,12 +20,12 @@ Global
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.LibTest|Any CPU.Build.0 = LibTest|Any CPU
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75D4D5E2-A391-48E2-B8C6-F85A72E269A2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.LibTest|Any CPU.ActiveCfg = Release|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.LibTest|Any CPU.Build.0 = Release|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AEFD5DD-8807-4498-9CBB-9B36D52DFF46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.ActiveCfg = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.LibTest|Any CPU.Build.0 = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F640F263-3BA5-4BDA-A202-C37E08E4BCFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

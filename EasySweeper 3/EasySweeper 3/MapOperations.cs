@@ -10,14 +10,14 @@ using Tesseract;
 /// </summary>
 
 namespace EasySweeper_3 {
-    partial class MapOperations {
+    public partial class MapOperations {
 
         /// <summary>
         /// capture the winterface
         /// create a new task when using this function
         /// </summary>
         /// <returns>a bitmap of the winterface once it successfully captures</returns>
-        public static Bitmap captureWinterface(ref CaptureDevice dev) {
+        public static Bitmap captureWinterface(CaptureDevice dev) {
 
             //if rs is not running, this is not valid
             //eventually fix so runescape must be foreground window

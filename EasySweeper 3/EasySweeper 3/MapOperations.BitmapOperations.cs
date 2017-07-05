@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EasySweeper_3 {
-    partial class MapOperations {
+    public partial class MapOperations {
 
         /// <summary>
         /// crops a bitmap according to a rectangle
