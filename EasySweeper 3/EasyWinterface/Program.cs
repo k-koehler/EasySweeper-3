@@ -23,8 +23,9 @@ namespace EasyWinterface {
                     if (bmp == null) {
                         Thread.Sleep(200);
                         continue;
-                    } else {   
+                    } else {
 #if TEST
+                        Console.WriteLine(MapOperations.GetActiveWindowTitle());
                         Console.WriteLine("winterface detected.");
 #else
                         var list = ocr.readWinterface(bmp);

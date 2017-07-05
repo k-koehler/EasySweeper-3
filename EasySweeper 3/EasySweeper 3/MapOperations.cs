@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Text;
 using Tesseract;
 
 /// <summary>
@@ -25,6 +27,14 @@ namespace EasySweeper_3 {
             var list = Process.GetProcessesByName(PROC_NAME);
             if (list.GetLength(0) == 0)
                 return null;
+
+#if !LIB_TEST
+            if (GetActiveWindowTitle() != "RuneScape")
+                return null;
+#elif !TEST
+            if (GetActiveWindowTitle() != "RuneScape")
+                return null;
+#endif
 
             //rec.Width != 0 -> dev.findRec found the winterface
             Rectangle rec = new Rectangle(0, 0, 0, 0);
@@ -213,6 +223,24 @@ namespace EasySweeper_3 {
         public static uint room_count(ref Graph dg_graph){
             //return the room count
             return dg_graph.roomcount;
+        }
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        public static string GetActiveWindowTitle() {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0) {
+                return Buff.ToString();
+            }
+            return null;
         }
 
     }
