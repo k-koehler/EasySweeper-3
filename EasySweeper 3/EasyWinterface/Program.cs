@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using EasySweeper_3;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Generic;
@@ -87,7 +86,7 @@ namespace EasyWinterface {
             //look for winterface
             var asynchTask = new Task(async () => {
                 while (true) {
-                    var bmp = MapOperations.captureWinterface(new CaptureDevice());
+                    var bmp = WinterfaceOperations.captureWinterface(new CaptureDevice());
                     if (bmp == null) {
                         Thread.Sleep(200);
                         continue;
