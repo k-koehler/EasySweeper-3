@@ -114,6 +114,7 @@
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
     <Compile Include="PixelMatchOCR.cs" />
+    <Compile Include="Database.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="Conversions.cs" />
