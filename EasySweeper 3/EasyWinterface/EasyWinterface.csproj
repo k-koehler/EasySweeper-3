@@ -49,6 +49,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Conversions.cs" />
     <Compile Include="DatabaseClasses.cs" />
+    <Compile Include="Storage.cs" />.
     <Compile Include="Floor.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="Player.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -96,6 +99,9 @@
       <Project>{75d4d5e2-a391-48e2-b8c6-f85a72e269a2}</Project>
       <Name>EasySweeper 3</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrayIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

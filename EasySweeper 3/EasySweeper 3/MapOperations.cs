@@ -30,7 +30,6 @@ namespace EasySweeper_3 {
 
 #if !TEST_LIB
            if (GetActiveWindowTitle() != "RuneScape") {
-                Console.WriteLine("returning null here");
                 return null;
             }           
 #endif
