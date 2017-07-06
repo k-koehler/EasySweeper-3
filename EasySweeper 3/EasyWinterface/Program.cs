@@ -32,19 +32,10 @@ namespace EasyWinterface {
         private void InitializeComponent() {
             TrayIcon = new NotifyIcon();
 
-            TrayIcon.BalloonTipIcon = ToolTipIcon.Info;
-            TrayIcon.BalloonTipText =
-              "I noticed that you double-clicked me! What can I do for you?";
-            TrayIcon.BalloonTipTitle = "You called Master?";
-            TrayIcon.Text = "My fabulous tray icon demo application";
-
-
             //The icon is added to the project resources.
             //Here I assume that the name of the file is 'TrayIcon.ico'
             TrayIcon.Icon = Properties.Resources.TrayIcon;
 
-            //Optional - handle doubleclicks on the icon:
-            TrayIcon.DoubleClick += TrayIcon_DoubleClick;
 
             //Optional - Add a context menu to the TrayIcon:
             TrayIconContextMenu = new ContextMenuStrip();
@@ -75,17 +66,8 @@ namespace EasyWinterface {
             TrayIcon.Visible = false;
         }
 
-        private void TrayIcon_DoubleClick(object sender, EventArgs e) {
-            //Here you can do stuff if the tray icon is doubleclicked
-            TrayIcon.ShowBalloonTip(10000);
-        }
-
         private void CloseMenuItem_Click(object sender, EventArgs e) {
-            if (MessageBox.Show("Do you really want to close me?",
-                    "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation,
-                    MessageBoxDefaultButton.Button2) == DialogResult.Yes) {
-                Application.Exit();
-            }
+            Application.Exit();
         }
     }
 
@@ -111,35 +93,48 @@ namespace EasyWinterface {
                         continue;
                     } else {
 #if TEST
-                        Console.WriteLine(MapOperations.GetActiveWindowTitle());
                         Console.WriteLine("winterface detected.");
                         bmp.Save("temp.bmp");
                         var fi = new FileInfo("temp.bmp");
-                        Console.WriteLine("uploading...");
-                        await UploadImage(fi.FullName);
-                        Console.WriteLine("done uploading");
-                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                        var url2 = String.Copy(url);
-                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (Object o, EventArgs a)
-                        {
-                            if(url2 != null)
-                                Process.Start(url2);
-                        });
-                        Console.WriteLine("url: " + url);
+                        try {
+                            Console.WriteLine("uploading image...");
+                            await UploadImage(fi.FullName);
+                            Console.WriteLine("success!");
+                            Console.WriteLine("url: " + url);
+                            appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
+                            var url2 = String.Copy(url);
+                            appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (Object o, EventArgs a)
+                            {
+                                if (url2 != null)
+                                    Process.Start(url2);
+                            });
+                            var list = ocr.readWinterface(bmp);
+                            updateDB(list, url);
+                        } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
+                            appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
+                            var list = ocr.readWinterface(bmp);
+                            updateDB(list);
+                        }
                         url = null;
-
 #else
                         bmp.Save("temp.bmp");
                         var fi = new FileInfo("temp.bmp");
-                        await UploadImage(fi.FullName);
-                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (Object o, EventArgs a)
-                        var url2 = String.Copy(url);
-                        {
-                            Process.Start(url2);
-                        });
-                        var list = ocr.readWinterface(bmp);
-                        updateDB(list, url);
+                        try {
+                            await UploadImage(fi.FullName);
+                            appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
+                            var url2 = String.Copy(url);
+                            appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (Object o, EventArgs a)
+                            {
+                                if (url2 != null)
+                                    Process.Start(url2);
+                            });
+                            var list = ocr.readWinterface(bmp);
+                            updateDB(list, url);
+                        } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
+                            appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
+                            var list = ocr.readWinterface(bmp);
+                            updateDB(list);
+                        }
                         url = null;
 #endif
                         Thread.Sleep(240000); //4 minutes
@@ -152,25 +147,37 @@ namespace EasyWinterface {
             Application.Run(appContext);
         }
 
+
+
         public static async Task UploadImage(string location) {
             try {
                 var client = new ImgurClient("303907803ca83e2", "4dac3d390864caa8e4f2782d61b023205e00f17d");
                 var endpoint = new ImageEndpoint(client);
-                IImage image;
+                IImage image = null;
                 using (var fs = new FileStream(location, FileMode.Open)) {
-                    image = await endpoint.UploadImageStreamAsync(fs);
+                    var task = endpoint.UploadImageStreamAsync(fs);
+                    if (await Task.WhenAny(task, Task.Delay(20000)) == task) {
+                        image = await task;
+                        if (image == null) {
+                            throw new ImgurException("imgur error?");
+                        }
+                        url = image.Link;
+                    } else {
+                        throw new TimeoutException("timeout error imgur");
+                    }
                 }
-                url = image.Link;
             } catch (ImgurException imgurEx) {
                 Debug.Write("An error occurred uploading an image to Imgur.");
                 Debug.Write(imgurEx.Message);
             }
         }
 
-        public static void updateDB(List<string> list, string url) {
+        public static void updateDB(List<string> list, string url="optional") {
             //TODO
         }
+
     }
+
 }
 
     
