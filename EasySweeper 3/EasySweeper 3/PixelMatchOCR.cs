@@ -194,8 +194,6 @@ namespace EasySweeper_3 {
             throw new Exception("this should never happen");
         }
 
-
-
         /// <summary>
         /// where all the good shit happens
         /// scans a larger bitmap for glyphs, returns a string of what it finds
