@@ -139,7 +139,7 @@ namespace EasySweeper_3 {
 
         }
 
-        public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP };
+        public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP, SIZE };
 
         /// <summary>
         /// this is all you need to call if you want to read a winterface
@@ -166,6 +166,7 @@ namespace EasySweeper_3 {
             winterfaceData.Add(pixelMatch(winterfaceList[6], GLYPH_TYPE.PLAYER));
             winterfaceData.Add(pixelMatch(winterfaceList[7], GLYPH_TYPE.PLAYER));
             winterfaceData.Add(pixelMatch(winterfaceList[8], GLYPH_TYPE.PLAYER));
+            winterfaceData.Add(pixelMatch(winterfaceList[9], GLYPH_TYPE.SIZE));
             return winterfaceData;
         }
 
@@ -182,9 +183,13 @@ namespace EasySweeper_3 {
                 return _scanPixels(_playerGlyphs, bitmap, GLYPH_TYPE.PLAYER);
                 case GLYPH_TYPE.TIMER:
                 return _scanPixels(_timerGlyphs, bitmap);
+                case GLYPH_TYPE.SIZE:
+                return _scanPixels(_levelModPcntCmpt, bitmap, GLYPH_TYPE.SIZE);
             }
             throw new Exception("this should never happen");
         }
+
+
 
         /// <summary>
         /// where all the good shit happens
@@ -220,7 +225,23 @@ namespace EasySweeper_3 {
                     widthBetweenFindings = 0;
                 }
             }
-            return retStr;
+
+            if (gt == GLYPH_TYPE.SIZE)
+                return _dg_size(retStr);
+            else return retStr;
+        }
+
+        private static string _dg_size(string v) {
+            switch (v) {
+                case "+15%":
+                    return "Large";
+                case "+7%":
+                    return "Medium";
+                case "+0%":
+                    return "Small";
+                default:
+                    return null;
+            }
         }
     }
 }

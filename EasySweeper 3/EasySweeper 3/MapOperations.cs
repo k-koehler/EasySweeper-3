@@ -76,13 +76,14 @@ namespace EasySweeper_3 {
             var rectangleList = new List<Rectangle> {
                 new Rectangle(new Point(30,30),   new Size(54,19)),  //timer                  -> 0
                 new Rectangle(new Point(49,79),   new Size(55,11)),  //floor number           -> 1
-                new Rectangle(new Point(307,166), new Size(37,14)),   //percentage completed   -> 2
+                new Rectangle(new Point(307,166), new Size(37,14)),  //percentage completed   -> 2
                 new Rectangle(new Point(310,186), new Size(33,14)),  //level mod              -> 3
-                new Rectangle(new Point(356,60),  new Size(105,16)),  //player 1               -> 4
+                new Rectangle(new Point(356,60),  new Size(105,16)), //player 1               -> 4
                 new Rectangle(new Point(355,110), new Size(105,49)), //player 2               -> 5
                 new Rectangle(new Point(355,160), new Size(105,49)), //player 3               -> 6
                 new Rectangle(new Point(355,210), new Size(105,49)), //player 4               -> 7
-                new Rectangle(new Point(355,260), new Size(105,49))  //player 5               -> 8
+                new Rectangle(new Point(355,260), new Size(105,49)), //player 5               -> 8
+                new Rectangle(new Point(305,144), new Size(36,18))   //size                   -> 9
             };
 
 

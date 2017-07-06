@@ -31,12 +31,13 @@ namespace EasySweeper_3 {
                 File.AppendAllText("log.txt", list[0]+"\n");
                 File.AppendAllText("log.txt", list[1] + "\n");
                 File.AppendAllText("log.txt", "percent completed: " + list[2] + "\n");
+                File.AppendAllText("log.txt", "size :"      + list[9] + "\n");
                 File.AppendAllText("log.txt", "level mod: " + list[3] + "\n");
-                File.AppendAllText("log.txt", "player 1: " + list[4] + "\n");
-                File.AppendAllText("log.txt", "player 2: " + list[5] + "\n");
-                File.AppendAllText("log.txt", "player 3: " + list[6] + "\n");
-                File.AppendAllText("log.txt", "player 4: " + list[7] + "\n");
-                File.AppendAllText("log.txt", "player 5: " + list[8] + "\n");
+                File.AppendAllText("log.txt", "player 1: "  + list[4] + "\n");
+                File.AppendAllText("log.txt", "player 2: "  + list[5] + "\n");
+                File.AppendAllText("log.txt", "player 3: "  + list[6] + "\n");
+                File.AppendAllText("log.txt", "player 4: "  + list[7] + "\n");
+                File.AppendAllText("log.txt", "player 5: "  + list[8] + "\n");
                 File.AppendAllText("log.txt", "----------------------------------------------\n");
             }
 
@@ -47,5 +48,7 @@ namespace EasySweeper_3 {
 #endif
 
         }
+
+
     }
 }
