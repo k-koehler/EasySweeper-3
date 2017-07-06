@@ -139,7 +139,7 @@ namespace EasySweeper_3 {
 
         }
 
-        public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP, SIZE };
+        public enum GLYPH_TYPE { TIMER, FLOOR, PLAYER, LVLMOD_PCNTCMP, SIZE, GUIDE_MODE};
 
         /// <summary>
         /// this is all you need to call if you want to read a winterface
@@ -167,6 +167,9 @@ namespace EasySweeper_3 {
             winterfaceData.Add(pixelMatch(winterfaceList[7], GLYPH_TYPE.PLAYER));
             winterfaceData.Add(pixelMatch(winterfaceList[8], GLYPH_TYPE.PLAYER));
             winterfaceData.Add(pixelMatch(winterfaceList[9], GLYPH_TYPE.SIZE));
+            winterfaceData.Add(pixelMatch(winterfaceList[10], GLYPH_TYPE.FLOOR));
+            winterfaceData.Add(pixelMatch(winterfaceList[11], GLYPH_TYPE.FLOOR));
+            winterfaceData.Add(pixelMatch(winterfaceList[12], GLYPH_TYPE.GUIDE_MODE));
             return winterfaceData;
         }
 
@@ -185,6 +188,8 @@ namespace EasySweeper_3 {
                 return _scanPixels(_timerGlyphs, bitmap);
                 case GLYPH_TYPE.SIZE:
                 return _scanPixels(_levelModPcntCmpt, bitmap, GLYPH_TYPE.SIZE);
+                case GLYPH_TYPE.GUIDE_MODE:
+                return _scanPixels(_levelModPcntCmpt, bitmap, GLYPH_TYPE.GUIDE_MODE);
             }
             throw new Exception("this should never happen");
         }
@@ -228,7 +233,15 @@ namespace EasySweeper_3 {
 
             if (gt == GLYPH_TYPE.SIZE)
                 return _dg_size(retStr);
+            else if (gt == GLYPH_TYPE.GUIDE_MODE)
+                return _guideMode(retStr);
             else return retStr;
+        }
+
+        private static string _guideMode(string retStr) {
+            if (retStr == "+0%")
+                return "No";
+            else return "Yes";
         }
 
         private static string _dg_size(string v) {

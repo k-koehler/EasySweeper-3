@@ -83,7 +83,10 @@ namespace EasySweeper_3 {
                 new Rectangle(new Point(355,160), new Size(105,49)), //player 3               -> 6
                 new Rectangle(new Point(355,210), new Size(105,49)), //player 4               -> 7
                 new Rectangle(new Point(355,260), new Size(105,49)), //player 5               -> 8
-                new Rectangle(new Point(305,144), new Size(36,18))   //size                   -> 9
+                new Rectangle(new Point(305,144), new Size(36,18)),  //size                   -> 9
+                new Rectangle(new Point(119,191), new Size(22,11)),  //difficulty             -> 10
+                new Rectangle(new Point(126,213), new Size(7,11)),   //complexity             -> 11
+                new Rectangle(new Point(309,208), new Size(36,18))   //guide mode             -> 11
             };
 
 
