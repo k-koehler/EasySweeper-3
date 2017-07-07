@@ -113,6 +113,7 @@
     <Compile Include="Conversions.cs" />
     <Compile Include="DatabaseClasses.cs" />
     <Compile Include="Storage.cs" />.
+    <Compile Include="DatabaseHelper.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
     <Compile Include="PixelMatchOCR.cs" />

@@ -169,8 +169,9 @@ namespace EasyWinterface {
             return null;
         }
 
-        public static void updateDB(List<string> list, string url="optional") {
-            //TODO
+        public static async void updateDB(List<string> list, string url="optional") {
+            //await Storage.AddFloor((Floor)list);
+            await Storage.TestDatabase();
         }
 
     }
