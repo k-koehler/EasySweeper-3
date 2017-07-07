@@ -63,9 +63,9 @@ namespace EasyMap.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DgMap {
+        internal static System.Drawing.Bitmap background {
             get {
-                object obj = ResourceManager.GetObject("DgMap", resourceCulture);
+                object obj = ResourceManager.GetObject("background", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace EasyMap.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap winterfaceBmp {
+        internal static System.Drawing.Bitmap DgMap {
             get {
-                object obj = ResourceManager.GetObject("winterfaceBmp", resourceCulture);
+                object obj = ResourceManager.GetObject("DgMap", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

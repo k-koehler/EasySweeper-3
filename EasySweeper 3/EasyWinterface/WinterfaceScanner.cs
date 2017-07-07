@@ -24,7 +24,6 @@ namespace EasyWinterface {
                 Thread.Sleep(timeout);
                 bmp = WinterfaceOperations.captureWinterface(dev);
             }
-
             return bmp;
         }
     }
