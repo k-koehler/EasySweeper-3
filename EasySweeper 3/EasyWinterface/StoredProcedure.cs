@@ -12,18 +12,20 @@ namespace EasyWinterface
     {
         private string _spName;
         private Action _dispose;
-        public StoredProcedure(string spName)
+        private SqlParameter[] _parameters;
+
+        public StoredProcedure(string spName, SqlParameter[] parameters = null)
         {
             _spName = spName;
+            _parameters = parameters;
         }
 
         public async Task<SqlDataReader> ExecuteAsync()
         {
-            Tuple<SqlDataReader, Action> resultTuple = await DatabaseHelper.ExecuteSprocAsync(_spName);
+            Tuple<SqlDataReader, Action> resultTuple = await DatabaseHelper.ExecuteSprocAsync(_spName, _parameters);
             SqlDataReader results = resultTuple.Item1;
             _dispose = resultTuple.Item2;
             return results;
-
         }
         
 

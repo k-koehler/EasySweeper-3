@@ -11,22 +11,27 @@ namespace EasyWinterface
     {
         public static string ConnectionString => "Server=NEDSPC\\SQLEXPRESS;Initial Catalog=EasySweeper;uid=EasySweeper;pwd=fkfut";
 
-        private static async Task<SqlCommand> CreateSprocAsync(string sprocName, SqlConnection conn)
+        private static async Task<SqlCommand> CreateSprocAsync(string sprocName, SqlConnection conn, SqlParameter[] parameters = null)
         {
             await conn.OpenAsync();
-
-            return new SqlCommand()
+            SqlCommand command = new SqlCommand()
             {
                 CommandText = sprocName,
                 CommandType = CommandType.StoredProcedure,
                 Connection = conn
             };
-        }
 
-        public static async Task<Tuple<SqlDataReader, Action>> ExecuteSprocAsync(string sprocName)
+            if (parameters != null)
+                command.Parameters.AddRange(parameters);
+
+            return command;
+        }
+        // Item1 -> Results of the stored procedure
+        // Item2 -> Delegate, which when invoked will dispose off the SQLConnection, SQLCommand and SQLReader used to execute the sproc.
+        public static async Task<Tuple<SqlDataReader, Action>> ExecuteSprocAsync(string sprocName, SqlParameter[] parameters)
         {
             SqlConnection conn = new SqlConnection(ConnectionString);
-            SqlCommand command = await CreateSprocAsync(sprocName, conn);
+            SqlCommand command = await CreateSprocAsync(sprocName, conn, parameters);
             SqlDataReader reader = await command.ExecuteReaderAsync();
 
             Action cleanup = () =>
