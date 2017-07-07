@@ -1,6 +1,7 @@
-USE master
+USE [master]
 GO
-
+DROP LOGIN EasySweeper
+GO
 CREATE LOGIN [EasySweeper] WITH PASSWORD=N'fkfut', DEFAULT_DATABASE=[EasySweeper], DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
 GO
 
@@ -12,7 +13,10 @@ IF NOT EXISTS
 )
 CREATE DATABASE EasySweeper
 GO
-Use EasySweeper
+USE EasySweeper
+GO
+CREATE USER [EasySweeper] FOR LOGIN [EasySweeper] WITH DEFAULT_SCHEMA=[EasySweeper]
+GO
 IF NOT EXISTS
 (
 	SELECT	*
@@ -250,6 +254,14 @@ BEGIN CATCH
 	RETURN 9999
 END CATCH		
 GO
+DROP USER EasySweeper
+GO
+CREATE USER EasySweeper
+GO
+GRANT EXECUTE ON spFloorAdd TO EasySweeper
+GO
 CREATE OR ALTER PROCEDURE spTestConnection
 AS
 SELECT 1
+GO
+GRANT EXECUTE ON spTestConnection TO EasySweeper
