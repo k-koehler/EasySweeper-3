@@ -133,7 +133,7 @@ namespace EasyWinterface {
                             updateDB(list);
                         }
 #endif
-                        Thread.Sleep(240000); //4 minutes
+                        await Task.Delay(24000); //4 minutes
 
                     }
                 }
