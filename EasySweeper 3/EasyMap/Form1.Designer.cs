@@ -46,6 +46,7 @@
             this.Controls.Add(this.mapPictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.mapPictureBox1)).EndInit();
             this.ResumeLayout(false);
 

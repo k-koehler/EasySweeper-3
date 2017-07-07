@@ -13,6 +13,8 @@ namespace EasyMap {
     public partial class Form1 : Form {
         public Form1() {
             InitializeComponent();
+            TopLevel = true;
+            TopMost = true;
         }
 
         public bool ChangeMainMapPicture(Bitmap bmp) {

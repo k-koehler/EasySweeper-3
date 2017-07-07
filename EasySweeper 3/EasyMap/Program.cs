@@ -21,7 +21,7 @@ namespace EasyMap {
             var ms = new MapScanner();
             var MapFind = new Task(async () => {
                 while (true) {
-                    var bmp = await ms.CaptureBitmap(_getTimeout());
+                    var bmp = await ms.CaptureMap(_getTimeout());
                     if (form.ChangeMainMapPicture(bmp))
                         MapOperations.ProcessChangedMap(bmp, form);
                 }

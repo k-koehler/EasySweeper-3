@@ -15,11 +15,11 @@ namespace EasyMap {
             _dev = new CaptureDevice();
         }
 
-        public async Task<Bitmap> CaptureBitmap(int timeout){
+        public async Task<Bitmap> CaptureMap(int timeout){
             Bitmap bmp = null;
             while (bmp == null) {
                 Thread.Sleep(timeout);
-                bmp = MapOperations.CaptureMap(_dev);
+                bmp = MapOperations.CaptureMap(ref _dev);
             }
             return bmp;
         }

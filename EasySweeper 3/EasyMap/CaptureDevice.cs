@@ -289,8 +289,10 @@ namespace EasyMap {
 
                 //set our rec to map dimensions
                 //this is the size of detected rec that we want
-                rec.Width = MAP_WIDTH;
-                rec.Height = MAP_HEIGHT;
+                rec.X += 17;
+                rec.Y += 23;
+                rec.Width = MAP_WIDTH - 39;
+                rec.Height = MAP_HEIGHT - 39;
             }
 
 

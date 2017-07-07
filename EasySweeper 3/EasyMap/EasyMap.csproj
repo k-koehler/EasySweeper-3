@@ -54,10 +54,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Map.cs" />
     <Compile Include="MapOperations.cs" />
     <Compile Include="MapScanner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MapOperations.BitmapOperations.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,6 +91,60 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dgmap.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\e.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\es.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\esn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\map-marker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\n.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ne.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ns.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nsw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nw.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\w.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\we.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wesn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ws.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wsn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
