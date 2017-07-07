@@ -218,9 +218,6 @@ namespace EasyWinterface {
                             widthBetweenFindings++;
                         continue;
                     }
-#if TEST_LIB        //TESTING
-                    Console.Write(glyph.Item2);
-#endif              //END TESTING
                     if (widthBetweenFindings >= 5 && gt == GLYPH_TYPE.PLAYER)
                         retStr += " ";
                     retStr += glyph.Item2;

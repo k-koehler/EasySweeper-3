@@ -107,6 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+		<Compile Include="Database.cs" />
     <Compile Include="CaptureDevice.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="DatabaseClasses.cs" />

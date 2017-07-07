@@ -8,40 +8,18 @@ using System.Threading.Tasks;
 namespace EasySweeper_3 {
     partial class Program {
 
-        //test the map capture
-        static partial void testMap(CaptureDevice dev) {
-            var testTask = new Task(() => {
-
-                while (true) {
-                    var bmp = MapOperations.captureMap(ref dev);
-                    if (bmp != null)
-                        Console.WriteLine("found map");
-                    Thread.Sleep(1000);
-                    bmp.Dispose();
-                }
-            });
-            testTask.Start();
-        }
+        /*//test the map capture
+        static async partial void testMap(CaptureDevice dev) {
+            var mps = new EasyMap.MapScanner();
+            var map = await mps.ScanForMap(100);
+            Console.WriteLine("found map");
+        }*/
 
         //test the winterface capture
-        static partial void testWinterface(CaptureDevice dev) {
-            Task testTask2 = new Task(() => {
-
-                while (true) {
-                    var winterface = MapOperations.captureWinterface(dev);
-
-                    if (winterface == null)
-                        continue;
-
-                    Console.WriteLine("found winterface");
-
-                    //delete it
-                    winterface.Dispose();
-                    Thread.Sleep(1000);
-                }
-
-            });
-            testTask2.Start();
+        static async partial void testWinterface(CaptureDevice dev) {
+            var wfs = new EasyWinterface.WinterfaceScanner();
+            var floor = await wfs.ScanForWinterface(1000);
+            Console.WriteLine("found winterface");
         }
 
     }

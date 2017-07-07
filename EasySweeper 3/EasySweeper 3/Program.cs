@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using EasyWinterface;
+
 namespace EasySweeper_3 {
 
     static partial class Program {
@@ -24,7 +26,8 @@ namespace EasySweeper_3 {
         static void Main() {
 
 #if TEST_LIB
-            var ocr = new PixelMatchOCR();
+            testWinterface(new CaptureDevice());
+            var ocr = new EasyWinterface.PixelMatchOCR();
             foreach (var file in Directory.EnumerateFiles("C:\\Users\\Kevin\\Documents\\EasySweeper", "*.bmp"))
             {
                 var list = ocr.readWinterface(new Bitmap(file));

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyWinterface {
 
-    class WinterfaceScanner {
+    public class WinterfaceScanner {
 
         CaptureDevice dev;
         PixelMatchOCR ocr;
@@ -18,15 +18,14 @@ namespace EasyWinterface {
             ocr = new PixelMatchOCR();
         }
 
-        public async Task<Floor> ScanForWinterface(int timeout) {
+        public async Task<Bitmap> ScanForWinterface(int timeout) {
             Bitmap bmp = null;
             while (bmp == null) {
                 Thread.Sleep(timeout);
                 bmp = WinterfaceOperations.captureWinterface(dev);
             }
 
-            var list = ocr.readWinterface(bmp);
-            return (Floor)list;
+            return bmp;
         }
     }
 }
