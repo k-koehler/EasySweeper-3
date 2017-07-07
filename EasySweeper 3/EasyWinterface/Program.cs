@@ -76,7 +76,6 @@ namespace EasyWinterface {
         /// </summary>
         /// 
 
-        static string url = null;
 
         [STAThread]
         static void Main() {
@@ -97,7 +96,7 @@ namespace EasyWinterface {
                         var fi = new FileInfo("temp.bmp");
                         try {
                             Console.WriteLine("uploading image...");
-                            await UploadImage(fi.FullName);
+                            var url = await UploadImage(fi.FullName);
                             Console.WriteLine("success!");
                             Console.WriteLine("url: " + url);
                             appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
@@ -114,12 +113,11 @@ namespace EasyWinterface {
                             var list = ocr.readWinterface(bmp);
                             updateDB(list);
                         }
-                        url = null;
 #else
                         bmp.Save("temp.bmp");
                         var fi = new FileInfo("temp.bmp");
                         try {
-                            await UploadImage(fi.FullName);
+                            var url = await UploadImage(fi.FullName);
                             appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
                             var url2 = String.Copy(url);
                             appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (Object o, EventArgs a)
@@ -134,7 +132,6 @@ namespace EasyWinterface {
                             var list = ocr.readWinterface(bmp);
                             updateDB(list);
                         }
-                        url = null;
 #endif
                         Thread.Sleep(240000); //4 minutes
 
@@ -148,7 +145,7 @@ namespace EasyWinterface {
 
 
 
-        public static async Task UploadImage(string location) {
+        public static async Task<string> UploadImage(string location) {
             try {
                 var client = new ImgurClient("303907803ca83e2", "4dac3d390864caa8e4f2782d61b023205e00f17d");
                 var endpoint = new ImageEndpoint(client);
@@ -158,9 +155,9 @@ namespace EasyWinterface {
                     if (await Task.WhenAny(task, Task.Delay(20000)) == task) {
                         image = await task;
                         if (image == null) {
-                            throw new ImgurException("imgur error?");
+                            throw new ImgurException("imgur error");
                         }
-                        url = image.Link;
+                        return image.Link;
                     } else {
                         throw new TimeoutException("timeout error imgur");
                     }
@@ -169,6 +166,7 @@ namespace EasyWinterface {
                 Debug.Write("An error occurred uploading an image to Imgur.");
                 Debug.Write(imgurEx.Message);
             }
+            return null;
         }
 
         public static void updateDB(List<string> list, string url="optional") {
