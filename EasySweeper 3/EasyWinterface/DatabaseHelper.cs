@@ -28,7 +28,7 @@ namespace EasyWinterface
         }
         // Item1 -> Results of the stored procedure
         // Item2 -> Delegate, which when invoked will dispose off the SQLConnection, SQLCommand and SQLReader used to execute the sproc.
-        public static async Task<Tuple<SqlDataReader, Action>> ExecuteSprocAsync(string sprocName, SqlParameter[] parameters)
+        public static async Task<Tuple<SqlDataReader, SqlCommand, Action>> ExecuteSprocAsync(string sprocName, SqlParameter[] parameters)
         {
             SqlConnection conn = new SqlConnection(ConnectionString);
             SqlCommand command = await CreateSprocAsync(sprocName, conn, parameters);
@@ -41,7 +41,7 @@ namespace EasyWinterface
                 reader.Dispose();
             };
 
-            return new Tuple<SqlDataReader, Action>(reader, cleanup);
+            return new Tuple<SqlDataReader, SqlCommand, Action>(reader, command, cleanup);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace EasyWinterface
             int ret = 0;
             SqlParameter[] parameters =
             {
-                Param("@a", SqlDbType.Int, 3)
+                Param("@a", SqlDbType.Int, null, 3)
             };
             using (StoredProcedure s = new StoredProcedure("spTestConnection", parameters))
             {
@@ -26,28 +26,76 @@ namespace EasyWinterface
                 while (await reader.ReadAsync())
                 {
                     ret = reader.GetInt32(0);
+                    Console.WriteLine(s.Parameters["@a"].Value);
                 }
             }            
             return ret == (int)parameters[0].Value;
-        }
-
-        private static SqlParameter Param(string name, SqlDbType type, object value)
-        {
-            return new SqlParameter()
-            {
-                ParameterName = name,
-                SqlDbType = type,
-                Value = value
-            };
         }
        
        public static async Task<int?> AddFloor(Floor f)
        {
             SqlParameter[] parameters =
             {
+                Param("@Floor", SqlDbType.Int, null, f.FloorNum),
+                Param("@Duration", SqlDbType.BigInt, null, f.Time.Ticks),
+                Param("@Size", SqlDbType.NVarChar, 20, f.Size),
+                new SqlParameter()
+                {
+                    ParameterName = "@FloorParticipants",
+                    SqlDbType = SqlDbType.Structured,
+                    TypeName = "dbo.FloorParticipants",
+                    Value = ParticipantsToDataTable(f.Players.ToArray<Player>())
+                },
+                Param("@Mod", SqlDbType.Int, null, f.Mod),
+                Param("@Bonus", SqlDbType.Int, null, f.BonusPercentage),
+                Param("@Complexity", SqlDbType.Int, null, f.Complexity),
+                new SqlParameter()
+                {
+                    ParameterName = "@FloorID", 
+                    SqlDbType = SqlDbType.Int,
+                    Direction = ParameterDirection.Output
+                }
+            };
 
+            using (StoredProcedure s = new StoredProcedure("spFloorAdd", parameters))
+            {
+                Console.WriteLine("Before ExecAsync");
+                SqlDataReader reader = await s.ExecuteAsync();
+                Console.WriteLine("After ExecAsync");
+                while(await reader.ReadAsync()) { /*Nothing returned in data set...*/}
+                return (int)s.Parameters["@FloorID"].Value;
             }
-            return null;
-       }      
+       }
+
+        private static SqlParameter Param(string name, SqlDbType type, int? size, object value)
+        {
+            return new SqlParameter()
+            {
+                ParameterName = name,
+                SqlDbType = type,
+                Value = value,
+                Size = size ?? 0
+
+            };
+        }
+
+        private static DataTable ParticipantsToDataTable(Player[] participants)
+        {
+            DataTable d = new DataTable();
+            d.Columns.Add("Name", typeof(string));
+            d.Columns.Add("Position", typeof(int));
+            d.Columns.Add("UnknownName", typeof(int));
+        
+            for (int i = 0; i < participants.Length; i++)
+            {
+                d.Rows.Add(new object[]{
+                            participants[i].User,
+                            i,
+                            participants[i].OCRFailed
+                        });
+            }
+        
+            return d;
+        }
     }
 }

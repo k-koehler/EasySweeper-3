@@ -14,6 +14,8 @@ namespace EasyWinterface
         public int? ID => _id;
         public string User => _user;
 
+        public bool OCRFailed => _user == null || _user.ToLower() == "(unknown)";
+
         public Player(int? id, string user)
         {
             _id = id;
