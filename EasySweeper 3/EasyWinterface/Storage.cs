@@ -10,8 +10,8 @@ namespace EasyWinterface
     {
         public async static Task<bool> AddFloor(Floor floor)
         {
-            await Database.AddFloor(floor);
-            return true;
+            floor.ID = await Database.AddFloor(floor);
+            return floor.ID != null;
         }
 
         public async static Task<bool> TestDatabase()

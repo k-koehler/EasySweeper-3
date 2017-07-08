@@ -8,7 +8,7 @@ namespace EasyWinterface
 {
     class Floor
     {
-        private int _id;
+        private int? _id;
         private List<Player> _players;
         private TimeSpan _time;
         private int _floor;
@@ -19,7 +19,7 @@ namespace EasyWinterface
         private int _difficulty;
         private int _complexity;
 
-        public int ID => _id;
+        
         public IEnumerable<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
@@ -35,7 +35,11 @@ namespace EasyWinterface
             set { _url = value; }
         }
 
-
+        public int? ID
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
         public static explicit operator Floor(List<string> strings)
         {
