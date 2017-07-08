@@ -106,6 +106,7 @@ CREATE TYPE FloorParticipants AS TABLE
 	UnknownName bit NOT NULL
 )
 GO
+GRANT EXECUTE ON TYPE :: dbo.FloorParticipants TO EasySweeper
 GO
 GO
 CREATE OR ALTER PROCEDURE [dbo].[spRaiseError] 
