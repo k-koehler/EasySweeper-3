@@ -16,7 +16,9 @@ using System.Linq.Expressions;
 using Squirrel;
 
 namespace EasyWinterface {
-    static class Program {
+    static class Program
+    {
+        private const int _TIMEOUT = 100;
 
         const int SCAN_TIMEOUT = 150; //ms
 
@@ -26,45 +28,11 @@ namespace EasyWinterface {
         /// 
         [STAThread]
         static void Main() {
-            var asynchTask = Tasks.WinterfaceSearch(SCAN_TIMEOUT, appContext);
-            var updateTask = Tasks.UpdateVersion();
-
-            const int SCAN_TIMEOUT = 150; //ms
-
-            //look for winterface
-            var asynchTask = new Task(async () => {
-                while (true) {
-                    var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
-                    bmp.Save("temp.bmp");
-                    var fi = new FileInfo("temp.bmp");
-                    try {
-                        var url = await UploadImage(fi.FullName);
-                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                        var url2 = string.Copy(url);
-                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
-                                Process.Start(url2);
-                        });
-                        var list = ocr.readWinterface(bmp);
-                        await updateDB(list, url);
-                    } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
-                        appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
-                        var list = ocr.readWinterface(bmp);
-                        //updateDB(list);
-                    }
-                    await Task.Delay(24000); //4 minutes
-                }
-            });
-
-            asynchTask.Start();
+            var appContext = new EWAppContext();
+            var ScanWinterface = Tasks.WinterfaceSearch(_TIMEOUT, appContext);
+            var UpdateApp = Tasks.UpdateVersion();
             Application.Run(appContext);
         }
-
-       
-
-        public static async Task<bool> updateDB(List<string> list, string url = "optional") {
-            return await Storage.AddFloor((Floor)list);
-        }
-
     }
 
 }

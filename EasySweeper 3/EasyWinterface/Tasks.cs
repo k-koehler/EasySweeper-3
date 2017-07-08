@@ -22,8 +22,8 @@ namespace EasyWinterface {
             }
         }
 
-        public static async void updateDB(List<string> list, string url = "optional") {
-            await Storage.AddFloor((Floor)list);
+        public static async Task<bool> updateDB(List<string> list, string url = "optional") {
+            return await Storage.AddFloor((Floor)list);
         }
 
         public static async Task WinterfaceSearch(int SCAN_TIMEOUT, EWAppContext appContext)
@@ -44,11 +44,11 @@ namespace EasyWinterface {
                         Process.Start(url2);
                     });
                     var list = ocr.readWinterface(bmp);
-                    updateDB(list, url);
+                    await updateDB(list, url);
                 } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
                     appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
                     var list = ocr.readWinterface(bmp);
-                    updateDB(list);
+                    await updateDB(list);
                 }
                 await Task.Delay(24000); //4 minutes
             }
