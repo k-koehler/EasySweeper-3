@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\Test\</OutputPath>
@@ -116,6 +117,7 @@
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="EWAppContext.cs" />
     <Compile Include="StoredProcedure.cs" />
+    <Compile Include="Tasks.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
     <Compile Include="PixelMatchOCR.cs" />
