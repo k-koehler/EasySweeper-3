@@ -17,7 +17,7 @@ namespace EasyWinterface {
 
         public static async Task UpdateVersion()
         {
-            using (var mgr = new UpdateManager("C:\\Projects\\MyApp\\Releases")) {
+            using (var mgr = new UpdateManager("C:\\Projects\\EasyWinterface\\Releases")) {
                 await mgr.UpdateApp();
             }
         }

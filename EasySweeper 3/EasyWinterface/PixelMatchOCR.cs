@@ -31,7 +31,7 @@ namespace EasyWinterface {
 
             //timer
             _timerGlyphs = new List<Tuple<Bitmap, string>>();
-            var timerPath = new FileInfo("../../Glyphs/timerGlyphs/");
+            var timerPath = new FileInfo("Glyphs/timerGlyphs/");
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/0.bmp"), "0"));
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/1.bmp"), "1"));
             _timerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(timerPath.FullName + "/2.bmp"), "2"));
@@ -46,7 +46,7 @@ namespace EasyWinterface {
 
             //floor
             _floorGlyphs = new List<Tuple<Bitmap, string>>();
-            var floorPath = new FileInfo("../../Glyphs/floorGlyphs/");
+            var floorPath = new FileInfo("Glyphs/floorGlyphs/");
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/0.bmp"), "0"));
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/1.bmp"), "1"));
             _floorGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(floorPath.FullName + "/2.bmp"), "2"));
@@ -62,14 +62,14 @@ namespace EasyWinterface {
             //lvlmodpcnt
             _levelModPcntCmpt = new List<Tuple<Bitmap, string>>();
             _levelModPcntCmpt.AddRange(_timerGlyphs);
-            var lvlModPath = new FileInfo("../../Glyphs/lvlModPcntCmptGlyphs/");
+            var lvlModPath = new FileInfo("Glyphs/lvlModPcntCmptGlyphs/");
             _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/plus.bmp"),    "+"));
             _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/minus.bmp"),   "-"));
             _levelModPcntCmpt.Add(new Tuple<Bitmap, string>(new Bitmap(lvlModPath.FullName + "/percent.bmp"), "%"));
 
             //player
             _playerGlyphs = new List<Tuple<Bitmap, string>>();
-            var playerPath = new FileInfo("../../Glyphs/playerGlyphs/");
+            var playerPath = new FileInfo("Glyphs/playerGlyphs/");
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/0.bmp"), "0"));           
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/2.bmp"), "2"));
             _playerGlyphs.Add(new Tuple<Bitmap, string>(new Bitmap(playerPath.FullName + "/3.bmp"), "3"));
@@ -203,7 +203,7 @@ namespace EasyWinterface {
         private static string _scanPixels(List<Tuple<Bitmap, string>> floorGlyphs, Bitmap bitmap, GLYPH_TYPE gt = GLYPH_TYPE.FLOOR) {
 
             if(gt == GLYPH_TYPE.PLAYER) {
-                var playerPath = new FileInfo("../../Glyphs/playerGlyphs/");
+                var playerPath = new FileInfo("Glyphs/playerGlyphs/");
                 if (WinterfaceOperations.FindRec(new Bitmap(playerPath.FullName + "/leecher.bmp"), bitmap).Width != 0) {
                     return null;
                 }
