@@ -114,6 +114,8 @@
     <Compile Include="DatabaseClasses.cs" />
     <Compile Include="Storage.cs" />.
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="EWAppContext.cs" />
+    <Compile Include="StoredProcedure.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
     <Compile Include="PixelMatchOCR.cs" />
@@ -158,6 +160,7 @@
   <ItemGroup>
     <None Include="Resources\winterfaceBmp.bmp" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
