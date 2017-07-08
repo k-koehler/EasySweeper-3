@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace EasyWinterface
 {
     static class Database
@@ -59,12 +60,10 @@ namespace EasyWinterface
 
             using (StoredProcedure s = new StoredProcedure("spFloorAdd", parameters))
             {
-                Console.WriteLine("Before ExecAsync");
                 SqlDataReader reader = await s.ExecuteAsync();
-                Console.WriteLine("After ExecAsync");
-                while(await reader.ReadAsync()) { /*Nothing returned in data set...*/}
+                while (await reader.ReadAsync()) { /*Nothing returned in data set...*/}
                 return (int)s.Parameters["@FloorID"].Value;
-            }
+            }                       
        }
 
         private static SqlParameter Param(string name, SqlDbType type, int? size, object value)

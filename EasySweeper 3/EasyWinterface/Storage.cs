@@ -3,14 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace EasyWinterface
 {
     class Storage
     {
-        public async static Task<bool> AddFloor(Floor floor)
+        public async static Task<bool> AddFloor(Floor floor, int? retry = null)
         {
-            floor.ID = await Database.AddFloor(floor);
+            try
+            {
+                floor.ID = await Database.AddFloor(floor);
+            }
+            catch(SqlException ex)
+            {
+                if(MessageBox.Show(ex.Message, "Database Upload Failed", MessageBoxButtons.RetryCancel) ==
+                    DialogResult.Retry)
+                {
+                    retry = ++retry ?? 1;
+                    if (retry < 3)
+                        await AddFloor(floor, retry);
+                    else
+                        MessageBox.Show("Too many retries!");
+                }
+                // Store on local machine here if we ever implement that...
+            }
+                
+
             return floor.ID != null;
         }
 
