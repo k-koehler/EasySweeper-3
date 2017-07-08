@@ -50,6 +50,7 @@ namespace EasyWinterface
                 Param("@Mod", SqlDbType.Int, null, f.Mod),
                 Param("@Bonus", SqlDbType.Int, null, f.BonusPercentage),
                 Param("@Complexity", SqlDbType.Int, null, f.Complexity),
+                Param("@Image", SqlDbType.NVarChar, 100, f.Url),
                 new SqlParameter()
                 {
                     ParameterName = "@FloorID", 
