@@ -130,6 +130,7 @@
     <Compile Include="DatabaseClasses.cs" />
     <Compile Include="Storage.cs" />.
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="DuplicateFloorException.cs" />
     <Compile Include="EWAppContext.cs" />
     <Compile Include="StoredProcedure.cs" />
     <Compile Include="Tasks.cs" />

@@ -17,8 +17,12 @@ namespace EasyWinterface
             {
                 floor.ID = await Database.AddFloor(floor);
             }
-            catch(SqlException ex)
+            catch (DuplicateFloorException ex)
             {
+                MessageBox.Show(ex.Message, "Duplicate Floor(s) Detected!");
+            }
+            catch (SqlException ex)
+            {                    
                 if(MessageBox.Show(ex.Message, "Database Upload Failed", MessageBoxButtons.RetryCancel) ==
                     DialogResult.Retry)
                 {
@@ -30,8 +34,7 @@ namespace EasyWinterface
                 }
                 // Store on local machine here if we ever implement that...
             }
-                
-
+            
             return floor.ID != null;
         }
 

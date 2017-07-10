@@ -16,8 +16,6 @@ namespace EasyWinterface
         private SqlCommand _sqlCommand;
         public SqlParameterCollection Parameters => _sqlCommand.Parameters;
 
-        //public SqlParameterCollection Paramters => _parameters;
-
         public StoredProcedure(string spName, SqlParameter[] parameters = null)
         {
             _spName = spName;

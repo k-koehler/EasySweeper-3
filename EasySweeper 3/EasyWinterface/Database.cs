@@ -11,8 +11,6 @@ namespace EasyWinterface
 {
     static class Database
     {
-
-
         public static async Task<bool> Test()
         {
             int ret = 0;
@@ -23,12 +21,13 @@ namespace EasyWinterface
             using (StoredProcedure s = new StoredProcedure("spTestConnection", parameters))
             {
                 SqlDataReader reader = await s.ExecuteAsync();
-
+    
                 while (await reader.ReadAsync())
                 {
                     ret = reader.GetInt32(0);
                     Console.WriteLine(s.Parameters["@a"].Value);
                 }
+    
             }            
             return ret == (int)parameters[0].Value;
         }
@@ -58,14 +57,22 @@ namespace EasyWinterface
                     Direction = ParameterDirection.Output
                 }
             };
-
-            using (StoredProcedure s = new StoredProcedure("spFloorAdd", parameters))
+            try
             {
-                SqlDataReader reader = await s.ExecuteAsync();
-                while (await reader.ReadAsync()) { /*Nothing returned in data set...*/}
-                return (int)s.Parameters["@FloorID"].Value;
-            }                       
-       }
+                using (StoredProcedure s = new StoredProcedure("spFloorAdd", parameters))
+                {
+                    SqlDataReader reader = await s.ExecuteAsync();
+                    while (await reader.ReadAsync()) { /*Nothing returned in data set...*/}
+                    return (int)s.Parameters["@FloorID"].Value;
+                }
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Message.Contains("Duplicate Floor Detected"))
+                    throw (new DuplicateFloorException(ex.Message));
+                throw (ex);
+            }
+        }
 
         private static SqlParameter Param(string name, SqlDbType type, int? size, object value)
         {
