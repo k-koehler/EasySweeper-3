@@ -1,17 +1,19 @@
-CREATE OR ALTER PROCEDURE spFloorAdd	@Floor int,
-				@Duration bigint,
-				@Size nvarchar(20),
-				@FloorParticipants dbo.FloorParticipants READONLY,
-				@Mod int = NULL,
-				@Bonus int = NULL,
-				@Complexity int = NULL
+CREATE OR ALTER PROCEDURE [dbo].[spFloorAdd]	@Floor int,
+					@Duration bigint,
+					@Size nvarchar(20),
+					@FloorParticipants dbo.FloorParticipants READONLY,
+					@Mod int = NULL,
+					@Bonus int = NULL,
+					@Complexity int = NULL,
+					@Image nvarchar(100) = NULL,
+					@FloorID int = NULL OUTPUT
 AS
 SET NOCOUNT, XACT_ABORT ON
 
 BEGIN TRY
 	BEGIN TRAN
-		DECLARE	@FloorID int,
-			@SizeID int
+		DECLARE	@SizeID int,
+			@MatchingIDs nvarchar(100)
 
 		-- Convert from our size, to Size Lookup ID
 		SELECT	@SizeID = ID
@@ -26,6 +28,7 @@ BEGIN TRY
 				@Mod = @Mod,
 				@Bonus = @Bonus,
 				@Complexity = @Complexity,
+				@Image = @Image,
 				@FloorID = @FloorID OUTPUT
 
 		-- We need to sanitise the input table, so have to pull out everything into a temp table
@@ -41,7 +44,7 @@ BEGIN TRY
 		WHERE	UnknownName = 1
 		
 
-		-- Update the player table with any new names
+		-- Update the player table with only new names
 		MERGE	dbo.Player AS P --Target
 		USING	#FloorParticipants AS FP --Source
 		ON	P.Name = FP.Name
@@ -56,20 +59,35 @@ BEGIN TRY
 			)
 		;
 
-
 		INSERT dbo.PlayerFloor
 		(
 			FloorID,
-			PlayerID
+			PlayerID,
+			Position
 		)
 		SELECT	@FloorID,
-			P.ID
+			P.ID,
+			FP.Position
 		FROM	#FloorParticipants FP
 			INNER JOIN dbo.Player P ON FP.Name = P.Name
+
+		SELECT @MatchingIDs = 
+		(	
+			SELECT	CONVERT(nvarchar(100), ID) + ' '
+			FROM	dbo.tfnFloorDuplicates(@FloorID)
+			FOR	XML PATH('')
+		)
+		-- Deal with potential duplicate floors here...
+		-- This relies on the transaction being rolled back in the catch block, which is rather lazy
+		IF ISNULL(@MatchingIDs, '') <> ''
+		BEGIN
+			SET @MatchingIDs = 'Duplicate Floor Detected! Floor IDs: ' + @MatchingIDs
+			RAISERROR (@MatchingIDs, 16, 1)
+		END
 	COMMIT TRAN
 END TRY
 BEGIN CATCH
-	IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
+	IF @@TRANCOUNT > 0 ROLLBACK TRAN
 	EXEC spRaiseError
 	RETURN 9999
-END CATCH		
+END CATCH

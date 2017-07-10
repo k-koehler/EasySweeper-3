@@ -1,0 +1,4 @@
+CREATE   PROCEDURE spTestConnection
+AS
+SELECT 1
+GO
