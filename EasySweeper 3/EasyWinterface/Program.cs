@@ -16,7 +16,7 @@ using System.Linq.Expressions;
 using Squirrel;
 
 namespace EasyWinterface {
-    static class Program
+    public static class Program
     {
         private const int _TIMEOUT = 100;
 
@@ -27,10 +27,10 @@ namespace EasyWinterface {
         /// </summary>
         /// 
         [STAThread]
-        static void Main() {
+        public static void Main() {
             var appContext = new EWAppContext();
             var ScanWinterface = Tasks.WinterfaceSearch(_TIMEOUT, appContext);
-            var UpdateApp = Tasks.UpdateVersion();
+            //var UpdateApp = Tasks.UpdateVersion();
             Application.Run(appContext);
         }
     }

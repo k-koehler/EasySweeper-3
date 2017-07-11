@@ -18,7 +18,7 @@ namespace EasySweeper_3 {
         //test the winterface capture
         static async partial void testWinterface(CaptureDevice dev) {
             var wfs = new EasyWinterface.WinterfaceScanner();
-            var floor = await wfs.ScanForWinterface(1000);
+            //var floor = await wfs.ScanForWinterface(1000);
             Console.WriteLine("found winterface");
         }
 
