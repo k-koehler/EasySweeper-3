@@ -64,7 +64,7 @@ namespace EasyMap {
         //initially no tentative area
         public CaptureDevice() {
             tentativeScreenAreaCapture = new Rectangle(0, 0, 0, 0);
-            mapIndicator = Properties.Resources.DgMap;
+            mapIndicator = Properties.Resources.dgmap;
         }
 
         //captures an area of the screen into a bitmap

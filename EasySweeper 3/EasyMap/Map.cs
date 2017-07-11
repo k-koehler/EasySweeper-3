@@ -65,6 +65,7 @@ namespace EasyMap {
         /// </summary>
         public Map() {
             _mapArray = new byte[_MAP_WIDTH, _MAP_HEIGHT];
+            _initializeRoomTypeList(_roomTypeList);
         }
 
         /// <summary>
@@ -79,6 +80,21 @@ namespace EasyMap {
 
         private void _scanRow(Point point) {
             throw new NotImplementedException();
+        }
+
+        public string TEST_FIND_COORDINATES(Bitmap bmp) {
+            var retStr = "";
+            for(int i=0; i<bmp.Width; ++i) {
+                for(int j=0; i<bmp.Height; ++j) {
+                    foreach(var option in _roomTypeList) {
+                        if(MapOperations.FindRec(option.Item2, bmp).Width != 0) {
+                            retStr += i + "," + j + " ";
+                        }
+                    }
+                }
+                retStr += "\n";
+            }
+            return retStr;
         }
     }
 }

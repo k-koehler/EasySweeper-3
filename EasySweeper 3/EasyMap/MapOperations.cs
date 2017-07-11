@@ -11,7 +11,8 @@ namespace EasyMap {
             return dev.findMap();
         }
 
-        internal static void ProcessChangedMap(Bitmap bmp, Form1 form) {
+        internal static void ProcessChangedMap(Bitmap bmp, Form1 form, ref Map map) {
+            //Console.WriteLine(map.TEST_FIND_COORDINATES(bmp));
             Thread.Sleep(1000);
         }
     }

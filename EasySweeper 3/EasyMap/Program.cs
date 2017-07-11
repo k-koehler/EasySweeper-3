@@ -19,11 +19,13 @@ namespace EasyMap {
 
             var form = new Form1();
             var ms = new MapScanner();
+            var map = new Map();
+
             var MapFind = new Task(async () => {
                 while (true) {
                     var bmp = await ms.CaptureMap(_getTimeout());
                     if (form.ChangeMainMapPicture(bmp))
-                        MapOperations.ProcessChangedMap(bmp, form);
+                        MapOperations.ProcessChangedMap(bmp, form, ref map);
                 }
             });
 
