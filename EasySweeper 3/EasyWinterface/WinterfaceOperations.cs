@@ -201,7 +201,7 @@ namespace EasyWinterface {
         }
 
         [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
+        public static extern IntPtr GetForegroundWindow();
 
 
         [DllImport("user32.dll")]

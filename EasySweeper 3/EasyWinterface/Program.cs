@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.IO;
-using System.Net;
-using Imgur.API.Authentication.Impl;
-using Imgur.API.Models;
 using System.Diagnostics;
 using Imgur.API;
+<<<<<<< HEAD
 using Imgur.API.Endpoints.Impl;
 using System.Configuration;
 using System.Linq.Expressions;

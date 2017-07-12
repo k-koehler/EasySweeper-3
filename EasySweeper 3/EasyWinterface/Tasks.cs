@@ -76,5 +76,16 @@ namespace EasyWinterface {
                 }
             }
         }
+
+        internal static async Task TrackForegroundWindow(Queue<IntPtr> _windowBuffer, TimeSpan _bufferLength) {
+            List<Tuple<IntPtr, DateTime>> internalList = new List<Tuple<IntPtr, DateTime>>();
+            while (true) {
+                IntPtr foregroundWindow = WinterfaceOperations.GetForegroundWindow();
+                if (!_windowBuffer.Contains(foregroundWindow)) {
+                    internalList.Add(new Tuple<IntPtr, DateTime>(foregroundWindow, DateTime.Now));
+                    _windowBuffer.Enqueue(foregroundWindow);
+                }
+            }
+        }
     }
 }
