@@ -16,8 +16,7 @@ using System.Linq.Expressions;
 using Squirrel;
 
 namespace EasyWinterface {
-    public static class Program
-    {
+    public static class Program {
         private const int _TIMEOUT = 100;
 
         const int SCAN_TIMEOUT = 150; //ms
@@ -28,9 +27,37 @@ namespace EasyWinterface {
         /// 
         [STAThread]
         public static void Main() {
+            var ocr = new PixelMatchOCR();
+            var wintScanner = new WinterfaceScanner();
             var appContext = new EWAppContext();
-            var ScanWinterface = Tasks.WinterfaceSearch(_TIMEOUT, appContext);
-            //var UpdateApp = Tasks.UpdateVersion();
+
+            const int SCAN_TIMEOUT = 150; //ms
+
+            //look for winterface
+            var asynchTask = new Task(async () => {
+                while (true) {
+                    var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
+                    bmp.Save("temp.bmp");
+                    var fi = new FileInfo("temp.bmp");
+                    try {
+                        var url = await Tasks.UploadImage(fi.FullName);
+                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
+                        var url2 = string.Copy(url);
+                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
+                            Process.Start(url2);
+                        });
+                        var list = ocr.readWinterface(bmp);
+                        await Tasks.updateDB(list, url);
+                    } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
+                        appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
+                        var list = ocr.readWinterface(bmp);
+                        await Tasks.updateDB(list);
+                    }
+                    await Task.Delay(24000); //4 minutes
+                }
+            });
+
+            asynchTask.Start();
             Application.Run(appContext);
         }
     }
