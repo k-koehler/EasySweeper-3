@@ -31,7 +31,7 @@ namespace EasyWinterface {
             var wintScanner = new WinterfaceScanner();
             var appContext = new EWAppContext();
 
-            const int SCAN_TIMEOUT = 150; //ms
+            const int SCAN_TIMEOUT = 350; //ms
 
             //look for winterface
             var asynchTask = new Task(async () => {
@@ -53,7 +53,7 @@ namespace EasyWinterface {
                         var list = ocr.readWinterface(bmp);
                         await Tasks.updateDB(list);
                     }
-                    await Task.Delay(24000); //4 minutes
+                    await Task.Delay(6000); //1 minute
                 }
             });
 

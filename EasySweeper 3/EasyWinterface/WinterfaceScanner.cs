@@ -19,10 +19,13 @@ namespace EasyWinterface {
         }
 
         public async Task<Bitmap> ScanForWinterface(int timeout) {
+            int i = 0;
             Bitmap bmp = null;
             while (bmp == null) {
                 await Task.Delay(timeout);
-                bmp = WinterfaceOperations.captureWinterface(dev);
+                if (i%2 == 0) bmp = WinterfaceOperations.captureWinterface(dev);
+                else          bmp = WinterfaceOperations.captureWinterface(dev, true);
+                ++i;
             }
             return bmp;
         }

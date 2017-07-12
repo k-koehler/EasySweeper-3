@@ -18,7 +18,7 @@ namespace EasyWinterface {
         /// create a new task when using this function
         /// </summary>
         /// <returns>a bitmap of the winterface once it successfully captures</returns>
-        public static Bitmap captureWinterface(CaptureDevice dev) {
+        public static Bitmap captureWinterface(CaptureDevice dev, bool RedMap = false) {
 
             //if rs is not running, this is not valid
             //eventually fix so runescape must be foreground window
@@ -35,7 +35,8 @@ namespace EasyWinterface {
 
             //rec.Width != 0 -> dev.findRec found the winterface
             Rectangle rec = new Rectangle(0, 0, 0, 0);
-            rec = dev.findRec(Properties.Resources.winterfaceBmp);
+            if (!RedMap) rec = dev.findRec(Properties.Resources.winterfaceBmp);
+            else         rec = dev.findRec(Properties.Resources.wintRed);
             if (rec.Width == 0)
                 return null;
 
