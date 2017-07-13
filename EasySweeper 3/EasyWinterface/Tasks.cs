@@ -10,6 +10,7 @@ using Imgur.API;
 using Imgur.API.Authentication.Impl;
 using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
+using System.Threading;
 
 namespace EasyWinterface {
     class Tasks {
@@ -77,14 +78,34 @@ namespace EasyWinterface {
             }
         }
 
-        internal static async Task TrackForegroundWindow(Queue<IntPtr> _windowBuffer, TimeSpan _bufferLength) {
+        internal static async Task TrackForegroundWindow(List<IntPtr> _windowBuffer, TimeSpan _bufferLength, CancellationTokenSource cts) {
             List<Tuple<IntPtr, DateTime>> internalList = new List<Tuple<IntPtr, DateTime>>();
             while (true) {
+                if (cts.IsCancellationRequested) {
+                    _checkAge(ref internalList, ref _windowBuffer, DateTime.Now - _bufferLength);
+                    break;
+                }
                 IntPtr foregroundWindow = WinterfaceOperations.GetForegroundWindow();
                 if (!_windowBuffer.Contains(foregroundWindow)) {
                     internalList.Add(new Tuple<IntPtr, DateTime>(foregroundWindow, DateTime.Now));
-                    _windowBuffer.Enqueue(foregroundWindow);
+                    _windowBuffer.Add(foregroundWindow);
+                    _checkAge(ref internalList, ref _windowBuffer, DateTime.Now - _bufferLength); //2 seconds
+                } else {
+                    for (int i= 0; i<internalList.Count; ++i) {
+                        if (internalList[i].Item1 == foregroundWindow) {
+                            internalList[i] = new Tuple<IntPtr, DateTime>(foregroundWindow, DateTime.Now);
+                            break;
+                        }
+                    }
                 }
+                await Task.Delay(200);
+            }
+        }
+
+        private static void _checkAge(ref List<Tuple<IntPtr, DateTime>> internalList, ref List<IntPtr> _windowBuffer, DateTime dt) {
+            foreach(var windowDate in internalList) {
+                if (windowDate.Item2.CompareTo(dt) < 0) //older
+                    _windowBuffer.Remove(windowDate.Item1);
             }
         }
     }

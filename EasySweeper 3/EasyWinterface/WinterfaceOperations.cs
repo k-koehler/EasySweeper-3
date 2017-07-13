@@ -218,5 +218,16 @@ namespace EasyWinterface {
             return null;
         }
 
+        public static string GetWindowTitle(IntPtr handle) {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+
+            if (GetWindowText(handle, Buff, nChars) > 0) {
+                return Buff.ToString();
+            }
+            return null;
+        }
+
+
     }
 }

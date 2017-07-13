@@ -26,7 +26,7 @@ namespace CaptureDevice {
                         using (var bmp = _searchBitmap(referenceImage, captureScreen)) {
                             return BitmapOperations.CropBitmap(bmp, referenceDimenensions);
                         }
-                    } catch (BadImageFormatException e) {
+                    } catch (BadImageFormatException) {
                         continue;
                     }
                 }

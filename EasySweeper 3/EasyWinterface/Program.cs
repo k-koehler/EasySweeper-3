@@ -12,6 +12,7 @@ using Squirrel;
 
 namespace EasyWinterface {
     public static class Program {
+    
         private const int _TIMEOUT = 100;
 
         const int SCAN_TIMEOUT = 150; //ms
@@ -25,13 +26,19 @@ namespace EasyWinterface {
             var ocr = new PixelMatchOCR();
             var wintScanner = new WinterfaceScanner();
             var appContext = new EWAppContext();
+            var cheatProtector = new CheatProtector();
 
-            const int SCAN_TIMEOUT = 350; //ms
+            const int SCAN_TIMEOUT = 200; //ms
 
             //look for winterface
             var asynchTask = new Task(async () => {
                 while (true) {
                     var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
+                    if (!cheatProtector.isWinterfaceValid()) {
+                        await Task.Delay(SCAN_TIMEOUT);
+                        cheatProtector = new CheatProtector();
+                        continue;
+                    }
                     bmp.Save("temp.bmp");
                     var fi = new FileInfo("temp.bmp");
                     try {
@@ -48,6 +55,8 @@ namespace EasyWinterface {
                         var list = ocr.readWinterface(bmp);
                         await Tasks.updateDB(list);
                     }
+
+                    cheatProtector = new CheatProtector();
                     await Task.Delay(6000); //1 minute
                 }
             });
