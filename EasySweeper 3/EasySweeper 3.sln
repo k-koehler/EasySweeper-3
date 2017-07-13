@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyWinterface", "EasyWinte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMap", "EasyMap\EasyMap.csproj", "{03C9D86F-2749-446F-A98B-5CBEA3ABC5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaptureDevice", "..\..\EasySweeper 3\CaptureDevice\CaptureDevice\CaptureDevice.csproj", "{EF370CAB-0D71-47C9-8809-579852187C0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaptureDevice", "CaptureDevice\CaptureDevice\CaptureDevice.csproj", "{EF370CAB-0D71-47C9-8809-579852187C0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
