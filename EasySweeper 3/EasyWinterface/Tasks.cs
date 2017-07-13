@@ -66,7 +66,7 @@ namespace EasyWinterface {
             IImage image = null;
             using (var fs = new FileStream(location, FileMode.Open)) {
                 var task = endpoint.UploadImageStreamAsync(fs);
-                if (await Task.WhenAny(task, Task.Delay(20000)) == task) {
+                if (await Task.WhenAny(task, Task.Delay(45000)) == task) {
                     image = await task;
                     if (image == null) {
                         throw new ImgurException("imgur error");

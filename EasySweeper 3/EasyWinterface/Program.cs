@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+<<<<<<< HEAD
 using Imgur.API;
 <<<<<<< HEAD
 using Imgur.API.Endpoints.Impl;
@@ -34,11 +35,13 @@ namespace EasyWinterface {
             var asynchTask = new Task(async () => {
                 while (true) {
                     var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
+#if !TEST
                     if (!cheatProtector.isWinterfaceValid()) {
                         await Task.Delay(SCAN_TIMEOUT);
                         cheatProtector = new CheatProtector();
                         continue;
                     }
+#endif
                     bmp.Save("temp.bmp");
                     var fi = new FileInfo("temp.bmp");
                     try {
@@ -50,7 +53,7 @@ namespace EasyWinterface {
                         });
                         var list = ocr.readWinterface(bmp);
                         await Tasks.updateDB(list, url);
-                    } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
+                    } catch (Exception e) when (e is TimeoutException || e is Imgur.API.ImgurException) {
                         appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
                         var list = ocr.readWinterface(bmp);
                         await Tasks.updateDB(list);
