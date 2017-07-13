@@ -14,22 +14,28 @@ namespace EasyWinterface
         public static async Task<bool> Test()
         {
             int ret = 0;
-            SqlParameter[] parameters =
-            {
-                Param("@a", SqlDbType.Int, null, 3)
-            };
-            using (StoredProcedure s = new StoredProcedure("spTestConnection", parameters))
-            {
-                SqlDataReader reader = await s.ExecuteAsync();
-    
-                while (await reader.ReadAsync())
+
+            try {
+                Console.WriteLine("Before SP");
+                using (StoredProcedure s = new StoredProcedure("spTestConnection"))
                 {
-                    ret = reader.GetInt32(0);
-                    Console.WriteLine(s.Parameters["@a"].Value);
+                    Console.WriteLine("AFter SP");
+                    SqlDataReader reader = await s.ExecuteAsync();
+                    Console.WriteLine("After EXEC");
+                    while (await reader.ReadAsync())
+                    {
+                        ret = reader.GetInt32(0);
+                        Console.WriteLine(ret);
+                    }
+                    return ret == 1;
                 }
-    
-            }            
-            return ret == (int)parameters[0].Value;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+            
         }
        
        public static async Task<int?> AddFloor(Floor f)
