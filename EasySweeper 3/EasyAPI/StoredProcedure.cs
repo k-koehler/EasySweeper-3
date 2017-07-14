@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyWinterface
+namespace EasyAPI
 {
     class StoredProcedure : IDisposable
     {
@@ -24,21 +24,21 @@ namespace EasyWinterface
 
         public async Task<SqlDataReader> ExecuteAsync()
         {
-            Tuple<SqlDataReader, SqlCommand,Action> resultTuple = await DatabaseHelper.ExecuteSprocAsync(_spName, _parameters);
+            Tuple<SqlDataReader, SqlCommand, Action> resultTuple = await DatabaseHelper.ExecuteSprocAsync(_spName, _parameters);
             SqlDataReader results = resultTuple.Item1;
             _sqlCommand = resultTuple.Item2;
             _dispose = resultTuple.Item3;
             return results;
         }
-        
 
-#region IDisposable Members
+
+        #region IDisposable Members
         public void Dispose()
         {
             _dispose?.Invoke();
         }
     }
-#endregion
+    #endregion
 
 }
 

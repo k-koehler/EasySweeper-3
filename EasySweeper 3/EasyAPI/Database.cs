@@ -6,8 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace EasyWinterface
+namespace EasyAPI
 {
     static class Database
     {
@@ -15,7 +14,8 @@ namespace EasyWinterface
         {
             int ret = 0;
 
-            try {
+            try
+            {
                 Console.WriteLine("Before SP");
                 using (StoredProcedure s = new StoredProcedure("spTestConnection"))
                 {
@@ -35,11 +35,11 @@ namespace EasyWinterface
                 Console.WriteLine(e.ToString());
                 return false;
             }
-            
+
         }
-       
-       public static async Task<int?> AddFloor(Floor f)
-       {
+
+        public static async Task<int?> AddFloor(Floor f)
+        {
             SqlParameter[] parameters =
             {
                 Param("@Floor", SqlDbType.Int, null, f.FloorNum),
@@ -58,7 +58,7 @@ namespace EasyWinterface
                 Param("@Image", SqlDbType.NVarChar, 100, f.Url),
                 new SqlParameter()
                 {
-                    ParameterName = "@FloorID", 
+                    ParameterName = "@FloorID",
                     SqlDbType = SqlDbType.Int,
                     Direction = ParameterDirection.Output
                 }
@@ -98,7 +98,7 @@ namespace EasyWinterface
             d.Columns.Add("Name", typeof(string));
             d.Columns.Add("Position", typeof(int));
             d.Columns.Add("UnknownName", typeof(int));
-        
+
             for (int i = 0; i < participants.Length; i++)
             {
                 d.Rows.Add(new object[]{
@@ -107,7 +107,6 @@ namespace EasyWinterface
                             participants[i].OCRFailed
                         });
             }
-        
             return d;
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace EasyWinterface
+namespace EasyAPI
 {
     static class Conversions
     {
@@ -19,10 +19,10 @@ namespace EasyWinterface
             char[] split = delimiters ?? new char[] { ':' };
             string[] splitTimes = timeString.Split(split);
 
-                return new TimeSpan(
-                    Convert.ToInt32(splitTimes[0]),
-                    Convert.ToInt32(splitTimes[1]),
-                    Convert.ToInt32(splitTimes[2]));
+            return new TimeSpan(
+                Convert.ToInt32(splitTimes[0]),
+                Convert.ToInt32(splitTimes[1]),
+                Convert.ToInt32(splitTimes[2]));
         }
 
         public static int ToBonusPercentage(string bonusString)
@@ -35,7 +35,7 @@ namespace EasyWinterface
             return JustDigits(modString);
         }
 
-        public static int JustDigits(string str)
+        private static int JustDigits(string str)
         {
             return Convert.ToInt32(Regex.Replace(str, "\\D+", ""));
         }

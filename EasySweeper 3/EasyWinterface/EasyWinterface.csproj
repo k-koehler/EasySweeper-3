@@ -125,15 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheatProtector.cs" />
-    <Compile Include="Database.cs" />
     <Compile Include="CaptureDevice.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="DatabaseClasses.cs" />
     <Compile Include="Storage.cs" />.
     <Compile Include="DatabaseHelper.cs" />
-    <Compile Include="DuplicateFloorException.cs" />
     <Compile Include="EWAppContext.cs" />
-    <Compile Include="StoredProcedure.cs" />
     <Compile Include="Tasks.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
@@ -193,6 +190,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\wintRed.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasyAPI\EasyAPI.csproj">
+      <Project>{0b154c92-2c1a-4e4c-8f8e-db61fec5eb10}</Project>
+      <Name>EasyAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyWinterface
+namespace EasyAPI
 {
-    class Player
+    public class Player
     {
         private int? _id;
         private string _user;
@@ -25,7 +25,5 @@ namespace EasyWinterface
         public Player(string name)
             : this(null, name)
         { }
-
-
     }
 }

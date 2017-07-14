@@ -12,6 +12,7 @@ using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
 using System.Threading;
 using Squirrel;
+using EasyAPI;
 
 namespace EasyWinterface {
     class Tasks {
@@ -24,7 +25,7 @@ namespace EasyWinterface {
             }
         }*/
 
-        public static async Task<bool> updateDB(List<string> list, string url = "optional") {
+        public static async Task<int?> updateDB(List<string> list, string url = "optional") {
             return await Storage.AddFloor((Floor)list);
         }
 

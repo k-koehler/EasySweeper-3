@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyWinterface
+namespace EasyAPI
 {
-    class Floor
+    public class Floor
     {
         private int? _id;
         private List<Player> _players;
@@ -19,7 +19,7 @@ namespace EasyWinterface
         private int _difficulty;
         private int _complexity;
 
-        
+
         public IEnumerable<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
@@ -62,7 +62,7 @@ namespace EasyWinterface
             }
 
             string size = strings[9];
-            
+
             int difficulty = Convert.ToInt32(strings[10]);
             int complexity = Convert.ToInt32(strings[11]);
 
@@ -80,10 +80,10 @@ namespace EasyWinterface
 
 
         public Floor(
-            IEnumerable<Player> players, 
-            TimeSpan time, 
-            int floor, 
-            int bonusPercentage, 
+            IEnumerable<Player> players,
+            TimeSpan time,
+            int floor,
+            int bonusPercentage,
             int mod,
             string size,
             int difficulty = 55,
@@ -100,9 +100,5 @@ namespace EasyWinterface
             _complexity = complexity;
             _url = url;
         }
-
-
-
-
     }
 }
