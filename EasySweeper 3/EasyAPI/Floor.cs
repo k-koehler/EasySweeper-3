@@ -19,6 +19,13 @@ namespace EasyAPI
         private int _difficulty;
         private int _complexity;
 
+        public static Player[] TestPlayers = new Player[2]
+        {
+            new Player("Puff Pure"), 
+            new Player("Big Chin")
+        };
+
+        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(1000), 1, 1, 1, "Large", 1);
 
         public IEnumerable<Player> Players => _players;
         public TimeSpan Time => _time;
