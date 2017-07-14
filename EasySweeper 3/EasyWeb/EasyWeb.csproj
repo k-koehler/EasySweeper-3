@@ -85,6 +85,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -106,10 +107,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Global.asax" />
     <Content Include="Main.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -120,9 +125,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyWinterface\EasyWinterface.csproj">
-      <Project>{f640f263-3ba5-4bda-a202-c37e08e4bcfb}</Project>
-      <Name>EasyWinterface</Name>
+    <ProjectReference Include="..\EasyAPI\EasyAPI.csproj">
+      <Project>{0b154c92-2c1a-4e4c-8f8e-db61fec5eb10}</Project>
+      <Name>EasyAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
