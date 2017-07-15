@@ -3,14 +3,12 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
-<<<<<<< HEAD
-<<<<<<< HEAD
 using Imgur.API;
-<<<<<<< HEAD
 using Imgur.API.Endpoints.Impl;
 using System.Configuration;
 using System.Linq.Expressions;
 using Squirrel;
+using System.Threading;
 using EasyAPI;
 
 namespace EasyWinterface {

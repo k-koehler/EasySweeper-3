@@ -130,7 +130,18 @@
     <Compile Include="DatabaseClasses.cs" />
     <Compile Include="Storage.cs" />.
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="DatabaseViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EWAppContext.cs" />
+    <Compile Include="ewintDataSet.cs">
+      <DependentUpon>ewintDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ewintDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ewintDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
@@ -143,6 +154,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinterfaceScanner.cs" />
+    <EmbeddedResource Include="DatabaseViewerForm.resx">
+      <DependentUpon>DatabaseViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -153,6 +167,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ewintDataSet.xsc">
+      <DependentUpon>ewintDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="ewintDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ewintDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ewintDataSet.xss">
+      <DependentUpon>ewintDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

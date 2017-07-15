@@ -69,7 +69,7 @@ namespace EasyAPI
                 {
                     SqlDataReader reader = await s.ExecuteAsync();
                     while (await reader.ReadAsync()) { /*Nothing returned in data set...*/}
-                    return (int)s.Parameters["@FloorID"].Value;
+                    return 0;
                 }
             }
             catch (SqlException ex)

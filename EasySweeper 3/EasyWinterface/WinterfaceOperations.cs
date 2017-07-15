@@ -41,7 +41,6 @@ namespace EasyWinterface {
                 return null;
 
             //garbage collect
-            //TODO fix the memory leak
             GC.Collect();
 
             //some consts which will be needed
