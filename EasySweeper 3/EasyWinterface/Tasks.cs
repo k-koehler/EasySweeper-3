@@ -15,12 +15,15 @@ using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
 using System.Threading;
 using Squirrel;
+using System.Configuration;
 using EasyAPI;
 
 namespace EasyWinterface {
     class Tasks {
 
         private const string UpdateLink = "https://raw.githubusercontent.com/k-koehler/EasySweeper-3/master/EasySweeper%203/EasyWinterface/Releases/RELEASES";
+
+        public static API Api { get; set; }
 
         public static async void UpdateVersion()
         {
@@ -49,15 +52,14 @@ namespace EasyWinterface {
         public static async Task<int?> updateDB(List<string> list, string url = "optional") {
             try
             {
-                return await API.GetInstance().AddFloor((Floor) list);
+                return await Api.AddFloor((Floor)list);
             }
             catch (DuplicateFloorException)
             {
                 return 0;
             }
         }
-
->>>>>>> 3b41bed... Didn't do much with the database. Added an updater.
+        
         public static async Task<string> UploadImage(string location) {
             var client = new ImgurClient("303907803ca83e2", "7cb9b347002e53227ea79bfb2ea37e344feae6c9");
             await Task.Delay(1000);
@@ -106,6 +108,17 @@ namespace EasyWinterface {
                 if (windowDate.Item2.CompareTo(dt) < 0) //older
                     _windowBuffer.Remove(windowDate.Item1);
             }
+        }
+
+        public static void ConfigureAPI(Action<bool> callback = null)
+        {
+            Guid key = new Guid(ConfigurationManager.AppSettings["EasyAPIKey"]);
+
+            API.ConfigureInstance(key, (bool valid) =>
+            {
+                Api = valid ? API.GetInstance() : null;
+                callback(valid);
+            });
         }
     }
 }

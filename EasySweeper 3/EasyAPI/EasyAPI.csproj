@@ -45,10 +45,12 @@
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="DuplicateFloorException.cs" />
     <Compile Include="Floor.cs" />
+    <Compile Include="InvalidAPIKeyException.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="API.cs" />
     <Compile Include="StoredProcedure.cs" />
+    <Compile Include="UnconfiguredAPIException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

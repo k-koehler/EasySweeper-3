@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyAPI
 {
-    public static class Database
+    static class Database
     {
         public static async Task<bool> Test()
         {
@@ -16,16 +16,13 @@ namespace EasyAPI
 
             try
             {
-                Console.WriteLine("Before SP");
                 using (StoredProcedure s = new StoredProcedure("spTestConnection"))
                 {
-                    Console.WriteLine("AFter SP");
                     SqlDataReader reader = await s.ExecuteAsync();
-                    Console.WriteLine("After EXEC");
+
                     while (await reader.ReadAsync())
                     {
                         ret = reader.GetInt32(0);
-                        Console.WriteLine(ret);
                     }
                     return ret == 1;
                 }
@@ -35,7 +32,6 @@ namespace EasyAPI
                 Console.WriteLine(e.ToString());
                 return false;
             }
-
         }
 
         public static async Task<int?> AddFloor(Floor f)
@@ -78,6 +74,37 @@ namespace EasyAPI
                     throw (new DuplicateFloorException(ex.Message));
                 throw (ex);
             }
+        }
+
+        public static async Task<bool> CheckAPIKey(Guid key)
+        {
+            try
+            {
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    Param("@Key", SqlDbType.UniqueIdentifier, null, key),
+                    new SqlParameter()
+                    {
+                        ParameterName = "@Valid",
+                        SqlDbType = SqlDbType.Bit,
+                        Direction = ParameterDirection.Output
+                    }
+                };
+
+                using (StoredProcedure s = new StoredProcedure("spAPIKeyCheck", parameters))
+                {
+                    SqlDataReader reader = await s.ExecuteAsync();
+                    while (await reader.ReadAsync())
+                    { }
+                    return (bool)s.Parameters["@Valid"].Value == true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+            return false;
         }
 
         private static SqlParameter Param(string name, SqlDbType type, int? size, object value)

@@ -1,21 +1,4 @@
-USE [master]
-GO
-DROP LOGIN EasySweeper
-GO
-CREATE LOGIN [EasySweeper] WITH PASSWORD=N'fkfut', DEFAULT_DATABASE=[EasySweeper], DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
-GO
-
-IF NOT EXISTS
-(
-	SELECT	*
-	FROM	sys.databases
-	WHERE	Name = 'EasySweeper'
-)
-CREATE DATABASE EasySweeper
-GO
-USE EasySweeper
-GO
-CREATE USER [EasySweeper] FOR LOGIN [EasySweeper] WITH DEFAULT_SCHEMA=[EasySweeper]
+CREATE USER [EasyWinterface] FOR LOGIN [EasyWinterface] WITH DEFAULT_SCHEMA=[EasyWinterface]
 GO
 IF NOT EXISTS
 (
@@ -108,7 +91,7 @@ CREATE TYPE FloorParticipants AS TABLE
 	UnknownName bit NOT NULL
 )
 GO
-GRANT EXECUTE ON TYPE :: dbo.FloorParticipants TO EasySweeper
+GRANT EXECUTE ON TYPE :: dbo.FloorParticipants TO EasyWinterface
 GO
 GO
 CREATE OR ALTER PROCEDURE [dbo].[spRaiseError] 
@@ -281,17 +264,17 @@ BEGIN CATCH
 END CATCH		
 
 GO
-DROP USER EasySweeper
+DROP USER EasyWinterface
 GO
-CREATE USER EasySweeper
+CREATE USER EasyWinterface
 GO
-GRANT EXECUTE ON spFloorAdd TO EasySweeper
+GRANT EXECUTE ON spFloorAdd TO EasyWinterface
 GO
 CREATE OR ALTER PROCEDURE spTestConnection
 AS
 SELECT 1
 GO
-GRANT EXECUTE ON spTestConnection TO EasySweeper
+GRANT EXECUTE ON spTestConnection TO EasyWinterface
 GO
 CREATE OR ALTER PROCEDURE [dbo].[Clean]
 AS
@@ -349,4 +332,39 @@ SELECT	@FloorID [FloorID],
 	))AS PlayerNames
 FROM	Floor F
 WHERE	F.ID = @FloorID
+GO
+IF NOT EXISTS
+(
+	SELECT	*
+	FROM	dbo.APIUser
+)
+CREATE TABLE dbo.APIUser
+(
+	APIKey uniqueidentifier PRIMARY KEY,
+	Name nvarchar(50)
+)
+GO
+CREATE OR ALTER PROCEDURE spAPIKeyCheck	@Key uniqueidentifier,
+				@Valid bit = 0 OUTPUT
+AS
+BEGIN TRY
+	BEGIN TRAN
+		SELECT	@Valid = 
+			CASE WHEN EXISTS
+			(
+				SELECT	*
+				FROM	dbo.APIUser
+			)
+			THEN 1
+			ELSE 0
+			END
+	COMMIT TRAN
+END TRY
+BEGIN CATCH
+	IF @@TRANCOUNT > 0 ROLLBACK TRAN
+	EXEC spRaiseError
+	RETURN 9999
+END CATCH
+GO
+GRANT EXECUTE ON spAPIKeyCheck TO EasyWinterface
 GO

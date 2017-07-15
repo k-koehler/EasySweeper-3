@@ -10,58 +10,70 @@ namespace EasyAPI
     public sealed class API
     {
         private static API instance;
+        public static API Instance => instance;
+        public bool Configured => _configured;
 
+        private bool _configured;
         private Guid _key; 
 
         private API(Guid key)
         {
-            if(CheckAPIKey(key))
-            {
-                _key = key;
-            }
-            else
-            {
-                throw new Exception(); //todo make an exception
-            }
-            
+            _key = key;
         }
 
-        public static API GetInstance(Guid key = default(Guid))
+        public static API GetInstance()
         {
-            if (key == default(Guid) && instance != null)
-            {
+            if (instance.Configured)
                 return instance;
+
+            throw new UnconfiguredAPIException();
+        }
+
+        public static async void ConfigureInstance(Guid key, Action<bool> callback = null)
+        {
+            bool valid = await CheckAPIKey(key);
+
+            if (valid)
+            {
+                instance = new API(key)
+                {
+                    _configured = true
+                };
             }
             else
             {
-                if (key == instance._key)
-                {
-                    return instance;
-                }
-                else
-                {
-                    instance = new API(key);
-                    return instance;
-                }
-                    
+                instance = null;
+                throw new InvalidAPIKeyException(key);
             }
+
+            callback(valid);
         }
 
         public async Task<int?> AddFloor(Floor floor, int? retry = null)
         {
-            return await Database.AddFloor(floor);
+            if (Configured)
+                return await Database.AddFloor(floor);
+            else
+                throw new UnconfiguredAPIException();
         }
 
         public async Task<bool> TestDatabase()
         {
-            bool success = await Database.Test();
-            Console.WriteLine(success ? "\n Yes" : "\n No");
-            return success;
+            if (Configured)
+            {
+                bool success = await Database.Test();
+                Console.WriteLine(success ? "\n Yes" : "\n No");
+                return success;
+            }
+            else
+            {
+                throw new UnconfiguredAPIException();
+            }              
         }
 
-        private bool CheckAPIKey(Guid key)
+        private static async Task<bool> CheckAPIKey(Guid key)
         {
-            return false;
+            return await Database.CheckAPIKey(key);
         }
     }
 }
