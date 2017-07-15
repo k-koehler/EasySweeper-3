@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyAPI
 {
-    static class Database
+    public static class Database
     {
         public static async Task<bool> Test()
         {

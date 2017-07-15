@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Imgur.API;
@@ -17,18 +20,44 @@ using EasyAPI;
 namespace EasyWinterface {
     class Tasks {
 
-        /*public static async Task UpdateVersion()
-        {
-            string updateURL = "https://github.com/k-koehler/EasySweeper-3/blob/master/EasySweeper%203/EasyWinterface/Releases/RELEASES";
-            using (var mgr = new Squirrel.UpdateManager(updateURL)) {
-                await mgr.UpdateApp();
-            }
-        }*/
+        private const string UpdateLink = "https://raw.githubusercontent.com/k-koehler/EasySweeper-3/master/EasySweeper%203/EasyWinterface/Releases/RELEASES";
 
-        public static async Task<int?> updateDB(List<string> list, string url = "optional") {
-            return await Storage.AddFloor((Floor)list);
+        public static async void UpdateVersion()
+        {
+            _updateVersion();
         }
 
+        private static void _updateVersion()
+        {
+            using (var wc = new WebClient())
+            {
+                var str = wc.DownloadString(new Uri(UpdateLink));
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = fvi.FileVersion;
+                if (!str.Contains(version))
+                    _promptUser();
+            }
+        }
+
+        private static void _promptUser() {
+            if (MessageBox.Show("Update Available!", "Would you like to download the new version of EasyWinterface?", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes) {
+                System.Diagnostics.Process.Start("https://github.com/k-koehler/EasySweeper-3/blob/master/EasySweeper%203/EasyWinterface/Releases/Setup.exe?raw=true");
+            }
+        }
+
+        public static async Task<int?> updateDB(List<string> list, string url = "optional") {
+            try
+            {
+                return await Database.AddFloor((Floor) list);
+            }
+            catch (DuplicateFloorException)
+            {
+                return 0;
+            }
+        }
+
+>>>>>>> 3b41bed... Didn't do much with the database. Added an updater.
         public static async Task<string> UploadImage(string location) {
             var client = new ImgurClient("303907803ca83e2", "7cb9b347002e53227ea79bfb2ea37e344feae6c9");
             await Task.Delay(1000);

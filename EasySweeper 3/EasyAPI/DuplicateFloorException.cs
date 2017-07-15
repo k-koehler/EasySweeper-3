@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyAPI
 {
-    class DuplicateFloorException : Exception
+    public class DuplicateFloorException : Exception
     {
         public DuplicateFloorException() : base() { }
         public DuplicateFloorException(string message) : base(message) { }
