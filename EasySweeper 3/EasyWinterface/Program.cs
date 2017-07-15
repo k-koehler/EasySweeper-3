@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Linq.Expressions;
 using Squirrel;
 using System.Threading;
+using System.Configuration;
 using EasyAPI;
 
 namespace EasyWinterface {

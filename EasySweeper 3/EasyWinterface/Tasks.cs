@@ -49,7 +49,7 @@ namespace EasyWinterface {
         public static async Task<int?> updateDB(List<string> list, string url = "optional") {
             try
             {
-                return await Database.AddFloor((Floor) list);
+                return await API.GetInstance().AddFloor((Floor) list);
             }
             catch (DuplicateFloorException)
             {

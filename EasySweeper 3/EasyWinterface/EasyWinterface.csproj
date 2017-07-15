@@ -167,6 +167,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Secrets.config" />
     <None Include="ewintDataSet.xsc">
       <DependentUpon>ewintDataSet.xsd</DependentUpon>
     </None>
