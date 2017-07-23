@@ -1,4 +1,4 @@
-ALTER FUNCTION [dbo].[tfnFloorWithPlayers]
+CREATE OR ALTER FUNCTION [dbo].[tfnFloorWithPlayers]
 (
 	@FloorID int
 )
@@ -26,3 +26,4 @@ SELECT	@FloorID [FloorID],
 	))AS PlayerNames
 FROM	Floor F
 WHERE	F.ID = @FloorID
+GO
