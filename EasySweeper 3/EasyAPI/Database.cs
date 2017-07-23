@@ -70,7 +70,7 @@ namespace EasyAPI
             }
         }
 
-        public static async Task<IEnumerable<Floor>> SearchFloor
+        public static async Task<IList<Floor>> SearchFloor
             (IEnumerable<int> ids,
             IList<Player> participants,
             TimeSpan? start, 
