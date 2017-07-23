@@ -18,6 +18,7 @@ namespace EasyAPI
         private string _size;
         private int _difficulty;
         private int _complexity;
+        private DateTime _date;
 
         public static Player[] TestPlayers = new Player[2]
         {
@@ -27,7 +28,7 @@ namespace EasyAPI
 
         public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(1000), 1, 1, 1, "Large", 1);
 
-        public IEnumerable<Player> Players => _players;
+        public IList<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
         public int BonusPercentage => _bonusPercentage;
@@ -35,6 +36,7 @@ namespace EasyAPI
         public string Size => _size;
         public int Difficulty => _difficulty;
         public int Complexity => _complexity;
+        public DateTime Date => _date;
 
         public string Url
         {
@@ -87,7 +89,7 @@ namespace EasyAPI
 
 
         public Floor(
-            IEnumerable<Player> players,
+            IList<Player> players,
             TimeSpan time,
             int floor,
             int bonusPercentage,
@@ -107,5 +109,26 @@ namespace EasyAPI
             _complexity = complexity;
             _url = url;
         }
+
+        public Floor(
+            int id,
+            IList<Player> players,
+            TimeSpan time,
+            int floor,
+            int bonusPercentage,
+            int mod,
+            string size,
+            DateTime date,
+            int difficulty = 55,
+            int complexity = 6,
+            string url = null
+            )
+            : this(players, time, floor, bonusPercentage, mod, size, difficulty, complexity, url)
+        {
+            _id = id;
+            _date = date;
+        }
+
+
     }
 }
