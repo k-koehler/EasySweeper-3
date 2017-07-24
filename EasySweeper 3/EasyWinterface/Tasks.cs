@@ -148,25 +148,31 @@ namespace EasyWinterface {
 
         public static CATEGORY DetermineCategory(Floor f) {
 
+            if (f == null) {
+                Console.WriteLine("null floor");
+                return CATEGORY.InvalidFloor ;
+            }
+
             if (f.Complexity == 1)
                 return CATEGORY.C1;
 
-            if (f.BonusPercentage != 13)
+            if (f.BonusPercentage != 13) {
+                Console.WriteLine("Invalid bonus percentage: " + f.BonusPercentage);
                 return CATEGORY.InvalidFloor;
+            }
 
-            if (f.Difficulty != 11 | f.Difficulty != 55)
+            //TODO implement difficulty in the db
+            /*if (f.Difficulty != 11 || f.Difficulty != 55) {
+                Console.WriteLine("Invalid difficulty: " + f.Difficulty);
                 return CATEGORY.InvalidFloor;
-
-            if (f.Size != "Large")
-                if (f.Players.Count != 1)
-                    return CATEGORY.InvalidFloor;
+            }*/
 
             if (f.Size == "Medium")
                 return CATEGORY.Med;
             if (f.Size == "Small")
                 return CATEGORY.Small;
 
-            switch (f.Players.Count) {
+            switch (f.Players.Count + 1) {
                 case 1:
                     return CATEGORY.Solo;
                 case 2:
@@ -177,6 +183,8 @@ namespace EasyWinterface {
                     return CATEGORY._4s;
                 case 5:
                     return CATEGORY._5s;
+                default:
+                    return CATEGORY.InvalidFloor;
             }
 
             throw new ArgumentException("bad floor");
@@ -200,6 +208,8 @@ namespace EasyWinterface {
                     return "Solo med";
                 case CATEGORY.C1:
                     return "C1";
+                default:
+                    return "Invalid Floor";
             }
 
             throw new ArgumentException("bad category enum");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -135,14 +136,22 @@ namespace EasyWinterface {
             TimeSpan startTimeSpan, endTimeSpan;
             try {
                 startTimeSpan = TimeSpan.Parse(textBox1.Text);
-                endTimeSpan = TimeSpan.Parse(textBox2.Text);
+                endTimeSpan = TimeSpan.Parse(textBox3.Text);
             } catch (Exception ex ) when (ex is FormatException || ex is OverflowException){
                 MessageBox.Show("Invalid query");
                 return;
             }
-            var matchedFloors = await Tasks.Api.SearchFloor(ids: "", start: startTimeSpan, end: endTimeSpan);
+            var matchedFloors = await Tasks.Api.SearchFloor(ids: "" /*, start: startTimeSpan, end: endTimeSpan*/);
+            Console.WriteLine("Lower: " + startTimeSpan.ToString());
+            Console.WriteLine("Upper: " + endTimeSpan.ToString());
+            Console.WriteLine("Search successful! Floor count =  " + matchedFloors.Count);
+            textBox2.Clear();
             foreach(var floor in matchedFloors) {
-                textBox3.Text += floor.Time + " " + Tasks.DetermineCategory(floor);
+                string playerString = "";
+                foreach(var player in floor.Players) {
+                    playerString += player.User + " ";
+                }
+                textBox2.AppendText(floor.Time + " " + floor.Size + " " + Tasks.CategoryString(Tasks.DetermineCategory(floor)) + " " + playerString + "\n");
                 //TODO implement category
             }
         }

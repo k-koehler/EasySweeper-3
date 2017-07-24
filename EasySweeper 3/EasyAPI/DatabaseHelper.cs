@@ -10,7 +10,7 @@ namespace EasyAPI
 {
     static class DatabaseHelper
     {
-        public static string ConnectionString => "Server=easywinterface.database.windows.net;Initial Catalog=EasyWinterface;uid=EasyWinterface;pwd=purple_pony_23;";
+        public static string ConnectionString => "Server=easywinterface.database.windows.net;Initial Catalog=EasyWinterface;uid=tresamigos;pwd=fuckFut123;";
 
         private static async Task<SqlCommand> CreateSprocAsync(string sprocName, SqlConnection conn, SqlParameter[] parameters = null)
         {
