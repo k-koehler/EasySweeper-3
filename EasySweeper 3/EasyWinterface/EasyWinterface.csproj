@@ -134,14 +134,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EWAppContext.cs" />
-    <Compile Include="ewintDataSet.cs">
-      <DependentUpon>ewintDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="ewintDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ewintDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
@@ -168,17 +160,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Secrets.config" />
-    <None Include="ewintDataSet.xsc">
-      <DependentUpon>ewintDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="ewintDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>ewintDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="ewintDataSet.xss">
-      <DependentUpon>ewintDataSet.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

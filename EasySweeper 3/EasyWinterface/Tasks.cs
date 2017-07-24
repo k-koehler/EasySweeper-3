@@ -143,5 +143,55 @@ namespace EasyWinterface {
                 callback(valid);
             });
         }
+
+        public enum CATEGORY { _5s, _4s, _3s, Duo, Solo, C1, Small, Med };
+
+        public static CATEGORY DetermineCategory(Floor f) {
+
+            if (f.Complexity == 6)
+                return CATEGORY.C1;
+            if (f.Size == "Medium")
+                return CATEGORY.Med;
+            if (f.Size == "Small")
+                return CATEGORY.Small;
+
+            switch (f.Players.Count) {
+                case 1:
+                    return CATEGORY.Solo;
+                case 2:
+                    return CATEGORY.Duo;
+                case 3:
+                    return CATEGORY._3s;
+                case 4:
+                    return CATEGORY._4s;
+                case 5:
+                    return CATEGORY._5s;
+            }
+
+            throw new ArgumentException("bad floor");
+        }
+
+        public static string CategoryString(CATEGORY c) {
+            switch (c) {
+                case CATEGORY._5s:
+                    return "5 man";
+                case CATEGORY._4s:
+                    return "4s1l";
+                case CATEGORY._3s:
+                    return "Trio";
+                case CATEGORY.Duo:
+                    return "Duo";
+                case CATEGORY.Solo:
+                    return "Solo";
+                case CATEGORY.Small:
+                    return "Solo small";
+                case CATEGORY.Med:
+                    return "Solo med";
+                case CATEGORY.C1:
+                    return "C1";
+            }
+
+            throw new ArgumentException("bad category enum");
+        }
     }
 }
