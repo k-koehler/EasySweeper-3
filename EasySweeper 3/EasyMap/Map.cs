@@ -42,6 +42,7 @@ namespace EasyMap {
         private List<Tuple<ROOM_TYPES, Bitmap>> _roomTypeList;
 
         private static void _initializeRoomTypeList(List<Tuple<ROOM_TYPES, Bitmap>> list) {
+            list = new List<Tuple<ROOM_TYPES, Bitmap>>();
             list.Add(new Tuple<ROOM_TYPES, Bitmap>(ROOM_TYPES.EAST, Properties.Resources.e));
             list.Add(new Tuple<ROOM_TYPES, Bitmap>(ROOM_TYPES.EAST_SOUTH, Properties.Resources.es));
             list.Add(new Tuple<ROOM_TYPES, Bitmap>(ROOM_TYPES.EAST_SOUTH_NORTH, Properties.Resources.esn));

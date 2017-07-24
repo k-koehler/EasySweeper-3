@@ -18,7 +18,7 @@ namespace CaptureDevice {
             _deviceType = dt;
         }
 
-        public async Task<Bitmap> CaptureImage(Bitmap referenceImage, Rectangle referenceDimenensions) {
+        public async Task<Bitmap> CaptureImage(Bitmap referenceImage, Rectangle referenceDimenensions, int millisTimeout) {
             while (true) {
                 var captureRec = _findRectangle();
                 using (var captureScreen = _captureScreen()) {
@@ -27,13 +27,14 @@ namespace CaptureDevice {
                             return BitmapOperations.CropBitmap(bmp, referenceDimenensions);
                         }
                     } catch (BadImageFormatException) {
+                        await Task.Delay(millisecondsDelay: millisTimeout);
                         continue;
                     }
                 }
             }
         }
 
-        private Bitmap _searchBitmap(Bitmap referenceImage, Bitmap captureScreen) {
+        private Bitmap _searchBitmap(Bitmap referenceImage, Bitmap captureScreen){
             throw new NotImplementedException();
         }
 

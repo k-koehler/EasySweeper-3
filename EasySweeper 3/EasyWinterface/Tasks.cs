@@ -11,52 +11,21 @@ using Imgur.API.Authentication.Impl;
 using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
 using System.Threading;
+using Squirrel;
 
 namespace EasyWinterface {
     class Tasks {
 
         /*public static async Task UpdateVersion()
         {
-            string updateURL = "https://github.com/k-koehler/EasySweeper-3/tree/master/EasySweeper%203/EasyWinterface/Releases";
-            using (var mgr = new UpdateManager(updateURL)) {
+            string updateURL = "https://github.com/k-koehler/EasySweeper-3/blob/master/EasySweeper%203/EasyWinterface/Releases/RELEASES";
+            using (var mgr = new Squirrel.UpdateManager(updateURL)) {
                 await mgr.UpdateApp();
             }
         }*/
 
         public static async Task<bool> updateDB(List<string> list, string url = "optional") {
             return await Storage.AddFloor((Floor)list);
-        }
-
-        public static async Task WinterfaceSearch(int SCAN_TIMEOUT, EWAppContext appContext) {
-
-            var ocr = new PixelMatchOCR();
-            var wintScanner = new WinterfaceScanner();
-
-            try {
-                while (true) {
-                    var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
-                    bmp.Save("temp.bmp");
-                    var fi = new FileInfo("temp.bmp");
-                    await Task.Delay(1000);
-                    try {
-                        var url = await UploadImage(fi.FullName);
-                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                        var url2 = string.Copy(url);
-                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
-                            Process.Start(url2);
-                        });
-                        var list = ocr.readWinterface(bmp);
-                        await updateDB(list, url);
-                    } catch (Exception e) when (e is TimeoutException || e is ImgurException) {
-                        appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
-                        var list = ocr.readWinterface(bmp);
-                        await updateDB(list);
-                    }
-                    await Task.Delay(24000); //4 minutes
-                }
-            } catch (System.EntryPointNotFoundException e) {
-                Console.WriteLine(e.StackTrace);
-            }
         }
 
         public static async Task<string> UploadImage(string location) {

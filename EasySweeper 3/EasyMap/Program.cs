@@ -26,6 +26,8 @@ namespace EasyMap {
                     var bmp = await ms.CaptureMap(_getTimeout());
                     if (form.ChangeMainMapPicture(bmp))
                         MapOperations.ProcessChangedMap(bmp, form, ref map);
+                    map.TEST_FIND_COORDINATES(bmp);
+                    bmp.Dispose();
                 }
             });
 

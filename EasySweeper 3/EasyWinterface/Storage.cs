@@ -16,6 +16,9 @@ namespace EasyWinterface
             try
             {
                 floor.ID = await Database.AddFloor(floor);
+#if TEST
+                MessageBox.Show("Uploaded Successfully!!!!!!!!");
+#endif
             }
             catch (DuplicateFloorException ex)
             {

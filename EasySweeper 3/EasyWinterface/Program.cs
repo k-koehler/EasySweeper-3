@@ -24,17 +24,19 @@ namespace EasyWinterface {
         /// 
         [STAThread]
         public static void Main() {
-            var ocr = new PixelMatchOCR();
-            var wintScanner = new WinterfaceScanner();
-            var appContext = new EWAppContext();
-            var cheatProtector = new CheatProtector();
 
-            const int SCAN_TIMEOUT = 200; //ms
+            try {
+                var ocr = new PixelMatchOCR();
+                var wintScanner = new WinterfaceScanner();
+                var appContext = new EWAppContext();
+                var cheatProtector = new CheatProtector();
 
-            //look for winterface
-            var asynchTask = new Task(async () => {
-                while (true) {
-                    var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
+                const int SCAN_TIMEOUT = 200; //ms
+
+                //look for winterface
+                var asynchTask = new Task(async () => {
+                    while (true) {
+                        var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
 #if !TEST
                     if (!cheatProtector.isWinterfaceValid()) {
                         await Task.Delay(SCAN_TIMEOUT);
@@ -42,30 +44,32 @@ namespace EasyWinterface {
                         continue;
                     }
 #endif
-                    bmp.Save("temp.bmp");
-                    var fi = new FileInfo("temp.bmp");
-                    try {
-                        var url = await Tasks.UploadImage(fi.FullName);
-                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                        var url2 = string.Copy(url);
-                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
-                            Process.Start(url2);
-                        });
-                        var list = ocr.readWinterface(bmp);
-                        await Tasks.updateDB(list, url);
-                    } catch (Exception e) when (e is TimeoutException || e is Imgur.API.ImgurException) {
-                        appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
-                        var list = ocr.readWinterface(bmp);
-                        await Tasks.updateDB(list);
+                        bmp.Save("temp.bmp");
+                        var fi = new FileInfo("temp.bmp");
+                        try {
+                            var url = await Tasks.UploadImage(fi.FullName);
+                            appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
+                            var url2 = string.Copy(url);
+                            appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
+                                Process.Start(url2);
+                            });
+                            var list = ocr.readWinterface(bmp);
+                            await Tasks.updateDB(list, url);
+                        } catch (Exception e) when (e is TimeoutException || e is Imgur.API.ImgurException) {
+                            appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
+                            var list = ocr.readWinterface(bmp);
+                            await Tasks.updateDB(list);
+                        }
+
+                        cheatProtector = new CheatProtector();
+                        await Task.Delay(6000); //1 minute
                     }
+                });
 
-                    cheatProtector = new CheatProtector();
-                    await Task.Delay(6000); //1 minute
-                }
-            });
-
-            asynchTask.Start();
-            Application.Run(appContext);
+                //var updateTask = Tasks.UpdateVersion();
+                asynchTask.Start();
+                Application.Run(appContext);
+            } catch (System.EntryPointNotFoundException) { }
         }
     }
 
