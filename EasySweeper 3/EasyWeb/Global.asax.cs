@@ -18,8 +18,9 @@ namespace EasyWeb
 
         private static void RegisterRoutes(RouteCollection routes)
         {
-            routes.MapPageRoute("", "Home/{floor}", "~/Main.aspx");
-            
+            routes.MapPageRoute("", "", "~/Main.aspx");
+            routes.MapPageRoute("", "People/{Username}", "~/People.aspx");
+
         }
 
         protected void Session_Start(object sender, EventArgs e)

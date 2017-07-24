@@ -11,7 +11,7 @@ namespace EasyWeb
 {
 
 
-    public partial class Main
+    public partial class People
     {
 
         /// <summary>
