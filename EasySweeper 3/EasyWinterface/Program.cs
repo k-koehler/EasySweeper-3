@@ -57,9 +57,6 @@ namespace EasyWinterface {
             var asynchTask = new Task(async () => {
                 while (true) {
                     var bmp = await wintScanner.ScanForWinterface(SCAN_TIMEOUT);
-#if TEST
-                    await Database.Test();
-#endif
 
 #if !TEST
                     if (!cheatProtector.isWinterfaceValid()) {
@@ -68,27 +65,28 @@ namespace EasyWinterface {
                         continue;
                     }
 #endif
-                        bmp.Save("temp.bmp");
-                        var fi = new FileInfo("temp.bmp");
-                        try {
-                            var url = await Tasks.UploadImage(fi.FullName);
-                            appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
-                            var url2 = string.Copy(url);
-                            appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
-                                Process.Start(url2);
-                            });
-                            var list = ocr.readWinterface(bmp);
-                            await Tasks.updateDB(list, url);
-                        } catch (Exception e) when (e is TimeoutException || e is Imgur.API.ImgurException) {
-                            appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
-                            var list = ocr.readWinterface(bmp);
-                            await Tasks.updateDB(list);
-                        }
-
-                        cheatProtector = new CheatProtector();
-                        await Task.Delay(6000); //1 minute
+                    bmp.Save("temp.bmp");
+                    var fi = new FileInfo("temp.bmp");
+                    try {
+                        var url = await Tasks.UploadImage(fi.FullName);
+                        appContext.TrayIcon.ShowBalloonTip(2000, "EasyWinterface", "Winterface uploaded. Click here.", ToolTipIcon.Info);
+                        var url2 = string.Copy(url);
+                        appContext.TrayIcon.BalloonTipClicked += new EventHandler(delegate (object o, EventArgs a) {
+                            Process.Start(url2);
+                        });
+                        var list = ocr.readWinterface(bmp);
+                        Tasks.LogLocal(bmp, list, url);
+                        await Tasks.updateDB(list, url);
+                    } catch (Exception e) when (e is TimeoutException || e is Imgur.API.ImgurException) {
+                        appContext.TrayIcon.ShowBalloonTip(2000, "Error", "There was an error uploading your image to Imgur.", ToolTipIcon.Error);
+                        var list = ocr.readWinterface(bmp);
+                        Tasks.LogLocal(bmp, list, null);
+                        await Tasks.updateDB(list);
                     }
-                });
+                    cheatProtector = new CheatProtector();
+                    await Task.Delay(millisecondsDelay: 60000); //1 minute
+                }
+            });
 
                 //var updateTask = Tasks.UpdateVersion();
                 asynchTask.Start();

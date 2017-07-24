@@ -17,6 +17,7 @@ using System.Threading;
 using Squirrel;
 using System.Configuration;
 using EasyAPI;
+using System.Drawing;
 
 namespace EasyWinterface {
     class Tasks {
@@ -25,15 +26,12 @@ namespace EasyWinterface {
 
         public static API Api { get; set; }
 
-        public static async void UpdateVersion()
-        {
+        public static async void UpdateVersion() {
             _updateVersion();
         }
 
-        private static void _updateVersion()
-        {
-            using (var wc = new WebClient())
-            {
+        private static void _updateVersion() {
+            using (var wc = new WebClient()) {
                 var str = wc.DownloadString(new Uri(UpdateLink));
                 var assembly = Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -50,12 +48,9 @@ namespace EasyWinterface {
         }
 
         public static async Task<int?> updateDB(List<string> list, string url = "optional") {
-            try
-            {
+            try {
                 return await Api.AddFloor((Floor)list);
-            }
-            catch (DuplicateFloorException)
-            {
+            } catch (DuplicateFloorException) {
                 return 0;
             }
         }
@@ -78,6 +73,34 @@ namespace EasyWinterface {
                 }
             }
         }
+
+        internal static void LogLocal(Bitmap bmp, List<string> list, string url) {
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDoc‌​uments), "EasyWinterfaceData");
+            Directory.CreateDirectory(path);
+            if (bmp != null)
+                bmp.Save(path + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bmp");
+            _logLocalFile(path, list, url);
+        }
+
+        private static void _logLocalFile(string path, List<string> list, string url) {
+                using (var tw = new StreamWriter(path + "\\easylog.txt", true)) {
+                    tw.WriteLine(list[0] + "\n");
+                    tw.WriteLine(list[1] + "\n");
+                    tw.WriteLine("percent completed: " + list[2] + "\n");
+                    tw.WriteLine("size: " + list[9] + "\n");
+                    tw.WriteLine("difficulty: " + list[10] + "\n");
+                    tw.WriteLine("complexity: " + list[11] + "\n");
+                    tw.WriteLine("guide mode: " + list[12] + "\n");
+                    tw.WriteLine("level mod: " + list[3] + "\n");
+                    tw.WriteLine("player 1: " + list[4] + "\n");
+                    tw.WriteLine("player 2: " + list[5] + "\n");
+                    tw.WriteLine("player 3: " + list[6] + "\n");
+                    tw.WriteLine("player 4: " + list[7] + "\n");
+                    tw.WriteLine("player 5: " + list[8] + "\n");
+                    tw.WriteLine("----------------------------------------------\n");
+                    tw.Close();
+                }
+        } 
 
         internal static async Task TrackForegroundWindow(List<IntPtr> _windowBuffer, TimeSpan _bufferLength, CancellationTokenSource cts) {
             List<Tuple<IntPtr, DateTime>> internalList = new List<Tuple<IntPtr, DateTime>>();
