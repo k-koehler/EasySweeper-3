@@ -144,12 +144,23 @@ namespace EasyWinterface {
             });
         }
 
-        public enum CATEGORY { _5s, _4s, _3s, Duo, Solo, C1, Small, Med };
+        public enum CATEGORY { _5s, _4s, _3s, Duo, Solo, C1, Small, Med, InvalidFloor };
 
         public static CATEGORY DetermineCategory(Floor f) {
 
-            if (f.Complexity == 6)
+            if (f.Complexity == 1)
                 return CATEGORY.C1;
+
+            if (f.BonusPercentage != 13)
+                return CATEGORY.InvalidFloor;
+
+            if (f.Difficulty != 11 | f.Difficulty != 55)
+                return CATEGORY.InvalidFloor;
+
+            if (f.Size != "Large")
+                if (f.Players.Count != 1)
+                    return CATEGORY.InvalidFloor;
+
             if (f.Size == "Medium")
                 return CATEGORY.Med;
             if (f.Size == "Small")
