@@ -172,7 +172,7 @@ namespace EasyWinterface {
             if (f.Size == "Small")
                 return CATEGORY.Small;
 
-            switch (f.Players.Count + 1) {
+            switch (f.Players.Count) {
                 case 1:
                     return CATEGORY.Solo;
                 case 2:
