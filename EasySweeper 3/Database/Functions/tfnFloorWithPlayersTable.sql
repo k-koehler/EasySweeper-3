@@ -11,14 +11,14 @@ SELECT
 	FROM	dbo.PlayerFloor PF
 		INNER JOIN dbo.Player P ON PF.PlayerID = P.ID
 	WHERE	PF.FloorID = @FloorID
-	AND	PF.Position = 1
+	AND	PF.Position = 0
 ) AS [P1],
 (
 	SELECT	P.Name
 	FROM	dbo.PlayerFloor PF
 		INNER JOIN dbo.Player P ON PF.PlayerID = P.ID
 	WHERE	PF.FloorID = @FloorID
-	AND	PF.Position = 2
+	AND	PF.Position = 1
 	
 ) AS [P2],
 (
@@ -26,20 +26,19 @@ SELECT
 	FROM	dbo.PlayerFloor PF
 		INNER JOIN dbo.Player P ON PF.PlayerID = P.ID
 	WHERE	PF.FloorID = @FloorID
-	AND	PF.Position = 3
+	AND	PF.Position = 2
 ) AS [P3],
 (
 	SELECT	P.Name
 	FROM	dbo.PlayerFloor PF
 		INNER JOIN dbo.Player P ON PF.PlayerID = P.ID
 	WHERE	PF.FloorID = @FloorID
-	AND	PF.Position = 4
+	AND	PF.Position = 3
 ) AS [P4],
 (
 	SELECT	P.Name
 	FROM	dbo.PlayerFloor PF
 		INNER JOIN dbo.Player P ON PF.PlayerID = P.ID
 	WHERE	PF.FloorID = @FloorID
-	AND	PF.Position = 5
-) AS P5
-GO
+	AND	PF.Position = 4
+) AS [P5]
