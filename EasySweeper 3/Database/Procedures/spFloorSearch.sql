@@ -1,14 +1,15 @@
-CREATE PROCEDURE [dbo].[spFloorSearch]		@FloorIDs dbo.IntSet READONLY,
-					@FloorParticipants dbo.FloorParticipants READONLY,
-					@DurationFrom int = NULL,
-					@DurationTo int = NULL,
-					@Bonuses dbo.IntSet READONLY,
-					@Mods dbo.IntSet READONLY,
-					@Sizes dbo.StringSet READONLY,
-					@Complexities dbo.IntSet READONLY,
-					@Image nvarchar(100) = NULL,
-					@DateFrom datetime2(0) = NULL,
-					@DateTo datetime2(0) = NULL
+ALTER PROCEDURE [dbo].[spFloorSearch]	@FloorIDs dbo.IntSet READONLY,
+				@FloorParticipants dbo.FloorParticipants READONLY,
+				@DurationFrom int = NULL,
+				@DurationTo int = NULL,
+				@Bonuses dbo.IntSet READONLY,
+				@Mods dbo.IntSet READONLY,
+				@Sizes dbo.StringSet READONLY,
+				@Complexities dbo.IntSet READONLY,
+				@Image nvarchar(100) = NULL,
+				@DateFrom datetime2(0) = NULL,
+				@DateTo datetime2(0) = NULL,
+				@IgnorePlayerPosition bit = 0
 AS
 
 SET NOCOUNT, XACT_ABORT ON
@@ -49,6 +50,23 @@ WHERE	1=1
 IF EXISTS (SELECT * FROM @FloorIDs)
 	SET @Where = @Where + N' AND F.ID IN (SELECT Value FROM @FloorIDs)'
 
+IF EXISTS (SELECT * FROM @FloorParticipants)
+	IF @IgnorePlayerPosition < 1
+	BEGIN 
+		SELECT	@Where = @Where + ' AND P' + CONVERT(char(2), P.Position + 1) + ' LIKE N''' + P.Name + ''''
+		FROM	@FloorParticipants P
+	END
+	ELSE
+	BEGIN
+
+		SET @Where = @Where + N' AND	EXISTS
+					(
+						SELECT	*
+						FROM	@FloorParticipants FP
+							CROSS APPLY dbo.tfnPlayerInFloor(FP.Name, F.ID) E
+						WHERE	E.IsInFloor = 1
+					) '
+	END
 
 IF @DurationFrom IS NOT NULL
 	SET @Where = @Where + N' AND F.Duration >= @DurationFrom '
@@ -68,7 +86,7 @@ BEGIN
 	INTO	#SizeIDs
 	FROM	@Sizes S
 		INNER JOIN SizeLookup SL ON S.Value LIKE SL.Name
-
+	
 	SET @Where = @Where + N' AND F.SizeID IN (SELECT ID FROM #SizeIDs)'
 END
 	
@@ -86,18 +104,20 @@ IF @DateTo IS NOT NULL
 
 SET @Sql = @Select + @From + @Where
 
-SET @Params = '@FloorIDs dbo.IntSet READONLY,
-	     @DurationFrom int,
-	     @DurationTo int,
-	     @Bonuses dbo.IntSet READONLY,
-	     @Mods dbo.IntSet READONLY,	     
-	     @Complexities dbo.IntSet READONLY,
-	     @Image nvarchar(100),
-	     @DateFrom datetime2(0),
-	     @DateTo datetime2(0)'
+SET @Params = '	@FloorIDs dbo.IntSet READONLY,
+		@FloorParticipants dbo.FloorParticipants READONLY,	
+		@DurationFrom int,
+		@DurationTo int,
+		@Bonuses dbo.IntSet READONLY,
+		@Mods dbo.IntSet READONLY,	     
+		@Complexities dbo.IntSet READONLY,
+		@Image nvarchar(100),
+		@DateFrom datetime2(0),
+		@DateTo datetime2(0)'
 
 EXEC sys.sp_executesql @SQL, @Params, 
 	@FloorIDs = @FloorIDs,
+	@FloorParticipants = @FloorParticipants,
 	@DurationFrom = @DurationFrom,
 	@DurationTo = @DurationTo,
 	@Bonuses = @Bonuses,
@@ -113,4 +133,3 @@ BEGIN CATCH
 	EXEC spRaiseError
 	RETURN 9999
 END CATCH
-GO
