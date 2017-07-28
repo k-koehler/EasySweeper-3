@@ -72,7 +72,7 @@ namespace EasyAPI
 
         public static async Task<IList<Floor>> SearchFloor
             (IEnumerable<int> ids,
-            IList<Player> participants,
+            IList<Tuple<Player, int>> participants,
             TimeSpan? start, 
             TimeSpan? end, 
             IEnumerable<int> bonuses,
@@ -81,7 +81,8 @@ namespace EasyAPI
             IEnumerable<int> complexities,
             string image,
             DateTime? dateFrom,
-            DateTime? dateTo)
+            DateTime? dateTo,
+            bool ignorePosition = false)
         {
 
             SqlParameter[] parameters =
@@ -186,38 +187,18 @@ namespace EasyAPI
             };
         }
 
-        private static DataTable ParticipantsToDataTable(IList<Player> participants)
-        {
-            DataTable d = new DataTable();
-            d.Columns.Add("Name", typeof(string));
-            d.Columns.Add("Position", typeof(int));
-            d.Columns.Add("UnknownName", typeof(int));
-
-            participants = participants ?? new Player[0];
-
-            for (int i = 0; i < participants.Count; i++)
-            {
-                d.Rows.Add(new object[]{
-                            participants[i].User,
-                            i,
-                            participants[i].OCRFailed
-                        });
-            }
-            return d;
-        }
-
         private static SqlParameter TVP<T>(string parameterName, IEnumerable<T> values, string tableTypeName, string colName = "Value")
-            where T : IConvertible
+           where T : IConvertible
         {
             if (parameterName == null || tableTypeName == null)
                 return null;
 
             DataTable d = new DataTable();
             d.Columns.Add(colName, typeof(T));
-            
+
             values = values ?? new T[0];
 
-            foreach(T value in values)
+            foreach (T value in values)
             {
                 d.Rows.Add(value);
             }
@@ -231,7 +212,26 @@ namespace EasyAPI
             };
         }
 
+
         private static SqlParameter ParticipantsTVP(IList<Player> players, string parameterName = "@FloorParticipants")
+        {
+            int length = players.Count;
+
+            Tuple<Player, int>[] participants = new Tuple<Player, int>[length];
+
+            for (int i = 0; i < length; i++)
+                participants[i] = new Tuple<Player, int>(players[i], i);
+
+            return new SqlParameter()
+            {
+                ParameterName = parameterName,
+                SqlDbType = SqlDbType.Structured,
+                TypeName = "dbo.FloorParticipants",
+                Value =  ParticipantsToDataTable(participants)
+            };
+        }
+
+        private static SqlParameter ParticipantsTVP(IEnumerable<Tuple<Player, int>> players, string parameterName = "@FloorParticipants")
         {
 
             return new SqlParameter()
@@ -239,8 +239,29 @@ namespace EasyAPI
                 ParameterName = parameterName,
                 SqlDbType = SqlDbType.Structured,
                 TypeName = "dbo.FloorParticipants",
-                Value =  ParticipantsToDataTable(players)
+                Value = ParticipantsToDataTable(players)
             };
+        }
+
+        private static DataTable ParticipantsToDataTable(IEnumerable<Tuple<Player, int>> participants)
+        {
+            DataTable d = new DataTable();
+            d.Columns.Add("Name", typeof(string));
+            d.Columns.Add("Position", typeof(int));
+            d.Columns.Add("UnknownName", typeof(int));
+
+            foreach (var p in participants)
+            {
+                if (p.Item1 != null)
+                {
+                    d.Rows.Add(new object[] {
+                        p.Item1.User,
+                        p.Item2,
+                        p.Item1.OCRFailed
+                    });
+                }
+            }
+            return d;
         }
 
         private static long? Round(TimeSpan? time)

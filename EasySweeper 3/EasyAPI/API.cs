@@ -101,7 +101,7 @@ namespace EasyAPI
         /// </example>
         public async Task<IList<Floor>> SearchFloor(
             IEnumerable<int> ids = null,
-            IList<Player> participants = null,
+            IEnumerable<Tuple<Player, int>> participants = null,
             TimeSpan? start = null,
             TimeSpan? end = null,
             IEnumerable<int> bonuses = null,
@@ -110,12 +110,13 @@ namespace EasyAPI
             IEnumerable<int> complexities = null,
             string image = null,
             DateTime? dateFrom = null,
-            DateTime? dateTo = null)
+            DateTime? dateTo = null,
+            bool ignorePosition = true)
         {
 
             CheckConfigured();
 
-            return await Database.SearchFloor(ids, participants, start, end, bonuses, mods, sizes, complexities, image, dateFrom, dateTo);
+            return await Database.SearchFloor(ids, participants, start, end, bonuses, mods, sizes, complexities, image, dateFrom, dateTo, ignorePosition);
         }
 
         public async Task<IList<Floor>> SearchFloor(
@@ -129,7 +130,8 @@ namespace EasyAPI
             string complexities = null,
             string image = null,
             DateTime? dateFrom = null,
-            DateTime? dateTo = null)
+            DateTime? dateTo = null,
+            bool ignorePosition = true)
         {
             CheckConfigured();
 
@@ -144,7 +146,8 @@ namespace EasyAPI
                     complexities: ParseNumberRanges(sizes),
                     image: image,
                     dateFrom: dateFrom,
-                    dateTo: dateTo);
+                    dateTo: dateTo,
+                    ignorePosition: ignorePosition);
 
         }
 
