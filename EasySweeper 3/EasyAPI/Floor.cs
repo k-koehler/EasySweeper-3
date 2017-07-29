@@ -26,8 +26,9 @@ namespace EasyAPI
             new Player("Big Chin")
         };
 
-        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(1000), 1, 1, 1, "Large", 1);
+        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(0,5,30), 1, 1, 1, "Large", 1);
 
+        
         public IList<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
