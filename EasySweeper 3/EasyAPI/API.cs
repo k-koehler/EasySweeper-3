@@ -66,13 +66,13 @@ namespace EasyAPI
             Console.WriteLine(success ? "\n Yes" : "\n No");
             return success;
         }
-
+        
         /// <summary>
         /// Find floors given a range of search conditions. All the conditions passed will be anded together. Any nulls will be ignored.
         /// 
         /// </summary>
         /// <param name="ids">Collection of Floor IDs to search for</param>
-        /// <param name="participants">List of players to search for. Currently unsupported!</param>
+        /// <param name="participants">List of players with their position, to search for</param>
         /// <param name="start">Lower bound on times to search for, for example passing as <code>new TimeSpan(hours: 0, minutes: 5, seconds: 30)</code> will return any floors that took longer than 5 minutes 30 seconds to complete.</param>
         /// <param name="end">Upper bound on times to search for, for example passing as <code>new TimeSpan(hours: 0, minutes: 5, seconds: 30)</code> will return any floors that took less than 5 minutes 30 seconds to complete.</param>
         /// <param name="bonuses">Collection of Bonus percentages to search for</param>
@@ -82,6 +82,7 @@ namespace EasyAPI
         /// <param name="image">Case insensitive string to search for. Floors are uploaded with an Imgur picture of their winterface if submitted by EasyWinterface, this parameter searches the URL of each floor's image</param>
         /// <param name="dateFrom">Lower bound of dates to search for. For example passing <code>new DateTime(year: 2017, month: 1, day: 1)</code> would return any floors completed on or after this date.</param>
         /// <param name="dateTo">Upper bound of dates to search for. For example passing <code>new DateTime(year: 2017, month: 1, day: 1)</code> would return any floors completed on or before this date.</param>
+        /// <param name="ignorePosition">When true instructs the search to ignore the position of players in the participants parameter</param>
         /// <returns>Collection containing any floors that meet the specified confitions.</returns>
         /// <example>
         /// Sample code to find any Large Floors faster than 5 minutes that had a bonus percentage completion of 11%-15%, completed in 2017.
@@ -111,7 +112,7 @@ namespace EasyAPI
             string image = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool ignorePosition = true)
+            bool ignorePosition = false)
         {
 
             CheckConfigured();
@@ -131,7 +132,7 @@ namespace EasyAPI
             string image = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
-            bool ignorePosition = true)
+            bool ignorePosition = false)
         {
             CheckConfigured();
 
@@ -151,15 +152,38 @@ namespace EasyAPI
 
         }
 
-        private static IList<Player> ParsePlayerList(string participants)
+        private static IEnumerable<Tuple<Player, int>> ParsePlayerList(string participants)
         {
             if (string.IsNullOrEmpty(participants))
                 return null;
+            List<Tuple<Player, int>> playersWithPositions = new List<Tuple<Player, int>>();
+            string[] ss;
 
-            return participants.Split(',')
-                .Where((name, include) => name.Length <= 12)
-                .Select((name) => new Player(name))
-                .ToList<Player>(); 
+            var iter = participants.Split(',').GetEnumerator();
+            for(int i = 0; iter.MoveNext(); i++)
+            {
+                string s = (string)iter.Current;
+                if (s.Contains("!"))
+                {
+                    ss = s.Split('!');
+                    if (ss.Length <= 2)
+                    {
+                        if (ss[0].Length < 12 && Int32.TryParse(ss[1], out int position))
+                        {
+                            playersWithPositions.Add(
+                                new Tuple<Player, int>(new Player(ss[0]), position));
+                        }
+
+                    }
+                }
+                else
+                {
+                    playersWithPositions.Add(
+                        new Tuple<Player, int>(new Player(s), i));
+                }
+            }
+
+            return playersWithPositions; 
         }
 
         private static async Task<bool> CheckAPIKey(Guid key)
