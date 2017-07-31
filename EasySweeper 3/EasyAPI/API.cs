@@ -261,8 +261,9 @@ namespace EasyAPI
 
             try
             {
-                Int32.TryParse(split[0], out int start);
-                Int32.TryParse(split[1], out int end);
+                int start, end;
+                Int32.TryParse(split[0], out start);
+                Int32.TryParse(split[1], out end);
                 int temp;
 
                 if (start > end)

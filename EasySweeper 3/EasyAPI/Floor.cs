@@ -38,6 +38,8 @@ namespace EasyAPI
         public int Difficulty => _difficulty;
         public int Complexity => _complexity;
         public DateTime Date => _date;
+        public string FormattedTime => _time.ToString(@"mm\:ss");
+        public string Theme => CalcTheme();
 
         public string Url
         {
@@ -130,6 +132,23 @@ namespace EasyAPI
             _date = date;
         }
 
+        private string CalcTheme()
+        {
+            if (_floor >= 48 && _floor < 60)
+                return "Warped";
+            if (_floor >= 36)
+                return "Occult";
+            if (_floor >= 30)
+                return "Abandoned 2";
+            if (_floor >= 18)
+                return "Furnished";
+            if (_floor >= 13)
+                return "Abandoned 1";
+            if (_floor >= 1)
+                return "Frozen";
+
+            return "Fak";
+        }
 
     }
 }
