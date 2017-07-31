@@ -33,6 +33,14 @@ namespace EasyAPI
         //<summary></summary>
         public static async void ConfigureInstance(Guid key, Action<bool> callback = null)
         {
+            instance = instance = new API(key)
+            {
+                _configured = true
+            };
+            callback(true);
+            return;
+
+            //remove above when distributing..
             bool valid = await CheckAPIKey(key);
 
             if (valid)
