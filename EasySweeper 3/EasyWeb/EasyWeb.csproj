@@ -124,9 +124,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="APIExtensions.cs" />
+    <Compile Include="HTMLColumnAttribute.cs" />
+    <Compile Include="HTMLGenerator.cs" />
     <Compile Include="Main.aspx.cs">
       <DependentUpon>Main.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
