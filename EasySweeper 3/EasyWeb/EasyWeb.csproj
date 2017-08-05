@@ -95,6 +95,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\Master.css" />
+    <Content Include="CSS\People.css" />
     <Content Include="Main.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -103,6 +105,7 @@
     <Content Include="Secrets.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Master.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -130,6 +133,13 @@
     </Compile>
     <Compile Include="Main.aspx.designer.cs">
       <DependentUpon>Main.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master.Master.cs">
+      <DependentUpon>Master.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master.Master.designer.cs">
+      <DependentUpon>Master.Master</DependentUpon>
     </Compile>
     <Compile Include="People.aspx.cs">
       <DependentUpon>People.aspx</DependentUpon>

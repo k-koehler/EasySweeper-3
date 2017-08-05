@@ -1,0 +1,19 @@
+﻿table {
+    text-align: center;
+    margin: auto;
+    max-width:1080px;
+    width:100%;
+}
+
+a {
+    color: cornflowerblue;
+}
+
+a:visited{
+    color:#315dac;
+}
+
+td{
+    border-top:dotted;
+    border-top-color:#252526;
+}
