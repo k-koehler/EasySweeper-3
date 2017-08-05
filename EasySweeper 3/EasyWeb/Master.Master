@@ -1,0 +1,22 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Master.master.cs" Inherits="EasyWeb.Master" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <link rel="stylesheet" type="text/css" href="/CSS/Master.css">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div id="everything">
+        <div id="NavBar"></div>
+        <form id="form1" runat="server">
+            <div id="mainContent">
+                <asp:ContentPlaceHolder ID="Main" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
