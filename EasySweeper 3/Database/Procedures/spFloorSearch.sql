@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dbo].[spFloorSearch]	@FloorIDs dbo.IntSet READONLY,
+CREATE OR ALTER PROCEDURE [dbo].[spFloorSearch]	@FloorIDs dbo.IntSet READONLY,
 				@FloorParticipants dbo.FloorParticipants READONLY,
 				@DurationFrom int = NULL,
 				@DurationTo int = NULL,
@@ -9,7 +9,8 @@ ALTER PROCEDURE [dbo].[spFloorSearch]	@FloorIDs dbo.IntSet READONLY,
 				@Image nvarchar(100) = NULL,
 				@DateFrom datetime2(0) = NULL,
 				@DateTo datetime2(0) = NULL,
-				@IgnorePlayerPosition bit = 0
+				@IgnorePlayerPosition bit = 0,
+				@PlayerCount int = NULL
 AS
 
 SET NOCOUNT, XACT_ABORT ON
@@ -82,6 +83,7 @@ IF EXISTS (SELECT * FROM @Mods)
 
 IF EXISTS (SELECT * FROM @Sizes)
 BEGIN
+
 	SELECT	DISTINCT SL.ID
 	INTO	#SizeIDs
 	FROM	@Sizes S
@@ -102,7 +104,18 @@ IF @DateFrom IS NOT NULL
 IF @DateTo IS NOT NULL
 	SET @Where = @Where + N' AND F.Date <= @DateTo '
 
-SET @Sql = @Select + @From + @Where
+IF @PlayerCount IS NOT NULL
+BEGIN
+	SET @From = @From + N' CROSS APPLY dbo.tfnFloorPlayersCount(F.ID) C '
+	SET @Where = @Where + N' AND  C.Players = @PlayerCount'
+END
+SET @Sql = @Select + @From + @Where + N' ORDER BY F.Size, F.Floor ASC, F.Duration ASC '
+
+INSERT Search Values (@sql)
+
+INSERT Search
+SELECT	Name + ' ' + CONVERT(nvarchar(2), position) + ' ' + CONVERT(nvarchar(5), @IgnorePlayerPosition)
+FROM	@FloorParticipants
 
 SET @Params = '	@FloorIDs dbo.IntSet READONLY,
 		@FloorParticipants dbo.FloorParticipants READONLY,	
@@ -113,7 +126,8 @@ SET @Params = '	@FloorIDs dbo.IntSet READONLY,
 		@Complexities dbo.IntSet READONLY,
 		@Image nvarchar(100),
 		@DateFrom datetime2(0),
-		@DateTo datetime2(0)'
+		@DateTo datetime2(0),
+		@PlayerCount int'
 
 EXEC sys.sp_executesql @SQL, @Params, 
 	@FloorIDs = @FloorIDs,
@@ -125,7 +139,8 @@ EXEC sys.sp_executesql @SQL, @Params,
 	@Complexities = @Complexities,
 	@Image = @Image,
 	@DateFrom = @DateFrom,
-	@DateTo = @DateTo 
+	@DateTo = @DateTo,
+	@PlayerCount = @PlayerCount
 
 END TRY
 BEGIN CATCH
