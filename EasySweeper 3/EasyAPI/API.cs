@@ -62,7 +62,6 @@ namespace EasyAPI
         public async Task<int?> AddFloor(Floor floor, int? retry = null)
         {
             CheckConfigured();
-
             return await Database.AddFloor(floor);
         }
 

@@ -101,14 +101,14 @@ namespace EasyWinterface {
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "5 man",
+            "4s1l" ,
+            "Trio" ,
+            "Duo"  , 
+            "Solo" ,
             "C1",
-            "Solo small",
-            "Solo med",
-            "Solo",
-            "Duo",
-            "Trio",
-            "4s1l",
-            "5 man"});
+            "Small",
+            "Medium"});
             this.comboBox1.Location = new System.Drawing.Point(165, 28);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -141,12 +141,18 @@ namespace EasyWinterface {
                 MessageBox.Show("Invalid query");
                 return;
             }
-            var matchedFloors = await Tasks.Api.SearchFloor(ids: "" /*, start: startTimeSpan, end: endTimeSpan*/);
-            Console.WriteLine("Lower: " + startTimeSpan.ToString());
-            Console.WriteLine("Upper: " + endTimeSpan.ToString());
-            Console.WriteLine("Search successful! Floor count =  " + matchedFloors.Count);
+            var matchedFloors = await Tasks.Api.SearchFloor(ids: "" , start: startTimeSpan, end: endTimeSpan);
             textBox2.Clear();
             foreach(var floor in matchedFloors) {
+
+                if (Tasks.DetermineCategory(floor) == Tasks.CATEGORY.InvalidFloor)
+                    continue;
+
+                if(comboBox1.SelectedIndex > -1) {
+                    if (comboBox1.SelectedIndex != (int)Tasks.DetermineCategory(floor))
+                        continue;
+                }
+
                 string playerString = "";
                 foreach(var player in floor.Players) {
                     playerString += player.User + " ";

@@ -20,7 +20,7 @@ using EasyAPI;
 using System.Drawing;
 
 namespace EasyWinterface {
-    class Tasks {
+    static class Tasks {
 
         private const string UpdateLink = "https://raw.githubusercontent.com/k-koehler/EasySweeper-3/master/EasySweeper%203/EasyWinterface/Releases/RELEASES";
 

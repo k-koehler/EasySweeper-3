@@ -93,7 +93,7 @@ namespace EasyAPI
                 TVP<int>("@Floors", floorNumbers, "dbo.IntSet"),
                 ParticipantsTVP(participants, "@FloorParticipants"),
                 Param("@DurationFrom", SqlDbType.BigInt, null, Round(start)),
-                Param("@DurationTo", SqlDbType.BigInt, null, Round(start)),
+                Param("@DurationTo", SqlDbType.BigInt, null, Round(end)),
                 TVP<int>("@Bonuses", bonuses, "dbo.IntSet"),
                 TVP<int>("@Mods", mods, "dbo.IntSet"),
                 TVP<string>("@Sizes", sizes, "dbo.StringSet"),
@@ -249,6 +249,10 @@ namespace EasyAPI
 
         private static DataTable ParticipantsToDataTable(IEnumerable<Tuple<Player, int>> participants)
         {
+
+            if (participants == null)
+                return null;
+
             DataTable d = new DataTable();
             d.Columns.Add("Name", typeof(string));
             d.Columns.Add("Position", typeof(int));
