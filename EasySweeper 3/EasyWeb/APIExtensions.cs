@@ -21,6 +21,12 @@ namespace EasyWeb
             return floor?.Theme ?? "";
         }
 
+        [HTMLColumn("Time")]
+        public static string GetTime(this Floor floor)
+        {
+            return floor?.Time.ToString(@"mm\:ss") ?? "";
+        }
+
         [HTMLColumn("P1")]
         public static string GetP1(this Floor floor)
         {
@@ -70,7 +76,7 @@ namespace EasyWeb
                 return "";
 
             string username = floor?.Players[position].User ?? "";
-            return "<a href=\"" + username + "\">" + username + "</a>";
+            return "<a href=\"/People/" + username + "/5\">" + username + "</a>";
         }
 
     }

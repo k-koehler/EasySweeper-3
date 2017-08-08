@@ -160,7 +160,8 @@ namespace EasyAPI
                     image: image,
                     dateFrom: dateFrom,
                     dateTo: dateTo,
-                    ignorePosition: ignorePosition);
+                    ignorePosition: ignorePosition,
+                    playerCount: playerCount);
 
         }
 

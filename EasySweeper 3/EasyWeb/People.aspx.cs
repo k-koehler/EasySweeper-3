@@ -18,30 +18,35 @@ namespace EasyWeb
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            string playerName = (string)RouteData.Values["Username"];
-            string strCount = (string)RouteData.Values["Count"];
+            string playerName = (string)RouteData.Values["Username"] ?? "Puff Pure";
+            string strCount = (string)RouteData.Values["Count"] ?? "5";
 
             _count = TypeExtension.TryParseNullable(strCount);
-
+            
             Page.Title = playerName;
             _player = new Player(playerName);
-
+            
             _floors = (await Global.API.SearchFloor(
-                participants: _player.User, 
-                ignorePosition: true, 
+                participants: _player.User,
+                sizes: "Large",
+                complexities: "6",
+
+                ignorePosition: true,
                 playerCount: _count)
                 ).ToArray();
         }
 
         public static string GenerateTable(IEnumerable<Floor> floors, string theme, int count)
         {
-            string[] properties = new string[count + 3];
+            string[] properties = new string[count + 4];
             properties[0] = "Time";
-            for(int i = 1; i < count; i++)
+            int i;
+            for (i = 1; i <= count; i++)
             {
                 properties[i] = "P" + i;
             }
-
+            properties[i + 1] = "Date";
+            properties[i + 2] = "Img";
             return HTMLGenerator.GenerateTable<Floor>(
                 floors.Where(
                     floor => 

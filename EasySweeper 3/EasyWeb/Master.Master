@@ -10,7 +10,6 @@
 </head>
 <body>
     <div id="everything">
-        <div id="NavBar"></div>
         <div id="mainContent">
             <asp:ContentPlaceHolder ID="Main" runat="server">
             </asp:ContentPlaceHolder>

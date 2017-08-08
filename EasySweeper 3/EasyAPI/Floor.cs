@@ -26,7 +26,14 @@ namespace EasyAPI
             new Player("Big Chin")
         };
 
-        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(0, 5, 30), 1, 1, 1, "Large", 1);
+        public static readonly Floor TestFloor = new Floor(
+            players: TestPlayers, 
+            time: new TimeSpan(0, 5, 30), 
+            bonusPercentage: 1, 
+            mod: 1, 
+            complexity: 1, 
+            size: "Small", 
+            floor: 1);
 
         public IList<Player> Players => _players;
         public TimeSpan Time => _time;
@@ -37,7 +44,6 @@ namespace EasyAPI
         public int Difficulty => _difficulty;
         public int Complexity => _complexity;
         public DateTime Date => _date;
-        public string FormattedTime => _time.ToString(@"mm\:ss");
         public string Theme => CalcTheme();
 
         public static string[] Themes => new string[] { "Frozen", "Abandoned 1", "Furnished", "Abandoned 2", "Occult", "Warped" };

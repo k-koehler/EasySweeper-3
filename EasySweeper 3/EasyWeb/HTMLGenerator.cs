@@ -40,8 +40,10 @@ namespace EasyWeb
                 tr = new XElement("tr");
                 tbody.Add(tr);
 
-                foreach (MethodInfo m in methods)
+                var loop = methods.GetEnumerator();
+                for (int i=0; loop.MoveNext(); i++ )
                 {
+                    MethodInfo m = loop.Current;
                     if (!headTrPopulated)
                         headTr.Add(new XElement("th") { Value = (m.GetCustomAttribute(typeof(HTMLColumnAttribute)) as HTMLColumnAttribute).ColumnName });
                     string value = (string)m.Invoke(t, new object[] { t });
