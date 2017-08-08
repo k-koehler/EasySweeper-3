@@ -22,13 +22,12 @@ namespace EasyAPI
 
         public static Player[] TestPlayers = new Player[2]
         {
-            new Player("Puff Pure"), 
+            new Player("Puff Pure"),
             new Player("Big Chin")
         };
 
-        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(0,5,30), 1, 1, 1, "Large", 1);
+        public static readonly Floor TestFloor = new Floor(TestPlayers, new TimeSpan(0, 5, 30), 1, 1, 1, "Large", 1);
 
-        
         public IList<Player> Players => _players;
         public TimeSpan Time => _time;
         public int FloorNum => _floor;
@@ -40,6 +39,8 @@ namespace EasyAPI
         public DateTime Date => _date;
         public string FormattedTime => _time.ToString(@"mm\:ss");
         public string Theme => CalcTheme();
+
+        public static string[] Themes => new string[] { "Frozen", "Abandoned 1", "Furnished", "Abandoned 2", "Occult", "Warped" };
 
         public string Url
         {
@@ -150,5 +151,34 @@ namespace EasyAPI
             return "Fak";
         }
 
+        public static bool TryParseTheme(string theme, out string themeRange)
+        {
+            if (string.IsNullOrWhiteSpace(theme) || theme == "*")
+            {
+                themeRange = null;
+                return false;
+            }
+
+            themeRange = "";
+            switch (theme.ToLower())
+            {
+                case "frozen": themeRange = "1-12";
+                    break;
+                case "abandoned 1": themeRange = "13-17";
+                    break;
+                case "furnished": themeRange = "18-29";
+                    break;
+                case "abandoned 2": themeRange = "30-35";
+                    break;
+                case "occult": themeRange = "36-47";
+                    break;
+                case "warped": themeRange = "48-60";
+                    break;
+            }
+            if (themeRange != "")
+                return true;
+
+            return false;
+        }
     }
 }

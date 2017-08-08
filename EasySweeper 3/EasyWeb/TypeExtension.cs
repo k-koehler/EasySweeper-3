@@ -50,5 +50,15 @@ namespace EasyWeb
             else
                 return mi.First<MethodInfo>();
         }
+
+        public static int? TryParseNullable(string s)
+        {
+            int intResult;
+            if(Int32.TryParse(s, out intResult))
+            {
+                return intResult;
+            }
+            return null;
+        }
     }
 }

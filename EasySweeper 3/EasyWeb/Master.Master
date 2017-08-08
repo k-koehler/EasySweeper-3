@@ -11,12 +11,10 @@
 <body>
     <div id="everything">
         <div id="NavBar"></div>
-        <form id="form1" runat="server">
-            <div id="mainContent">
-                <asp:ContentPlaceHolder ID="Main" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
-        </form>
+        <div id="mainContent">
+            <asp:ContentPlaceHolder ID="Main" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
     </div>
 </body>
 </html>

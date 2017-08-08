@@ -9,7 +9,7 @@ namespace EasyWeb
 {
     public static class HTMLGenerator
     {
-        public static XElement GenerateTable<T>(IEnumerable<T> objects, params string[] propertiesToUse)
+        public static XElement GenerateTable<T>(IEnumerable<T> objects, string id = "", params string[] propertiesToUse)
         {
             var methods = typeof(T)
                 .GetExtensionMethods()
@@ -21,7 +21,10 @@ namespace EasyWeb
 
 
             XElement table = new XElement("table");
+            table.SetAttributeValue("class", typeof(T).Name + "Table");
+            table.SetAttributeValue("id", id ?? "");
             XElement thead = new XElement("thead");
+
             XElement headTr = new XElement("tr");
 
             thead.Add(headTr);
@@ -41,13 +44,13 @@ namespace EasyWeb
                 {
                     if (!headTrPopulated)
                         headTr.Add(new XElement("th") { Value = (m.GetCustomAttribute(typeof(HTMLColumnAttribute)) as HTMLColumnAttribute).ColumnName });
-
-                    tr.Add(new XElement("td") { Value = (string)m.Invoke(t, new object[] { t }) });
+                    string value = (string)m.Invoke(t, new object[] { t });
+                    var el = XElement.Parse("<td>" + value + "</td>");
+                    tr.Add(el);
                 }
 
                 headTrPopulated = true;
             }
-
             table.Add(tbody);
 
             return table;

@@ -260,6 +260,7 @@ END
 RAISERROR(@ErrorMessage, @Severity, @State, @ErrorMessage)
 GO
 CREATE OR ALTER PROCEDURE [dbo].[spFloorSearch]	@FloorIDs dbo.IntSet READONLY,
+				@Floors dbo.IntSet READONLY,
 				@FloorParticipants dbo.FloorParticipants READONLY,
 				@DurationFrom int = NULL,
 				@DurationTo int = NULL,
@@ -310,7 +311,10 @@ WHERE	1=1
 '
 
 IF EXISTS (SELECT * FROM @FloorIDs)
-	SET @Where = @Where + N' AND F.ID IN (SELECT Value FROM @FloorIDs)'
+	SET @Where = @Where + N' AND F.ID IN (SELECT Value FROM @FloorIDs) '
+
+IF EXISTS (SELECT * FROM @Floors)
+	SET @Where = @Where + N' AND F.Floor IN (SELECT Value FROM @Floors) '
 
 IF EXISTS (SELECT * FROM @FloorParticipants)
 	IF @IgnorePlayerPosition < 1
@@ -367,7 +371,7 @@ IF @DateTo IS NOT NULL
 
 IF @PlayerCount IS NOT NULL
 BEGIN
-	SET @From = @From + N' CROSS APPLY dbo.tfnFloorPlayerCount(F.ID) C '
+	SET @From = @From + N' CROSS APPLY dbo.tfnFloorPlayersCount(F.ID) C '
 	SET @Where = @Where + N' AND  C.Players = @PlayerCount'
 END
 SET @Sql = @Select + @From + @Where + N' ORDER BY F.Size, F.Floor ASC, F.Duration ASC '
@@ -379,6 +383,7 @@ SELECT	Name + ' ' + CONVERT(nvarchar(2), position) + ' ' + CONVERT(nvarchar(5), 
 FROM	@FloorParticipants
 
 SET @Params = '	@FloorIDs dbo.IntSet READONLY,
+		@Floors dbo.IntSet READONLY,
 		@FloorParticipants dbo.FloorParticipants READONLY,	
 		@DurationFrom int,
 		@DurationTo int,
@@ -392,6 +397,7 @@ SET @Params = '	@FloorIDs dbo.IntSet READONLY,
 
 EXEC sys.sp_executesql @SQL, @Params, 
 	@FloorIDs = @FloorIDs,
+	@Floors = @Floors,
 	@FloorParticipants = @FloorParticipants,
 	@DurationFrom = @DurationFrom,
 	@DurationTo = @DurationTo,

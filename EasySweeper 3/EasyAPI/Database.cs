@@ -72,6 +72,7 @@ namespace EasyAPI
 
         public static async Task<IList<Floor>> SearchFloor
             (IEnumerable<int> ids,
+            IEnumerable<int> floorNumbers,
             IEnumerable<Tuple<Player, int>> participants,
             TimeSpan? start, 
             TimeSpan? end, 
@@ -82,12 +83,14 @@ namespace EasyAPI
             string image,
             DateTime? dateFrom,
             DateTime? dateTo,
-            bool ignorePosition = false)
+            bool ignorePosition = false,
+            int? playerCount = null)
         {
 
             SqlParameter[] parameters =
             {
                 TVP<int>("@FloorIDs", ids, "dbo.IntSet"),
+                TVP<int>("@Floors", floorNumbers, "dbo.IntSet"),
                 ParticipantsTVP(participants, "@FloorParticipants"),
                 Param("@DurationFrom", SqlDbType.BigInt, null, Round(start)),
                 Param("@DurationTo", SqlDbType.BigInt, null, Round(start)),
@@ -98,7 +101,8 @@ namespace EasyAPI
                 Param("@Image", SqlDbType.NVarChar, 100, image),
                 Param("@DateFrom", SqlDbType.DateTime2, 0, dateFrom),
                 Param("@DateTo", SqlDbType.DateTime2, 0, dateTo),
-                Param("@IgnorePlayerPosition", SqlDbType.Bit, null, ignorePosition)
+                Param("@IgnorePlayerPosition", SqlDbType.Bit, null, ignorePosition),
+                Param("@PlayerCount", SqlDbType.Int, null, playerCount)
             };
 
             List<Floor> floors = new List<Floor>();
