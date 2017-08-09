@@ -473,6 +473,15 @@ CREATE OR ALTER   PROCEDURE [dbo].[spFloorAdd]	@Floor int,
 AS
 SET NOCOUNT, XACT_ABORT ON
 
+DECLARE @S nvarchar(max) =
+(
+SELECT	*
+FROM	@FloorParticipants
+FOR XML RAW
+)
+INSERT SEARCH 
+VALUES (@S + @Size + CAST(@Floor AS nvarchar(3)) + N' ' + CAST(@Duration AS nvarchar(10)))
+
 BEGIN TRY
 
 	DECLARE	@SizeID int,
@@ -487,6 +496,11 @@ BEGIN TRY
 	SELECT	*
 	INTO	#FloorParticipants
 	FROM	@FloorParticipants
+	-- If we're given a null name or an empty string as a name
+	-- AND the caller thinks that this name is correct something has probably gone wrong
+	-- we'll just ignore this player cause fuck knows what has happened...
+	WHERE	ISNULL(Name, '') <> ''
+	AND	UnknownName < 1
 	
 	-- Set any names to a name the database will recognise, in the case of an unknown name
 	-- There will be some names in the Player table that are (Unknown 1), (Unknown 2) etc
@@ -496,7 +510,7 @@ BEGIN TRY
 	WHERE	UnknownName = 1
 
 	BEGIN TRAN
-		-- We need to CREATE OR ALTER a floor, before regestering our participants
+		-- We need to create a floor, before regestering our participants
 		-- As we need the ID of the floor (passed out via @FloorID)
 		EXEC spNewFloor	@Floor = @Floor,
 				@Duration = @Duration,
@@ -550,7 +564,7 @@ BEGIN CATCH
 	IF @@TRANCOUNT > 0 ROLLBACK TRAN
 	EXEC spRaiseError
 	RETURN 9999
-END CATCH
+END CATCH		
 GO
 CREATE OR ALTER   PROCEDURE spAPIKeyCheck	@Key uniqueidentifier,
 				@Valid bit = 0 OUTPUT
