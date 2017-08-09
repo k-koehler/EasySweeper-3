@@ -262,11 +262,22 @@ namespace EasyAPI
             {
                 if (p.Item1 != null)
                 {
-                    d.Rows.Add(new object[] {
-                        p.Item1.User,
-                        p.Item2,
-                        p.Item1.OCRFailed
-                    });
+                    if (p.Item1.OCRFailed)
+                    {
+                        d.Rows.Add(new object[] {
+                            p.Item1.User,
+                            p.Item2,
+                            p.Item1.OCRFailed
+                        });
+                    }
+                    else if (string.IsNullOrWhiteSpace(p.Item1.User))
+                    {
+                        d.Rows.Add(new object[] {
+                            p.Item1.User,
+                            p.Item2,
+                            p.Item1.OCRFailed
+                        });
+                    }
                 }
             }
             return d;
