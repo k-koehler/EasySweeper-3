@@ -29,6 +29,8 @@ namespace EasyWeb
         {
             routes.MapPageRoute("", "", "~/Main.aspx");
             routes.MapPageRoute("", "People/{Username}/{Count}", "~/People.aspx");
+            routes.MapPageRoute("", "People/{Username}/{Count}", "~/People.aspx");
+            routes.MapPageRoute("", "People/{Username}", "~/People.aspx");
 
         }
 
@@ -72,6 +74,20 @@ namespace EasyWeb
             {
                 _api = valid ? API.Instance : null;
             });
+        }
+
+        public static string PlayerCountToString(int? count)
+        {
+
+            switch (count)
+            {
+                case 1: return "Solo";
+                case 2: return "Duo";
+                case 3: return "Trio";
+                case 4: return "4s";
+                case 5: return "5s";
+                default: return "-";
+            }
         }
     }
 }

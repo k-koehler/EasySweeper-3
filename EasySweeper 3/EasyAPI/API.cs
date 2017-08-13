@@ -17,6 +17,7 @@ namespace EasyAPI
         private bool _configured;
         private Guid _key;
 
+        #region Configuration
         private API(Guid key)
         {
             _key = key;
@@ -59,12 +60,6 @@ namespace EasyAPI
             callback(valid);
         }
 
-        public async Task<int?> AddFloor(Floor floor, int? retry = null)
-        {
-            CheckConfigured();
-            return await Database.AddFloor(floor);
-        }
-
         public async Task<bool> TestDatabase()
         {
             CheckConfigured();
@@ -73,7 +68,28 @@ namespace EasyAPI
             Console.WriteLine(success ? "\n Yes" : "\n No");
             return success;
         }
-        
+
+        private static async Task<bool> CheckAPIKey(Guid key)
+        {
+            return await Database.CheckAPIKey(key);
+        }
+
+        private void CheckConfigured()
+        {
+            if (!Configured)
+                throw new UnconfiguredAPIException();
+        }
+        #endregion
+
+        #region AddFloor
+        public async Task<int?> AddFloor(Floor floor, int? retry = null)
+        {
+            CheckConfigured();
+            return await Database.AddFloor(floor);
+        }
+        #endregion
+
+        #region SearchFloor
         /// <summary>
         /// Find floors given a range of search conditions. All the conditions passed will be anded together. Any nulls will be ignored.
         /// 
@@ -117,6 +133,7 @@ namespace EasyAPI
             IEnumerable<int> mods = null,
             IEnumerable<string> sizes = null,
             IEnumerable<int> complexities = null,
+            IEnumerable<int> difficulties = null,
             string image = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
@@ -126,7 +143,7 @@ namespace EasyAPI
 
             CheckConfigured();
 
-            return await Database.SearchFloor(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, image, dateFrom, dateTo, ignorePosition, playerCount);
+            return await Database.SearchFloor(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount);
         }
 
         public async Task<IList<Floor>> SearchFloor(
@@ -139,6 +156,7 @@ namespace EasyAPI
             string mods = null,
             string sizes = null,
             string complexities = null,
+            string difficulties = null,
             string image = null,
             DateTime? dateFrom = null,
             DateTime? dateTo = null,
@@ -157,6 +175,7 @@ namespace EasyAPI
                     mods: ParseNumberRanges(mods),
                     sizes: sizes?.Split(','),
                     complexities: ParseNumberRanges(sizes),
+                    difficulties: ParseNumberRanges(difficulties),
                     image: image,
                     dateFrom: dateFrom,
                     dateTo: dateTo,
@@ -164,7 +183,32 @@ namespace EasyAPI
                     playerCount: playerCount);
 
         }
+        #endregion
 
+
+        public async Task<IList<Aggregates>> SearchAggregates(
+            IEnumerable<int> ids = null,
+            IEnumerable<int> floors = null,
+            IEnumerable<Tuple<Player, int>> participants = null,
+            TimeSpan? start = null,
+            TimeSpan? end = null,
+            IEnumerable<int> bonuses = null,
+            IEnumerable<int> mods = null,
+            IEnumerable<string> sizes = null,
+            IEnumerable<int> complexities = null,
+            IEnumerable<int> difficulties = null,
+            string image = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool ignorePosition = false,
+            int? playerCount = null)
+        {
+            CheckConfigured();
+
+            return await Database.SearchAggregates(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount);
+        }
+
+        #region Helpers
         private static IEnumerable<Tuple<Player, int>> ParsePlayerList(string participants)
         {
             if (string.IsNullOrEmpty(participants))
@@ -186,7 +230,6 @@ namespace EasyAPI
                             playersWithPositions.Add(
                                 new Tuple<Player, int>(new Player(ss[0]), position));
                         }
-
                     }
                 }
                 else
@@ -197,17 +240,6 @@ namespace EasyAPI
             }
 
             return playersWithPositions; 
-        }
-
-        private static async Task<bool> CheckAPIKey(Guid key)
-        {
-            return await Database.CheckAPIKey(key);
-        }
-
-        private void CheckConfigured()
-        {
-            if (!Configured)
-                throw new UnconfiguredAPIException();
         }
 
         /// <summary>
@@ -293,5 +325,6 @@ namespace EasyAPI
                 return Enumerable.Empty<int>();
             }
         }
+        #endregion
     }
 }

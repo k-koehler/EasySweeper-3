@@ -10,6 +10,7 @@ namespace EasyAPI
 {
     public static class Database
     {
+        #region Test
         public static async Task<bool> Test()
         {
             int ret = 0;
@@ -33,7 +34,42 @@ namespace EasyAPI
                 return false;
             }
         }
+        #endregion
 
+        #region CheckAPIKey
+        public static async Task<bool> CheckAPIKey(Guid key)
+        {
+            try
+            {
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    Param("@Key", SqlDbType.UniqueIdentifier, null, key),
+                    new SqlParameter()
+                    {
+                        ParameterName = "@Valid",
+                        SqlDbType = SqlDbType.Bit,
+                        Direction = ParameterDirection.Output
+                    }
+                };
+
+                using (StoredProcedure s = new StoredProcedure("spAPIKeyCheck", parameters))
+                {
+                    SqlDataReader reader = await s.ExecuteAsync();
+                    while (await reader.ReadAsync())
+                    { }
+                    return (bool)s.Parameters["@Valid"].Value == true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region AddFloor
         public static async Task<int?> AddFloor(Floor f)
         {
             SqlParameter[] parameters =
@@ -45,6 +81,7 @@ namespace EasyAPI
                 Param("@Mod", SqlDbType.Int, null, f.Mod),
                 Param("@Bonus", SqlDbType.Int, null, f.BonusPercentage),
                 Param("@Complexity", SqlDbType.Int, null, f.Complexity),
+                Param("@Difficulty",SqlDbType.Int, null, f.Difficulty),
                 Param("@Image", SqlDbType.NVarChar, 100, f.Url),
                 new SqlParameter()
                 {
@@ -69,9 +106,11 @@ namespace EasyAPI
                 throw (ex);
             }
         }
+        #endregion
 
-        public static async Task<IList<Floor>> SearchFloor
-            (IEnumerable<int> ids,
+        #region SearchFloor
+        public static async Task<IList<Floor>> SearchFloor(
+            IEnumerable<int> ids,
             IEnumerable<int> floorNumbers,
             IEnumerable<Tuple<Player, int>> participants,
             TimeSpan? start, 
@@ -80,6 +119,7 @@ namespace EasyAPI
             IEnumerable<int> mods,
             IEnumerable<string> sizes,
             IEnumerable<int> complexities,
+            IEnumerable<int> difficulties,
             string image,
             DateTime? dateFrom,
             DateTime? dateTo,
@@ -98,6 +138,7 @@ namespace EasyAPI
                 TVP<int>("@Mods", mods, "dbo.IntSet"),
                 TVP<string>("@Sizes", sizes, "dbo.StringSet"),
                 TVP<int>("@Complexities", complexities, "dbo.IntSet"),
+                TVP<int>("@Difficulties", difficulties, "dbo.IntSet"),
                 Param("@Image", SqlDbType.NVarChar, 100, image),
                 Param("@DateFrom", SqlDbType.DateTime2, 0, dateFrom),
                 Param("@DateTo", SqlDbType.DateTime2, 0, dateTo),
@@ -142,43 +183,83 @@ namespace EasyAPI
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + ' ' + e.StackTrace);
+                throw (e);
             }
 
             return floors;
         }
+        #endregion
 
-        public static async Task<bool> CheckAPIKey(Guid key)
+        #region SearchAggregates
+        public static async Task<IList<Aggregates>> SearchAggregates(
+            IEnumerable<int> ids = null,
+            IEnumerable<int> floorNumbers = null,
+            IEnumerable<Tuple<Player, int>> participants = null,
+            TimeSpan? start = null,
+            TimeSpan? end = null,
+            IEnumerable<int> bonuses = null,
+            IEnumerable<int> mods = null,
+            IEnumerable<string> sizes = null,
+            IEnumerable<int> complexities = null,
+            IEnumerable<int> difficulties = null,
+            string image = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool ignorePosition = false,
+            int? playerCount = null)
         {
-            try
+            SqlParameter[] parameters =
             {
-                SqlParameter[] parameters = new SqlParameter[]
-                {
-                    Param("@Key", SqlDbType.UniqueIdentifier, null, key),
-                    new SqlParameter()
-                    {
-                        ParameterName = "@Valid",
-                        SqlDbType = SqlDbType.Bit,
-                        Direction = ParameterDirection.Output
-                    }
-                };
+                TVP<int>("@FloorIDs", ids, "dbo.IntSet"),
+                TVP<int>("@Floors", floorNumbers, "dbo.IntSet"),
+                ParticipantsTVP(participants, "@FloorParticipants"),
+                Param("@DurationFrom", SqlDbType.BigInt, null, Round(start)),
+                Param("@DurationTo", SqlDbType.BigInt, null, Round(end)),
+                TVP<int>("@Bonuses", bonuses, "dbo.IntSet"),
+                TVP<int>("@Mods", mods, "dbo.IntSet"),
+                TVP<string>("@Sizes", sizes, "dbo.StringSet"),
+                TVP<int>("@Complexities", complexities, "dbo.IntSet"),
+                TVP<int>("@Difficulties", difficulties, "dbo.IntSet"),
+                Param("@Image", SqlDbType.NVarChar, 100, image),
+                Param("@DateFrom", SqlDbType.DateTime2, 0, dateFrom),
+                Param("@DateTo", SqlDbType.DateTime2, 0, dateTo),
+                Param("@IgnorePlayerPosition", SqlDbType.Bit, null, ignorePosition),
+                Param("@PlayerCount", SqlDbType.Int, null, playerCount)
+            };
 
-                using (StoredProcedure s = new StoredProcedure("spAPIKeyCheck", parameters))
+            List<Aggregates> aggs = new List<Aggregates>();
+
+            using (StoredProcedure s = new StoredProcedure("spAggregates", parameters))
+            {
+                SqlDataReader reader = await s.ExecuteAsync();
+                while (await reader.ReadAsync())
                 {
-                    SqlDataReader reader = await s.ExecuteAsync();
-                    while (await reader.ReadAsync())
-                    { }
-                    return (bool)s.Parameters["@Valid"].Value == true;
+                    int count = (int)reader["Players"];
+                    string theme = (string)reader["Theme"];
+                    int? totalFloors = (int?)reader["TotalFloors"];
+                    var fastestTime = TimeSpanOrNull(reader["FastestTime"]);
+                    var slowestTime = TimeSpanOrNull(reader["SlowestTime"]);
+                    var averageTime = TimeSpanOrNull(reader["AverageTime"]);
+                    var totalTime = TimeSpanOrNull(reader["TotalTime"]);
+                    var stdDev = TimeSpanOrNull(reader["StandardDeviationTime"]);
+                    Aggregates a = new Aggregates(
+                        theme: theme,
+                        playerCount: count,
+                        totalFloors: totalFloors,
+                        fastestTime: fastestTime,
+                        slowestTime: slowestTime,
+                        averageTime: averageTime,
+                        totalTime: totalTime,
+                        standardDeviationTime: stdDev);
+                    aggs.Add(a);
                 }
             }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            
-            return false;
+            return aggs;
         }
+        #endregion
 
+
+        #region Helpers
         private static SqlParameter Param(string name, SqlDbType type, int? size, object value)
         {
             return new SqlParameter()
@@ -270,7 +351,7 @@ namespace EasyAPI
                             p.Item1.OCRFailed
                         });
                     }
-                    else if (string.IsNullOrWhiteSpace(p.Item1.User))
+                    else if (!string.IsNullOrWhiteSpace(p.Item1.User))
                     {
                         d.Rows.Add(new object[] {
                             p.Item1.User,
@@ -290,5 +371,27 @@ namespace EasyAPI
 
             return (long)Math.Round(time.Value.TotalSeconds);
         }
+
+        static int count = 0;
+        private static TimeSpan? TimeSpanOrNull(object readerSeconds)
+        {
+            count++;
+            try
+            {
+                if (readerSeconds == DBNull.Value || readerSeconds == null)
+                    return null;
+
+                int seconds = (int)readerSeconds;
+
+                return new TimeSpan(0, 0, seconds);
+            }
+            catch(InvalidCastException e)
+            {
+                e.GetBaseException();
+                throw;
+            }
+        }
+        
+        #endregion
     }
 }

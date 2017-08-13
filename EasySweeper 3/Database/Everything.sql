@@ -90,6 +90,21 @@ CREATE TABLE [dbo].[Floor]
 	) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY  = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
 )
 GO
+CREATE TABLE ThemeLookup
+(
+	ID int PRIMARY KEY CLUSTERED,
+	Name nvarchar(20) NOT NULL
+)
+GO
+INSERT ThemeLookup 
+VALUES (1, N'Frozen'), (2, N'Abandoned 1'), (3, N'Furnished'), (4, N'Abandoned 2'), (5, N'Occult'), (6, N'Warped')
+GO
+CREATE TABLE ThemeBand
+(
+	Floor int NOT NULL,
+	ThemeID int NOT NULL	
+)
+GO
 CREATE OR ALTER VIEW [dbo].[vwFloor]
 AS
 SELECT	F.ID,

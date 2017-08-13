@@ -9,6 +9,8 @@ namespace EasyWeb
 {
     public static class APIExtensions
     {
+        static private readonly string na = "-";
+        #region Floor
         [HTMLColumn("Floor")]
         public static string GetFloorNumber(this Floor floor)
         {
@@ -78,6 +80,63 @@ namespace EasyWeb
             string username = floor?.Players[position].User ?? "";
             return "<a href=\"/People/" + username + "/5\">" + username + "</a>";
         }
+        #endregion
 
+        #region Aggregates
+        [HTMLColumn("Theme")]
+        public static string GetTheme(this Aggregates a)
+        {
+            return a?.Theme ?? "No Theme";
+        }
+
+        [HTMLColumn("Category")]
+        public static string GetCategory(this Aggregates a)
+        {
+            return a?.PlayerCount + "s" ?? "No Category";
+        }
+
+        [HTMLColumn("Tot Floors")]
+        public static string GetFloorCount(this Aggregates a)
+        {
+            return a?.TotalFloors.ToString() ?? na;
+        }
+
+        [HTMLColumn("Fastest Time")]
+        public static string GetFastestTime(this Aggregates a)
+        {
+            return a?.FastestTime?.ToString(@"mm\:ss") ?? na;
+        }
+
+        [HTMLColumn("Slowest Time")]
+        public static string GetSlowestTime(this Aggregates a)
+        {
+            return a?.SlowestTime?.ToString(@"mm\:ss") ?? na;
+        }
+
+        [HTMLColumn("Avg Time")]
+        public static string GetAverageTime(this Aggregates a)
+        {
+            return a?.AverageTime?.ToString(@"mm\:ss") ?? na;
+        }
+
+        [HTMLColumn("Total Time")]
+        public static string GetTotalTime(this Aggregates a)
+        {
+            return a?.TotalTime?.ToString(@"mm\:ss") ?? na;
+        }
+
+        [HTMLColumn("Std Dev")]
+        public static string GetStdDev(this Aggregates a)
+        {
+            return a?.StandardDeviationTime?.ToString(@"mm\:ss") ?? na;
+        }
+
+        [HTMLColumn("Avg Mod")]
+        public static string GetAvgMod(this Aggregates a)
+        {
+            return a?.AverageMod?.ToString() ?? na;
+        }
+
+        #endregion
     }
 }

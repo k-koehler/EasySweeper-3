@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregates.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseHelper.cs" />

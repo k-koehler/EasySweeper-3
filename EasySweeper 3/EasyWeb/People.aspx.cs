@@ -12,28 +12,44 @@ namespace EasyWeb
     public partial class People : System.Web.UI.Page
     {
         public Player _player;
-        public Floor[] _floors;
+        public IList<Floor> _floors;
+        public IList<Aggregates> _aggregates;
         public int? _count;
 
+        private static string[] AggregateProperties =
+{
+                "Tot Floors",
+                "Avg Time",
+                "Total Time",
+                "Std Dev"
+            };
 
         protected async void Page_Load(object sender, EventArgs e)
         {
             string playerName = (string)RouteData.Values["Username"] ?? "Puff Pure";
-            string strCount = (string)RouteData.Values["Count"] ?? "5";
+            string strCount = (string)RouteData.Values["Count"] ?? "Summary";
 
-            _count = TypeExtension.TryParseNullable(strCount);
-            
             Page.Title = playerName;
             _player = new Player(playerName);
-            
-            _floors = (await Global.API.SearchFloor(
-                participants: _player.User,
-                sizes: "Large",
-                complexities: "6",
 
-                ignorePosition: true,
-                playerCount: _count)
-                ).ToArray();
+            if (strCount != "Summary")
+            {
+                _count = TypeExtension.TryParseNullable(strCount);
+
+                _floors = await Global.API.SearchFloor(
+                    participants: _player.User,
+                    sizes: "Large",
+                    complexities: "6",
+                    bonuses: "13",
+                    difficulties: "55",
+                    ignorePosition: true,
+                    playerCount: _count);
+            }
+            else
+            {
+                _count = null;
+                _aggregates = (await Global.API.SearchAggregates());
+            }
         }
 
         public static string GenerateTable(IEnumerable<Floor> floors, string theme, int count)
@@ -56,24 +72,12 @@ namespace EasyWeb
                 properties).ToString();
         }
 
-        //public static IEnumerable<string> GenerateThemeTables(IEnumerable<Floor> floors, int count)
-        //{
-        //    string[] properties = new string[count + 3];
-        //    properties[0] = "Time";
-        //    for (int i = 1; i < count; i++)
-        //    {
-        //        properties[i] = "P" + i;
-        //    }
-        //
-        //    foreach (string s in Floor.Themes)
-        //    {
-        //        yield return HTMLGenerator.GenerateTable<Floor>(
-        //        floors.Where(
-        //            floor =>
-        //                floor.Players.Count == count),
-        //        s + "Table",
-        //        properties).ToString();
-        //    }
-        //}
+        public static string GenerateAggregates(Aggregates aggs)
+        {
+            Aggregates[] a = { aggs };
+            return HTMLGenerator.GenerateTable<Aggregates>(a, aggs.Theme + aggs.PlayerCount + "Table", AggregateProperties)
+                .ToString();
+
+        }
     }
 }
