@@ -9,11 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyWinterface</RootNamespace>
     <AssemblyName>EasyWinterface</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>C:\deploy\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,9 +25,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,11 +52,25 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\Test\</OutputPath>
     <DefineConstants>TEST</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>7B04E2743E0D9EF5EC203D7235D5018FA2D27DA5</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>EasyWinterface_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -134,6 +152,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="EWAppContext.cs" />
+    <Compile Include="SearchPlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Tasks.cs" />
     <Compile Include="WinterfaceOperations.BitmapOperations.cs" />
     <Compile Include="WinterfaceOperations.cs" />
@@ -159,7 +180,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Secrets.config" />
+    <EmbeddedResource Include="SearchPlayerForm.resx">
+      <DependentUpon>SearchPlayerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="EasyWinterface_TemporaryKey.pfx" />
+    <Content Include="Secrets.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -203,6 +230,99 @@
       <Project>{0b154c92-2c1a-4e4c-8f8e-db61fec5eb10}</Project>
       <Name>EasyAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Glyphs\floorGlyphs\0.bmp" />
+    <Content Include="Glyphs\floorGlyphs\1.bmp" />
+    <Content Include="Glyphs\floorGlyphs\2.bmp" />
+    <Content Include="Glyphs\floorGlyphs\3.bmp" />
+    <Content Include="Glyphs\floorGlyphs\4.bmp" />
+    <Content Include="Glyphs\floorGlyphs\5.bmp" />
+    <Content Include="Glyphs\floorGlyphs\6.bmp" />
+    <Content Include="Glyphs\floorGlyphs\7.bmp" />
+    <Content Include="Glyphs\floorGlyphs\8.bmp" />
+    <Content Include="Glyphs\floorGlyphs\9.bmp" />
+    <Content Include="Glyphs\floorGlyphs\Floor.bmp" />
+    <Content Include="Glyphs\lvlModPcntCmptGlyphs\minus.bmp" />
+    <Content Include="Glyphs\lvlModPcntCmptGlyphs\percent.bmp" />
+    <Content Include="Glyphs\lvlModPcntCmptGlyphs\plus.bmp" />
+    <Content Include="Glyphs\playerGlyphs\0.bmp" />
+    <Content Include="Glyphs\playerGlyphs\1.bmp" />
+    <Content Include="Glyphs\playerGlyphs\2.bmp" />
+    <Content Include="Glyphs\playerGlyphs\3.bmp" />
+    <Content Include="Glyphs\playerGlyphs\4.bmp" />
+    <Content Include="Glyphs\playerGlyphs\5.bmp" />
+    <Content Include="Glyphs\playerGlyphs\6.bmp" />
+    <Content Include="Glyphs\playerGlyphs\7.bmp" />
+    <Content Include="Glyphs\playerGlyphs\8.bmp" />
+    <Content Include="Glyphs\playerGlyphs\9.bmp" />
+    <Content Include="Glyphs\playerGlyphs\a.bmp" />
+    <Content Include="Glyphs\playerGlyphs\a_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\b.bmp" />
+    <Content Include="Glyphs\playerGlyphs\b_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\c.bmp" />
+    <Content Include="Glyphs\playerGlyphs\c_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\d.bmp" />
+    <Content Include="Glyphs\playerGlyphs\dash.bmp" />
+    <Content Include="Glyphs\playerGlyphs\d_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\e.bmp" />
+    <Content Include="Glyphs\playerGlyphs\e_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\f.bmp" />
+    <Content Include="Glyphs\playerGlyphs\f_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\g.bmp" />
+    <Content Include="Glyphs\playerGlyphs\g_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\h.bmp" />
+    <Content Include="Glyphs\playerGlyphs\h_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\i.bmp" />
+    <Content Include="Glyphs\playerGlyphs\i_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\j.bmp" />
+    <Content Include="Glyphs\playerGlyphs\j_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\k.bmp" />
+    <Content Include="Glyphs\playerGlyphs\k_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\l.bmp" />
+    <Content Include="Glyphs\playerGlyphs\leecher.bmp" />
+    <Content Include="Glyphs\playerGlyphs\l_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\m.bmp" />
+    <Content Include="Glyphs\playerGlyphs\m_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\n.bmp" />
+    <Content Include="Glyphs\playerGlyphs\n_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\o.bmp" />
+    <Content Include="Glyphs\playerGlyphs\o_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\p.bmp" />
+    <Content Include="Glyphs\playerGlyphs\p_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\q.bmp" />
+    <Content Include="Glyphs\playerGlyphs\q_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\r.bmp" />
+    <Content Include="Glyphs\playerGlyphs\r_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\s.bmp" />
+    <Content Include="Glyphs\playerGlyphs\s_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\t.bmp" />
+    <Content Include="Glyphs\playerGlyphs\t_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\u.bmp" />
+    <Content Include="Glyphs\playerGlyphs\underscore.bmp" />
+    <Content Include="Glyphs\playerGlyphs\u_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\v.bmp" />
+    <Content Include="Glyphs\playerGlyphs\v_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\w.bmp" />
+    <Content Include="Glyphs\playerGlyphs\w_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\x.bmp" />
+    <Content Include="Glyphs\playerGlyphs\x_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\y.bmp" />
+    <Content Include="Glyphs\playerGlyphs\y_cap.bmp" />
+    <Content Include="Glyphs\playerGlyphs\z.bmp" />
+    <Content Include="Glyphs\playerGlyphs\z_cap.bmp" />
+    <Content Include="Glyphs\timerGlyphs\0.bmp" />
+    <Content Include="Glyphs\timerGlyphs\1.bmp" />
+    <Content Include="Glyphs\timerGlyphs\2.bmp" />
+    <Content Include="Glyphs\timerGlyphs\3.bmp" />
+    <Content Include="Glyphs\timerGlyphs\4.bmp" />
+    <Content Include="Glyphs\timerGlyphs\5.bmp" />
+    <Content Include="Glyphs\timerGlyphs\6.bmp" />
+    <Content Include="Glyphs\timerGlyphs\7.bmp" />
+    <Content Include="Glyphs\timerGlyphs\8.bmp" />
+    <Content Include="Glyphs\timerGlyphs\9.bmp" />
+    <Content Include="Glyphs\timerGlyphs\semicolon.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

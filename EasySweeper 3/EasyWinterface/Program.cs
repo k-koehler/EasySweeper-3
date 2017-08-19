@@ -26,19 +26,26 @@ namespace EasyWinterface {
         [STAThread]
         public static void Main()
         {
-            Tasks.UpdateVersion();
-            Tasks.ConfigureAPI( async valid => 
+            try
             {
-                try
+                Tasks.ConfigureAPI(async valid =>
                 {
-                    await Tasks.Api.TestDatabase();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                
-            });
+                    try
+                    {
+                        await Tasks.Api.TestDatabase();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
 
             var ocr = new PixelMatchOCR();
             var wintScanner = new WinterfaceScanner();

@@ -149,7 +149,6 @@ namespace EasyWinterface {
         public static CATEGORY DetermineCategory(Floor f) {
 
             if (f == null) {
-                Console.WriteLine("null floor");
                 return CATEGORY.InvalidFloor ;
             }
 
@@ -157,7 +156,6 @@ namespace EasyWinterface {
                 return CATEGORY.C1;
 
             if (f.BonusPercentage != 13) {
-                Console.WriteLine("Invalid bonus percentage: " + f.BonusPercentage);
                 return CATEGORY.InvalidFloor;
             }
 

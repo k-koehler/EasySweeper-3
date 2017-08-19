@@ -65,7 +65,6 @@ namespace EasyAPI
             CheckConfigured();
 
             bool success = await Database.Test();
-            Console.WriteLine(success ? "\n Yes" : "\n No");
             return success;
         }
 
