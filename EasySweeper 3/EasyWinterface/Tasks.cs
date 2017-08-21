@@ -127,20 +127,17 @@ namespace EasyWinterface {
 
         public static CATEGORY DetermineCategory(Floor f) {
 
-            if (f == null) {
+            if (f == null) 
                 return CATEGORY.InvalidFloor ;
-            }
 
             if (f.Complexity == 1)
                 return CATEGORY.C1;
 
-            if (f.BonusPercentage != 13) {
+            if (f.BonusPercentage != 13)
                 return CATEGORY.InvalidFloor;
-            }
 
-            if (f.Difficulty != 11 || f.Difficulty != 55) {
-                return CATEGORY.InvalidFloor;
-            }
+            if (f.Difficulty == 11 || f.Difficulty == 55) ;
+            else return CATEGORY.InvalidFloor;
 
             if (f.Size == "Medium")
                 return CATEGORY.Med;
@@ -159,7 +156,7 @@ namespace EasyWinterface {
                 case 5:
                     return CATEGORY._5s;
                 default:
-                    return CATEGORY.InvalidFloor;
+                return CATEGORY.InvalidFloor;
             }
 
             throw new ArgumentException("bad floor");

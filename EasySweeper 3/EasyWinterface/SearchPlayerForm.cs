@@ -254,7 +254,6 @@ namespace EasyWinterface {
                 retList.Add(Tasks.CATEGORY.Med);
                 retList.Add(Tasks.CATEGORY.C1);
             }
-            Console.WriteLine("checked: " + retList.Count);
             return retList;
         }
 
