@@ -26,7 +26,7 @@ namespace EasyWinterface {
 
         public static API Api { get; set; }
 
-        public static async Task<int?> updateDB(List<string> list, string url = "") {
+        public static async Task<int?> updateDB(List<string> list, string url = null) {
             try {
                 Floor f = (Floor)list;
                 f.Url = url;
