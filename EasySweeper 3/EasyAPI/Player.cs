@@ -14,12 +14,14 @@ namespace EasyAPI
         public int? ID => _id;
         public string User => _user;
 
-        public bool OCRFailed => _user == null || _user.ToLower() == "(unknown)";
+        public bool OCRFailed => _user == null || _user.ToLower() == UNKNOWN_NAME;
+
+        public const string UNKNOWN_NAME = "(unknown)";
 
         public Player(int? id, string user)
         {
             _id = id;
-            _user = user;
+            _user = user == "" ? UNKNOWN_NAME : user;
         }
 
         public Player(string name)

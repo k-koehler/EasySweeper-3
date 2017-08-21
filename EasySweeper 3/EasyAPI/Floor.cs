@@ -22,8 +22,8 @@ namespace EasyAPI
 
         public static Player[] TestPlayers = new Player[2]
         {
-            new Player("Puff Pure"),
-            new Player("Big Chin")
+            new Player("Big Chin"),
+            new Player("")
         };
 
         public static readonly Floor TestFloor = new Floor(
