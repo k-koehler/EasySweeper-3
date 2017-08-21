@@ -138,11 +138,9 @@ namespace EasyWinterface {
                 return CATEGORY.InvalidFloor;
             }
 
-            //TODO implement difficulty in the db
-            /*if (f.Difficulty != 11 || f.Difficulty != 55) {
-                Console.WriteLine("Invalid difficulty: " + f.Difficulty);
+            if (f.Difficulty != 11 || f.Difficulty != 55) {
                 return CATEGORY.InvalidFloor;
-            }*/
+            }
 
             if (f.Size == "Medium")
                 return CATEGORY.Med;
