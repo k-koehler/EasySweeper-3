@@ -26,27 +26,6 @@ namespace EasyWinterface {
 
         public static API Api { get; set; }
 
-        public static async void UpdateVersion() {
-            _updateVersion();
-        }
-
-        private static void _updateVersion() {
-            using (var wc = new WebClient()) {
-                var str = wc.DownloadString(new Uri(UpdateLink));
-                var assembly = Assembly.GetExecutingAssembly();
-                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                var version = fvi.FileVersion;
-                if (!str.Contains(version))
-                    _promptUser();
-            }
-        }
-
-        private static void _promptUser() {
-            if (MessageBox.Show("Update Available!", "Would you like to download the new version of EasyWinterface?", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes) {
-                System.Diagnostics.Process.Start("https://github.com/k-koehler/EasySweeper-3/blob/master/EasySweeper%203/EasyWinterface/Releases/Setup.exe?raw=true");
-            }
-        }
-
         public static async Task<int?> updateDB(List<string> list, string url = "optional") {
             try {
                 return await Api.AddFloor((Floor)list);
