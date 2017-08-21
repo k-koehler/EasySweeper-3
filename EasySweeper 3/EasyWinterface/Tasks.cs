@@ -26,9 +26,11 @@ namespace EasyWinterface {
 
         public static API Api { get; set; }
 
-        public static async Task<int?> updateDB(List<string> list, string url = "optional") {
+        public static async Task<int?> updateDB(List<string> list, string url = "") {
             try {
-                return await Api.AddFloor((Floor)list);
+                Floor f = (Floor)list;
+                f.Url = url;
+                return await Api.AddFloor(f);
             } catch (DuplicateFloorException) {
                 return 0;
             }
