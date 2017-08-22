@@ -38,7 +38,7 @@ namespace EasyAPI
             {
                 _configured = true
             };
-            callback(true);
+            callback?.Invoke(true);
             return;
 
             //remove above when distributing..

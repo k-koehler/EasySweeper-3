@@ -170,6 +170,7 @@ namespace EasyAPI
                                 (int)reader["Mod"],
                                 (string)reader["Size"],
                                 Convert.ToDateTime(reader["Date"]),
+                                (int)reader["Difficulty"],
                                 (int)reader["Complexity"]
                             ));
 
