@@ -73,7 +73,9 @@ namespace EasyWinterface {
             // 
             // textBox2
             // 
-            this.textBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox2.Location = new System.Drawing.Point(0, 69);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
@@ -101,7 +103,6 @@ namespace EasyWinterface {
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 5;
-            this.comboBox1.SelectedIndex = 1;
             // 
             // checkBox1
             // 
@@ -353,7 +354,6 @@ namespace EasyWinterface {
                 " Solo: "   + listAvgTimes[4];
 
 
-
             if (comboBox1.SelectedIndex==0)
                 _sortByDate((List<Floor>)matchedFloors);
             else _sortByTime((List<Floor>)matchedFloors);
@@ -364,7 +364,6 @@ namespace EasyWinterface {
                 textBox2.AppendText(counter + ". " + _sexyToString(floor) + "\n");
                 ++counter;
             }
-
         }
 
         

@@ -161,9 +161,10 @@
     <Compile Include="Storage.cs" />.
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="DatabaseViewerForm.cs">
+    <Compile Include="EWAppContext.cs" />
+    <Compile Include="HiScoresForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EWAppContext.cs" />
     <Compile Include="SearchPlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,8 +180,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinterfaceScanner.cs" />
-    <EmbeddedResource Include="DatabaseViewerForm.resx">
-      <DependentUpon>DatabaseViewerForm.cs</DependentUpon>
+    <EmbeddedResource Include="HiScoresForm.resx">
+      <DependentUpon>HiScoresForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
