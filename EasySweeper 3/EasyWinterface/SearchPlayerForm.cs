@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using EasyAPI;
 using System.Threading;
+using System.Globalization;
 
 namespace EasyWinterface {
     internal class SearchPlayerForm : Form {
@@ -227,7 +228,8 @@ namespace EasyWinterface {
             return "Category: " + Tasks.CategoryString(Tasks.DetermineCategory(f))
             + " | Theme: " + f.Theme 
             + " | Time: "  + f.Time.ToString()
-            + " | Players: " + _playersToString(f);
+            + " | Players: " + _playersToString(f)
+            + " | URL: " + f.Url;
         }
 
         private string _playersToString(Floor f)
@@ -304,10 +306,14 @@ namespace EasyWinterface {
 
             return new List<string>
             {
-                averageTimes[0].ToString(), averageTimes[1].ToString(),
-                averageTimes[2].ToString(),averageTimes[3].ToString(),
-                averageTimes[4].ToString()
+                _formatTimeSpan(averageTimes[0]), _formatTimeSpan(averageTimes[1]),
+                _formatTimeSpan(averageTimes[2]), _formatTimeSpan(averageTimes[3]),
+                _formatTimeSpan(averageTimes[4])
             };
+        }
+
+        private string _formatTimeSpan(TimeSpan t) {
+            return String.Format(CultureInfo.CurrentCulture, "{0}:{1}:{2}", t.Hours, t.Minutes, t.Seconds);
         }
 
         private TimeSpan _calculateAverageTimeSpan(List<TimeSpan> sourceList)
@@ -339,7 +345,14 @@ namespace EasyWinterface {
             }
 
             var listAvgTimes = _calculateAverages(matchedFloors);
-            this.textBox3.Text = listAvgTimes[0];
+            this.textBox3.Text = 
+                "5 man: "   + listAvgTimes[0]
+                + " 4s1l: " + listAvgTimes[1] +
+                " Trio: "   + listAvgTimes[2] +
+                " Duo:  "   + listAvgTimes[3] +
+                " Solo: "   + listAvgTimes[4];
+
+
 
             if (comboBox1.SelectedIndex==0)
                 _sortByDate((List<Floor>)matchedFloors);
@@ -348,7 +361,7 @@ namespace EasyWinterface {
             {
                 if (Tasks.DetermineCategory(floor) == Tasks.CATEGORY.InvalidFloor)
                     continue;
-                textBox2.AppendText(counter + "." + _sexyToString(floor) + "\n");
+                textBox2.AppendText(counter + ". " + _sexyToString(floor) + "\n");
                 ++counter;
             }
 
