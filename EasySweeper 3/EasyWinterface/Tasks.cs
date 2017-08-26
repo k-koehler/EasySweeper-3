@@ -136,8 +136,8 @@ namespace EasyWinterface {
             if (f.BonusPercentage != 13)
                 return CATEGORY.InvalidFloor;
 
-            if (f.Difficulty == 11 || f.Difficulty == 55) ;
-            else return CATEGORY.InvalidFloor;
+            /*if (f.Difficulty == 11 || f.Difficulty == 55) ;
+            else return CATEGORY.InvalidFloor;*/
 
             if (f.Size == "Medium")
                 return CATEGORY.Med;
