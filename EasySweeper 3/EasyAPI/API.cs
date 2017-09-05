@@ -207,6 +207,44 @@ namespace EasyAPI
             return await Database.SearchAggregates(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount);
         }
 
+        public async Task<IList<Aggregates>> SearchAggregates(
+            string ids = null,
+            string floors = null,
+            string participants = null,
+            TimeSpan? start = null,
+            TimeSpan? end = null,
+            string bonuses = null,
+            string mods = null,
+            string sizes = null,
+            string complexities = null,
+            string difficulties = null,
+            string image = null,
+            DateTime? dateFrom = null,
+            DateTime? dateTo = null,
+            bool ignorePosition = false,
+            int? playerCount = null)
+        {
+            CheckConfigured();
+
+            return await SearchAggregates(
+                    ids: ParseNumberRanges(ids),
+                    floors: ParseNumberRanges(floors),
+                    participants: ParsePlayerList(participants),
+                    start: start,
+                    end: end,
+                    bonuses: ParseNumberRanges(bonuses),
+                    mods: ParseNumberRanges(mods),
+                    sizes: sizes?.Split(','),
+                    complexities: ParseNumberRanges(sizes),
+                    difficulties: ParseNumberRanges(difficulties),
+                    image: image,
+                    dateFrom: dateFrom,
+                    dateTo: dateTo,
+                    ignorePosition: ignorePosition,
+                    playerCount: playerCount);
+
+        }
+
         #region Helpers
         private static IEnumerable<Tuple<Player, int>> ParsePlayerList(string participants)
         {

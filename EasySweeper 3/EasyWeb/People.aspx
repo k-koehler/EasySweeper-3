@@ -27,11 +27,8 @@
     <%foreach (Aggregates a in _aggregates) { %>
         <table>
             <tr>
-                <td class="summary
-                    
-                    
-                    
-                    "><%=Global.PlayerCountToString(a.PlayerCount) + " " + a.Theme %></td>
+                <td class="summary">
+                    <%=Global.PlayerCountToString(a.PlayerCount) + " " + a.Theme %></td>
                 <td><%=GenerateAggregates(a) %></td>
             </tr>
         </table>

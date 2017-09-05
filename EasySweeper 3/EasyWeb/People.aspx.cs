@@ -17,12 +17,12 @@ namespace EasyWeb
         public int? _count;
 
         private static string[] AggregateProperties =
-{
+        {
                 "Tot Floors",
                 "Avg Time",
                 "Total Time",
                 "Std Dev"
-            };
+        };
 
         protected async void Page_Load(object sender, EventArgs e)
         {
@@ -48,7 +48,14 @@ namespace EasyWeb
             else
             {
                 _count = null;
-                _aggregates = (await Global.API.SearchAggregates());
+                _aggregates = (await Global.API.SearchAggregates(
+                    participants: _player.User,
+                    sizes: "Large",
+                    complexities: "6",
+                    bonuses: "13",
+                    difficulties: "55",
+                    ignorePosition: true,
+                    playerCount: _count));
             }
         }
 

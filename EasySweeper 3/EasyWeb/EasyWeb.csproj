@@ -118,7 +118,6 @@
     <Content Include="People.aspx" />
     <Content Include="Scripts\jquery-3.2.1.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
-    <Content Include="Scripts\API.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
