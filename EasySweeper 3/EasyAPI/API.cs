@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Caching;
+using PostSharp.Patterns.Caching.Backends;
 
 namespace EasyAPI
 {
@@ -34,6 +34,7 @@ namespace EasyAPI
         //<summary></summary>
         public static async void ConfigureInstance(Guid key, Action<bool> callback = null)
         {
+            CachingServices.DefaultBackend = new MemoryCachingBackend();
             instance = instance = new API(key)
             {
                 _configured = true
@@ -122,6 +123,29 @@ namespace EasyAPI
         /// });
         /// </code>
         /// </example>
+
+        [Cache(AbsoluteExpiration = 10)]
+        private async Task<IList<Floor>> SearchFloor(SearchParameters parameters)
+        {
+            return await Database.SearchFloor(
+                ids: parameters.Ids,
+                floorNumbers: parameters.Floors,
+                participants: parameters.Participants,
+                start: parameters.Start,
+                end: parameters.End,
+                bonuses: parameters.Bonuses,
+                mods: parameters.Mods,
+                sizes: parameters.Sizes,
+                complexities: parameters.Complexities,
+                difficulties: parameters.Difficulties,
+                image: parameters.Image,
+                dateFrom: parameters.DateFrom,
+                dateTo: parameters.DateTo,
+                ignorePosition: parameters.IgnorePosition,
+                playerCount: parameters.PlayerCount);
+        }
+
+
         public async Task<IList<Floor>> SearchFloor(
             IEnumerable<int> ids = null,
             IEnumerable<int> floors = null,
@@ -142,7 +166,7 @@ namespace EasyAPI
 
             CheckConfigured();
 
-            return await Database.SearchFloor(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount);
+            return await SearchFloor(new SearchParameters(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount));
         }
 
         public async Task<IList<Floor>> SearchFloor(
@@ -184,6 +208,27 @@ namespace EasyAPI
         }
         #endregion
 
+        #region SearchAggregates
+        [Cache(AbsoluteExpiration = 10)]
+        private async Task<IList<Aggregates>> SearchAggregates(SearchParameters parameters)
+        {
+            return await Database.SearchAggregates(
+                ids: parameters.Ids,
+                floorNumbers: parameters.Floors,
+                participants: parameters.Participants,
+                start: parameters.Start,
+                end: parameters.End,
+                bonuses: parameters.Bonuses,
+                mods: parameters.Mods,
+                sizes: parameters.Sizes,
+                complexities: parameters.Complexities,
+                difficulties: parameters.Difficulties,
+                image: parameters.Image,
+                dateFrom: parameters.DateFrom,
+                dateTo: parameters.DateTo,
+                ignorePosition: parameters.IgnorePosition,
+                playerCount: parameters.PlayerCount);
+        }
 
         public async Task<IList<Aggregates>> SearchAggregates(
             IEnumerable<int> ids = null,
@@ -204,7 +249,7 @@ namespace EasyAPI
         {
             CheckConfigured();
 
-            return await Database.SearchAggregates(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount);
+            return await SearchAggregates(new SearchParameters(ids, floors, participants, start, end, bonuses, mods, sizes, complexities, difficulties, image, dateFrom, dateTo, ignorePosition, playerCount));
         }
 
         public async Task<IList<Aggregates>> SearchAggregates(
@@ -244,6 +289,7 @@ namespace EasyAPI
                     playerCount: playerCount);
 
         }
+        #endregion
 
         #region Helpers
         private static IEnumerable<Tuple<Player, int>> ParsePlayerList(string participants)

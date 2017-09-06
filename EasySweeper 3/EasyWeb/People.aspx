@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="People.aspx.cs" Inherits="EasyWeb.People" Async="true" MasterPageFile="~/Master.Master"%>
+<%@ OutputCache Location="ServerAndClient" VaryByParam="Username;Count" Duration="600" %>
 <% @ Import Namespace="EasyAPI" %>
 <% @ Import Namespace="EasyWeb" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="Main" Runat="Server">

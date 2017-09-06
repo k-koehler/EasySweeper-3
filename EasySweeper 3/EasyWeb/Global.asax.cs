@@ -31,7 +31,6 @@ namespace EasyWeb
             routes.MapPageRoute("", "People/{Username}/{Count}", "~/People.aspx");
             routes.MapPageRoute("", "People/{Username}/{Count}", "~/People.aspx");
             routes.MapPageRoute("", "People/{Username}", "~/People.aspx");
-
         }
 
         protected void Session_Start(object sender, EventArgs e)
